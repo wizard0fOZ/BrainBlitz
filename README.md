@@ -11,7 +11,7 @@
 - CRUD for quizzes
 - CRUD learning materials
 - Review students' performance
-- hhhbhb
+- 
 
 # Admin
 - CRUD for users
@@ -20,3 +20,10 @@
 
 # System-wide
 - Update profile
+- Password encryption
+- Registration (Students only)
+
+# Extras
+- Comment/thread feature
+- OTP
+- Self-reset for password
