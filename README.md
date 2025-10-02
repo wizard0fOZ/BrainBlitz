@@ -22,8 +22,11 @@
 - Update profile
 - Password encryption
 - Registration (Students only)
+- Image/document upload
 
 # Extras
 - Comment/thread feature
 - OTP
 - Self-reset for password
+- Animated and more interactive quiz section
+- 
