@@ -5,42 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BrainBlitz - Learn Smarter</title>
     <link href="https://fonts.googleapis.com/css2?family=Sansation:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Content/Site.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Sansation', sans-serif;
-            position: relative;
-            width: 100%;
-            min-height: 1560px;
-            background: #F2F2F2;
-            margin: 0;
-        }
-
-        /* Header */
-        .header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 75px;
-            background: #FFFFFF;
-        }
-
-        .logo {
-            position: absolute;
-            width: 312px;
-            height: 60px;
-            left: 32px;
-            top: 7px;
-            background: url('Images/BrainBlitz.png');
-            background-size: contain;
-        }
-
         .header-signin-btn {
             display: flex;
             flex-direction: row;
