@@ -1,588 +1,377 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Landing.aspx.cs" Inherits="BrainBlitz.Landing" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" %>
 
 <!DOCTYPE html>
-<html lang="en">
-<head runat="server">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta charset="utf-8" />
-    <meta name="description" content="BrainBlitz - Interactive quizzes, rich learning resources, and powerful analytics to turbocharge your educational journey." />
-    <title>BrainBlitz - Learn Smarter</title>
-    
-    <style type="text/css">
-        @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
-        
+<html>
+<head>
+    <title>BrainBlitz - Landing Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sansation:wght@400;700&display=swap" rel="stylesheet">
+    <style>
         * {
-            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
-        
-        html, body {
-            margin: 0px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        button:focus-visible, a:focus-visible {
-            outline: 2px solid #4a90e2 !important;
-            outline: -webkit-focus-ring-color auto 5px !important;
-        }
-        
-        a {
-            text-decoration: none;
+
+        body {
+            font-family: 'Sansation', sans-serif;
+            background: #F2F2F2;
+            width: 1440px;
+            height: 1560px;
+            position: relative;
         }
 
-        .landing-page {
-            background-color: #ffffff;
-            width: 100%;
-            min-width: 1440px;
-            min-height: 1560px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .landing-page .header {
+        .header {
+            position: absolute;
             width: 1440px;
             height: 75px;
-            display: flex;
-            background-color: transparent;
+            left: 0px;
+            top: 0px;
+            background: #FFFFFF;
         }
 
-        .landing-page .brainblitz-logo {
-            margin-top: 7px;
+        .logo {
+            position: absolute;
             width: 312px;
             height: 60px;
-            margin-left: 32px;
-            aspect-ratio: 5.17;
-            object-fit: cover;
+            left: 32px;
+            top: 7px;
+            background: url(image.png);
         }
 
-        .landing-page .header-nav {
+        .header-signin-btn {
             display: flex;
+            flex-direction: row;
+            justify-content: center;
             align-items: center;
-            margin-left: auto;
-            gap: 41px;
-            margin-top: 17px;
-        }
-
-        .landing-page .sign-in-btn {
-            display: inline-flex;
+            padding: 9px 38px;
+            gap: 10px;
+            position: absolute;
             width: 139px;
             height: 40px;
-            gap: 10px;
-            padding: 9px 38px;
+            left: 1084px;
+            top: 17px;
+            background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
             border-radius: 10px;
-            overflow: hidden;
-            background: linear-gradient(90deg, rgba(97, 0, 153, 1) 0%, rgba(255, 0, 217, 1) 100%);
-            position: relative;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            cursor: pointer;
-            transition: opacity 0.2s ease;
             border: none;
+            cursor: pointer;
         }
 
-        .landing-page .sign-in-btn:hover,
-        .landing-page .sign-in-btn:focus {
-            opacity: 0.9;
-        }
-
-        .landing-page .text-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: fit-content;
-            margin-top: -1.00px;
-            font-family: "Sansation-Bold", Helvetica;
+        .header-signin-btn span {
+            width: 63px;
+            height: 22px;
             font-weight: 700;
-            color: #ffffff;
             font-size: 20px;
-            text-align: center;
-            letter-spacing: 0;
-            line-height: normal;
-            white-space: nowrap;
+            line-height: 22px;
+            color: #FFFFFF;
         }
 
-        .landing-page .get-started-btn {
-            display: inline-flex;
+        .header-getstarted-btn {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 9px 19px;
+            gap: 10px;
+            position: absolute;
             width: 140px;
             height: 40px;
-            gap: 10px;
-            padding: 9px 19px;
+            left: 1264px;
+            top: 17px;
+            background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
             border-radius: 10px;
-            overflow: hidden;
-            background: linear-gradient(90deg, rgba(97, 0, 153, 1) 0%, rgba(255, 0, 217, 1) 100%);
-            position: relative;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            cursor: pointer;
             border: none;
-            transition: opacity 0.2s ease;
+            cursor: pointer;
         }
 
-        .landing-page .get-started-btn:hover,
-        .landing-page .get-started-btn:focus {
-            opacity: 0.9;
+        .header-getstarted-btn span {
+            width: 102px;
+            height: 22px;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 22px;
+            color: #FFFFFF;
         }
 
-        .landing-page .body {
-            width: 1440px;
-            height: 1485px;
-            display: flex;
-            flex-direction: column;
-            background-color: #f2f2f2;
-        }
-
-        .landing-page .slogal-div {
-            margin-left: 296px;
+        .slogan-div {
+            position: absolute;
             width: 848px;
             height: 477px;
-            position: relative;
+            left: 296px;
+            top: 75px;
         }
 
-        .landing-page .div-wrapper {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 56px;
+        .main-title {
             position: absolute;
-            top: 370px;
-            left: 567px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .landing-page .div-wrapper:hover,
-        .landing-page .div-wrapper:focus {
-            background-color: #f5f5f5;
-        }
-
-        .landing-page .div {
-            display: flex;
-            width: fit-content;
-            margin-top: -1.00px;
-            font-family: "Sansation-Bold", Helvetica;
+            width: 733px;
+            height: 168px;
+            left: 57px;
+            top: 57px;
             font-weight: 700;
-            color: #000000;
-            font-size: 20px;
+            font-size: 75px;
+            line-height: 84px;
+            display: flex;
+            align-items: center;
             text-align: center;
-            letter-spacing: 0;
-            line-height: normal;
-            white-space: nowrap;
-            position: relative;
-            align-items: center;
-            justify-content: center;
+            color: #000000;
         }
 
-        .landing-page .get-started-btn-2 {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 14px 20px;
+        .subtitle {
             position: absolute;
-            top: 370px;
-            left: 96px;
-            border-radius: 10px;
-            overflow: hidden;
-            background: linear-gradient(90deg, rgba(97, 0, 153, 1) 0%, rgba(255, 0, 217, 1) 100%);
-            text-decoration: none;
-            cursor: pointer;
-            transition: opacity 0.2s ease;
-        }
-
-        .landing-page .get-started-btn-2:hover,
-        .landing-page .get-started-btn-2:focus {
-            opacity: 0.9;
-        }
-
-        .landing-page .arrow-right {
-            position: relative;
-            width: 20px;
-            height: 20px;
-            aspect-ratio: 1;
-        }
-
-        .landing-page .p {
-            position: absolute;
-            top: 248px;
-            left: 96px;
             width: 656px;
             height: 54px;
+            left: 96px;
+            top: 248px;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 27px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-family: "Sansation-Bold", Helvetica;
-            font-weight: 700;
-            color: #8d97aa;
-            font-size: 24px;
             text-align: center;
-            letter-spacing: 0;
-            line-height: normal;
+            color: #8D97AA;
         }
 
-        .landing-page .info-div {
+        .hero-getstarted-btn {
             display: flex;
-            margin-left: 6px;
+            flex-direction: row;
+            align-items: center;
+            padding: 14px 20px;
+            gap: 7px;
+            position: absolute;
+            width: 213px;
+            height: 50px;
+            left: 96px;
+            top: 370px;
+            background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hero-getstarted-btn span {
+            width: 146px;
+            height: 22px;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 22px;
+            color: #FFFFFF;
+        }
+
+        .hero-signin-btn {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 14px 56px;
+            gap: 10px;
+            position: absolute;
+            width: 175px;
+            height: 50px;
+            left: 567px;
+            top: 370px;
+            background: #FFFFFF;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hero-signin-btn span {
+            width: 63px;
+            height: 22px;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 22px;
+            color: #000000;
+        }
+
+        .info-div {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 75px 0px;
+            gap: 30px;
+            position: absolute;
             width: 1428px;
             height: 406px;
-            position: relative;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            padding: 75px 0px;
+            left: 6px;
+            top: 552px;
         }
 
-        .landing-page .interactive-quizzes {
+        .feature-card {
+            display: flex;
             flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px 56px;
+            gap: 20px;
             width: 400px;
             height: 256px;
-            justify-content: flex-end;
-            gap: 20px;
-            padding: 20px 56px;
-            background-color: #ffffff;
+            background: #FFFFFF;
             border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            position: relative;
         }
 
-        .landing-page .image {
+        .feature-icon {
             width: 87px;
             height: 87px;
-            position: relative;
-            aspect-ratio: 1;
-            object-fit: cover;
+            background: url(image.png);
         }
 
-        .landing-page .text-wrapper-2 {
-            justify-content: center;
-            width: fit-content;
-            font-family: "Sansation-Bold", Helvetica;
+        .feature-title {
             font-weight: 700;
-            color: #000000;
             font-size: 20px;
+            line-height: 22px;
             text-align: center;
-            letter-spacing: 0;
-            line-height: normal;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .landing-page .text-wrapper-3 {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 284px;
-            font-family: "Sansation-Regular", Helvetica;
-            font-weight: 400;
             color: #000000;
-            font-size: 14px;
-            text-align: center;
-            letter-spacing: 0;
-            line-height: normal;
         }
 
-        .landing-page .rich-resources {
+        .feature-description {
+            width: 284px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 16px;
+            text-align: center;
+            color: #000000;
+        }
+
+        .user-div {
             display: flex;
             flex-direction: column;
-            width: 400px;
-            height: 256px;
             align-items: center;
-            justify-content: flex-end;
-            gap: 20px;
-            padding: 20px 73px;
-            position: relative;
-            background-color: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .landing-page .img {
-            position: relative;
-            width: 89px;
-            height: 89px;
-            aspect-ratio: 1;
-            object-fit: cover;
-        }
-
-        .landing-page .text-wrapper-4 {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 284px;
-            margin-left: -15.00px;
-            margin-right: -15.00px;
-            font-family: "Sansation-Regular", Helvetica;
-            font-weight: 400;
-            color: #000000;
-            font-size: 14px;
-            text-align: center;
-            letter-spacing: 0;
-            line-height: normal;
-        }
-
-        .landing-page .interactive-quizzes-2 {
-            flex-direction: column;
-            width: 400px;
-            height: 256px;
-            justify-content: flex-end;
-            gap: 20px;
-            padding: 20px 75px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .landing-page .text-wrapper-5 {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 284px;
-            margin-left: -17.00px;
-            margin-right: -17.00px;
-            font-family: "Sansation-Regular", Helvetica;
-            font-weight: 400;
-            color: #000000;
-            font-size: 14px;
-            text-align: center;
-            letter-spacing: 0;
-            line-height: normal;
-        }
-
-        .landing-page .user-div {
-            display: flex;
-            margin-left: 6px;
+            padding: 75px 0px;
+            gap: 30px;
+            position: absolute;
             width: 1428px;
             height: 528px;
-            position: relative;
-            margin-top: 13px;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-            padding: 75px 0px;
+            left: 6px;
+            top: 971px;
         }
 
-        .landing-page .built-for-everyone {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: fit-content;
-            margin-top: -1.00px;
-            font-family: "Sansation-Bold", Helvetica;
+        .section-title {
+            width: 297px;
+            height: 40px;
             font-weight: 700;
-            color: #000000;
             font-size: 36px;
+            line-height: 40px;
             text-align: center;
-            letter-spacing: 0;
-            line-height: normal;
-            white-space: nowrap;
-        }
-
-        .landing-page .text-wrapper-6 {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: fit-content;
-            font-family: "Sansation-Regular", Helvetica;
-            font-weight: 400;
             color: #000000;
+        }
+
+        .section-subtitle {
+            width: 571px;
+            height: 22px;
+            font-weight: 400;
             font-size: 20px;
+            line-height: 22px;
             text-align: center;
-            letter-spacing: 0;
-            line-height: normal;
-            white-space: nowrap;
+            color: #000000;
         }
 
-        .landing-page .userinfo-div {
-            display: inline-flex;
+        .userinfo-div {
+            display: flex;
+            flex-direction: row;
             align-items: flex-start;
+            padding: 0px;
             gap: 30px;
-            position: relative;
-            flex: 0 0 auto;
+            width: 1260px;
+            height: 256px;
         }
 
-        .landing-page .div-2 {
+        .user-card {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 30px;
+            gap: 20px;
             width: 400px;
             height: 256px;
-            align-items: flex-start;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px 30px;
-            position: relative;
-            background-color: #ffffff;
+            background: #FFFFFF;
             border-radius: 10px;
-            overflow: hidden;
         }
 
-        .landing-page .img-2 {
-            position: relative;
+        .user-icon {
             width: 50px;
             height: 46px;
-            aspect-ratio: 1.09;
-            object-fit: cover;
+            background: url(image.png);
         }
 
-        .landing-page .text-wrapper-7 {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            width: 284px;
-            font-family: "Sansation-Regular", Helvetica;
-            font-weight: 400;
+        .user-type-title {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 22px;
             color: #000000;
+        }
+
+        .user-features {
+            width: 284px;
+            font-weight: 400;
             font-size: 14px;
-            letter-spacing: 0;
-            line-height: normal;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            gap: 4px;
-        }
-
-        .landing-page .text-wrapper-7 li {
-            position: relative;
-            padding-left: 0;
-        }
-
-        .landing-page .text-wrapper-7 li::before {
-            content: "-";
-            position: absolute;
-            left: -12px;
-        }
-
-        .landing-page .image-2 {
-            width: 50px;
-            height: 50px;
-            position: relative;
-            aspect-ratio: 1;
-            object-fit: cover;
-        }
-
-        .landing-page .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
+            line-height: 16px;
+            color: #000000;
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="landing-page">
-            <header class="header">
-                <img class="brainblitz-logo" src="img/brainblitz-logo.png" alt="BrainBlitz Logo" />
-                <nav class="header-nav" role="navigation" aria-label="Main navigation">
-                    <asp:HyperLink ID="hlSignIn" runat="server" NavigateUrl="#signin" CssClass="sign-in-btn" role="button" aria-label="Sign in to your account">
-                        <span class="text-wrapper">Sign In</span>
-                    </asp:HyperLink>
-                    <asp:HyperLink ID="hlGetStarted" runat="server" NavigateUrl="#getstarted" CssClass="get-started-btn" role="button" aria-label="Get started for free">
-                        <span class="text-wrapper">Get Started</span>
-                    </asp:HyperLink>
-                </nav>
-            </header>
-            <main class="body">
-                <section class="slogal-div" aria-labelledby="hero-heading">
-                    <h1 id="hero-heading" class="visually-hidden">Learn Smarter with BrainBlitz</h1>
-                    <asp:HyperLink ID="hlSignIn2" runat="server" NavigateUrl="#signin" CssClass="div-wrapper" role="button" aria-label="Sign in to your account">
-                        <span class="div">Sign In</span>
-                    </asp:HyperLink>
-                    <asp:HyperLink ID="hlGetStartedFree" runat="server" NavigateUrl="#getstarted" CssClass="get-started-btn-2" role="button" aria-label="Get started for free">
-                        <span class="text-wrapper">Get Started Free</span>
-                        <img class="arrow-right" src="img/arrow-right.svg" alt="" aria-hidden="true" />
-                    </asp:HyperLink>
-                    <p class="p">
-                        Interactive quizzes, rich learning resources, and powerful analytics to turbocharge your educational journey.
-                    </p>
-                </section>
-                <section class="info-div" aria-labelledby="features-heading">
-                    <h2 id="features-heading" class="visually-hidden">Key Features</h2>
-                    <article class="interactive-quizzes">
-                        <img class="image" src="img/image-1.png" alt="Interactive quizzes icon" />
-                        <h3 class="text-wrapper-2">Interactive Quizzes</h3>
-                        <p class="text-wrapper-3">
-                            Engage with animated quizzes, track your progress, and improve with unlimited attempts.
-                        </p>
-                    </article>
-                    <article class="rich-resources">
-                        <img class="img" src="img/image-2.png" alt="Rich resources icon" />
-                        <h3 class="text-wrapper-2">Rich Resources</h3>
-                        <p class="text-wrapper-4">
-                            Access a comprehensive library of learning materials, bookmark favorites, and track completion.
-                        </p>
-                    </article>
-                    <article class="interactive-quizzes-2">
-                        <img class="img" src="img/image-3.png" alt="Track progress icon" />
-                        <h3 class="text-wrapper-2">Track Progress</h3>
-                        <p class="text-wrapper-5">
-                            Monitor your learning journey with detailed analytics and performance insights.
-                        </p>
-                    </article>
-                </section>
-                <section class="user-div" aria-labelledby="users-heading">
-                    <h2 id="users-heading" class="built-for-everyone">Built For&nbsp;&nbsp;Everyone</h2>
-                    <p class="text-wrapper-6">Tailored experiences for students, teachers, and administrators</p>
-                    <div class="userinfo-div">
-                        <article class="div-2">
-                            <img class="img-2" src="img/students.png" alt="Students icon" />
-                            <h3 class="text-wrapper-2">Students</h3>
-                            <ul class="text-wrapper-7">
-                                <li>Take interactive quizzes</li>
-                                <li>Access learning resources</li>
-                                <li>Track your progress</li>
-                                <li>Join discussions</li>
-                            </ul>
-                        </article>
-                        <article class="div-2">
-                            <img class="img-2" src="img/teachers.png" alt="Teachers icon" />
-                            <h3 class="text-wrapper-2">Teachers</h3>
-                            <ul class="text-wrapper-7">
-                                <li>Create and manage quizzes</li>
-                                <li>Upload learning materials</li>
-                                <li>Review student performance</li>
-                                <li>Subject-based access</li>
-                            </ul>
-                        </article>
-                        <article class="div-2">
-                            <img class="image-2" src="img/image-4.png" alt="Admin icon" />
-                            <h3 class="text-wrapper-2">Admin</h3>
-                            <ul class="text-wrapper-7">
-                                <li>Manage users and roles</li>
-                                <li>Assign subjects to teachers</li>
-                                <li>View analytics dashboard</li>
-                                <li>System-wide control</li>
-                            </ul>
-                        </article>
-                    </div>
-                </section>
-            </main>
+        <div class="header">
+            <div class="logo"></div>
+            <button class="header-signin-btn">
+                <span>Sign In</span>
+            </button>
+            <button class="header-getstarted-btn">
+                <span>Get Started</span>
+            </button>
+        </div>
+
+        <div class="slogan-div">
+            <div class="main-title">Learn Smarter with BrainBlitz</div>
+            <div class="subtitle">Interactive quizzes, rich learning resources, and powerful analytics to turbocharge your educational journey.</div>
+            <button class="hero-getstarted-btn">
+                <span>Get Started Free</span>
+            </button>
+            <button class="hero-signin-btn">
+                <span>Sign In</span>
+            </button>
+        </div>
+
+        <div class="info-div">
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <div class="feature-title">Interactive Quizzes</div>
+                <div class="feature-description">Engage with animated quizzes, track your progress, and improve with unlimited attempts.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <div class="feature-title">Rich Resources</div>
+                <div class="feature-description">Access a comprehensive library of learning materials, bookmark favorites, and track completion.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"></div>
+                <div class="feature-title">Track Progress</div>
+                <div class="feature-description">Monitor your learning journey with detailed analytics and performance insights.</div>
+            </div>
+        </div>
+
+        <div class="user-div">
+            <div class="section-title">Built For Everyone</div>
+            <div class="section-subtitle">Tailored experiences for students, teachers, and administrators</div>
+            <div class="userinfo-div">
+                <div class="user-card">
+                    <div class="user-icon"></div>
+                    <div class="user-type-title">Students</div>
+                    <div class="user-features">-Take interactive quizzes<br/>-Access learning resources<br/>-Track your progress<br/>-Join discussions</div>
+                </div>
+                <div class="user-card">
+                    <div class="user-icon"></div>
+                    <div class="user-type-title">Teachers</div>
+                    <div class="user-features">-Create and manage quizzes<br/>-Upload learning materials<br/>-Review student performance<br/>-Subject-based access</div>
+                </div>
+                <div class="user-card">
+                    <div class="user-icon"></div>
+                    <div class="user-type-title">Admin</div>
+                    <div class="user-features">-Manage users and roles<br/>-Assign subjects to teachers<br/>-View analytics dashboard<br/>-System-wide control</div>
+                </div>
+            </div>
         </div>
     </form>
 </body>
