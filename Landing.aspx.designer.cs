@@ -11,7 +11,7 @@ namespace BrainBlitz
 {
 
 
-    public partial class Default
+    public partial class Landing
     {
 
         /// <summary>
@@ -24,39 +24,39 @@ namespace BrainBlitz
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// btnSignInHeader control.
+        /// hlSignIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSignInHeader;
+        protected global::System.Web.UI.WebControls.HyperLink hlSignIn;
 
         /// <summary>
-        /// btnGetStartedHeader control.
+        /// hlGetStarted control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGetStartedHeader;
+        protected global::System.Web.UI.WebControls.HyperLink hlGetStarted;
 
         /// <summary>
-        /// btnGetStartedHero control.
+        /// hlSignIn2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGetStartedHero;
+        protected global::System.Web.UI.WebControls.HyperLink hlSignIn2;
 
         /// <summary>
-        /// btnSignInHero control.
+        /// hlGetStartedFree control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSignInHero;
+        protected global::System.Web.UI.WebControls.HyperLink hlGetStartedFree;
     }
 }
