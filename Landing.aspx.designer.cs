@@ -24,39 +24,39 @@ namespace BrainBlitz
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// hlSignIn control.
+        /// btnHeaderSignIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlSignIn;
+        protected global::System.Web.UI.WebControls.Button btnHeaderSignIn;
 
         /// <summary>
-        /// hlGetStarted control.
+        /// btnHeaderGetStarted control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlGetStarted;
+        protected global::System.Web.UI.WebControls.Button btnHeaderGetStarted;
 
         /// <summary>
-        /// hlSignIn2 control.
+        /// btnGetStartedFree control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlSignIn2;
+        protected global::System.Web.UI.WebControls.Button btnGetStartedFree;
 
         /// <summary>
-        /// hlGetStartedFree control.
+        /// btnSignIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlGetStartedFree;
+        protected global::System.Web.UI.WebControls.Button btnSignIn;
     }
 }
