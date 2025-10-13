@@ -42,12 +42,9 @@ body {
 
 /* BrainBlitz Logo Only */
 .logo {
-    position: absolute;
-    left: 50%;
-    top: 100px;
-    transform: translateX(-50%);
     width: 100px;
     height: 100px;
+    margin-bottom: 20px;
     background: url('../Images/BrainBlitz_Logo.png');
     background-size: contain;
     background-repeat: no-repeat;
@@ -56,12 +53,9 @@ body {
 
 /* BrainBlitz Name Only */
 .name {
-    position: absolute;
-    left: 50%;
-    top: 210px;
-    transform: translateX(-50%);
     width: 318px;
     height: 75px;
+    margin-bottom: 30px;
     background: url('../Images/BrainBlitz_Name.png');
     background-size: contain;
     background-repeat: no-repeat;
