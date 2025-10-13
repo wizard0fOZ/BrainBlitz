@@ -23,7 +23,8 @@ body {
     background: #FFFFFF;
 }
 
-.logo {
+/* BrainBlitz */
+.brainblitz {
     position: absolute;
     width: 312px;
     height: 60px;
@@ -33,7 +34,36 @@ body {
     background-size: contain;
 }
 
-.logo:hover {
+.brainblitz:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
+}
+
+
+/* BrainBlitz Logo Only */
+.logo {
+    position: absolute;
+    left: 50%;
+    top: 100px;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 100px;
+    background: url('../Images/BrainBlitz_Logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* BrainBlitz Name Only */
+.name {
+    position: absolute;
+    left: 50%;
+    top: 210px;
+    transform: translateX(-50%);
+    width: 318px;
+    height: 75px;
+    background: url('../Images/BrainBlitz_Name.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }

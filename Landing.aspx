@@ -438,7 +438,7 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <div class="logo"></div>
+        <div class="brainblitz"></div>
         <div class="header-signin-btn">
             <span>Sign In</span>
         </div>
