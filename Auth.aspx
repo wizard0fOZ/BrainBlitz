@@ -7,6 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Sansation:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Content/Site.css">
     <style>
+        .auth-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 80px;
+            margin-bottom: 30px;
+        }
+
         .toggle-div {
             display: flex;
             flex-direction: row;
@@ -14,13 +22,12 @@
             align-items: center;
             padding: 5px;
             gap: 5px;
-            position: absolute;
+            margin: 0 auto;
             width: 600px;
             height: 50px;
-            left: 420px;
-            top: 311px;
             background: #FFFFFF;
             border-radius: 10px;
+            margin-bottom: 10px;
         }
 
         .toggle-btn {
@@ -47,17 +54,21 @@
             color: #FFFFFF;
         }
 
+        .form-container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+
         .signin-div {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             padding: 27px;
             gap: 10px;
-            position: absolute;
             width: 600px;
             height: 400px;
-            left: 420px;
-            top: 371px;
             background: #FFFFFF;
             border-radius: 10px;
             visibility: visible;
@@ -72,8 +83,7 @@
             position: absolute;
             width: 600px;
             height: 600px;
-            left: 420px;
-            top: 371px;
+            top: 0;
             background: #FFFFFF;
             border-radius: 10px;
             visibility: hidden;
@@ -163,11 +173,11 @@
     </style>
 </head>
 <body>
-    <!-- Logo -->
-    <div class="logo"></div>
-
-    <!-- BrainStorm Title -->
-    <div class="name"></div>
+    <!-- Logo and Name Header -->
+    <div class="auth-header">
+        <div class="logo"></div>
+        <div class="name"></div>
+    </div>
 
     <!-- Sign In / Sign Up Toggle -->
     <div class="toggle-div">
@@ -175,46 +185,75 @@
         <div class="toggle-btn">Sign Up</div>
     </div>
 
-    <!-- Sign In Form -->
-    <div class="signin-div">
-        <div class="title">Welcome Back</div>
-        <div class="subtitle">Sign in to your account to continue</div>
-        
-        <div class="input-container">
-            <div class="input-label">Email</div>
-            <input type="email" class="input-field" placeholder="your@email.com">
+    <!-- Forms Container -->
+    <div class="form-container">
+        <!-- Sign In Form -->
+        <div class="signin-div" id="signinForm">
+            <div class="title">Welcome Back</div>
+            <div class="subtitle">Sign in to your account to continue</div>
             
-            <div class="input-label">Password</div>
-            <input type="password" class="input-field" placeholder="****************************">
+            <div class="input-container">
+                <div class="input-label">Email</div>
+                <input type="email" class="input-field" placeholder="your@email.com">
+                
+                <div class="input-label">Password</div>
+                <input type="password" class="input-field" placeholder="****************************">
+            </div>
+
+            <button class="submit-btn">Sign In</button>
         </div>
 
-        <button class="submit-btn">Sign In</button>
-    </div>
+        <!-- Sign Up Form -->
+        <div class="signup-div" id="signupForm">
+            <div class="title">Create Account</div>
+            <div class="subtitle">Sign up to get started with BrainBlitz</div>
+            
+            <div class="input-container">
+                <div class="input-label">Full Name</div>
+                <input type="text" class="input-field" placeholder="Full Name">
+                
+                <div class="input-label">Email</div>
+                <input type="email" class="input-field" placeholder="your@email.com">
+                
+                <div class="input-label">Password</div>
+                <input type="password" class="input-field" placeholder="****************************">
+                
+                <div class="input-label">I am a...</div>
+                <select class="input-field">
+                    <option value="">Student</option>
+                    <option value="teacher">Teacher</option>
+                </select>
+            </div>
 
-    <!-- Sign Up Form -->
-    <div class="signup-div">
-        <div class="title">Create Account</div>
-        <div class="subtitle">Sign up to get started with BrainBlitz</div>
-        
-        <div class="input-container">
-            <div class="input-label">Full Name</div>
-            <input type="text" class="input-field" placeholder="Full Name">
-            
-            <div class="input-label">Email</div>
-            <input type="email" class="input-field" placeholder="your@email.com">
-            
-            <div class="input-label">Password</div>
-            <input type="password" class="input-field" placeholder="****************************">
-            
-            <div class="input-label">I am a...</div>
-            <select class="input-field">
-                <option value="">Student</option>
-                <option value="teacher">Teacher</option>
-                <option value="parent">Parent</option>
-            </select>
+            <button class="submit-btn">Sign Up</button>
         </div>
-
-        <button class="submit-btn">Sign Up</button>
     </div>
+
+    <script>
+        function toggleForm(formType) {
+            const signinForm = document.getElementById('signinForm');
+            const signupForm = document.getElementById('signupForm');
+            const toggleBtns = document.querySelectorAll('.toggle-btn');
+
+            if (formType === 'signin') {
+                signinForm.style.visibility = 'visible';
+                signupForm.style.visibility = 'hidden';
+                toggleBtns[0].classList.add('active');
+                toggleBtns[1].classList.remove('active');
+            } else {
+                signinForm.style.visibility = 'hidden';
+                signupForm.style.visibility = 'visible';
+                toggleBtns[0].classList.remove('active');
+                toggleBtns[1].classList.add('active');
+            }
+        }
+
+        // Add click event listeners to toggle buttons
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleBtns = document.querySelectorAll('.toggle-btn');
+            toggleBtns[0].addEventListener('click', () => toggleForm('signin'));
+            toggleBtns[1].addEventListener('click', () => toggleForm('signup'));
+        });
+    </script>
 </body>
 </html>
