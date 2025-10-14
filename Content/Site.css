@@ -8,6 +8,7 @@ body {
     font-family: 'Sansation', sans-serif;
     position: relative;
     width: 100%;
+    min-height: 1560px;
     background: #F2F2F2;
     margin: 0;
 }
