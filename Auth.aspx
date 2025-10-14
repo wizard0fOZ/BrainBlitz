@@ -7,6 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Sansation:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Content/Site.css">
     <style>
+        body {
+            min-height: 1120px;
+        }
+
         .auth-header {
             display: flex;
             flex-direction: column;
