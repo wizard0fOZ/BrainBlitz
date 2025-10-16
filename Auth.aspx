@@ -267,7 +267,6 @@
             } else if (mode === 'signin') {
                 toggleForm('signin');
             }
-            // If no parameter, default signin form is already shown
         });
     </script>
 </body>
