@@ -504,4 +504,26 @@
         </div>
     </div>
 </body>
+    <script>
+        // Event Listener
+        document.addEventListener('DOMContentLoaded', function () {
+            // Header buttons
+            document.querySelector('.header-getstarted-btn').addEventListener('click', redirectToSignup);
+            document.querySelector('.header-signin-btn').addEventListener('click', redirectToSignin);
+
+            // Hero buttons
+            document.querySelector('.hero-getstarted-btn').addEventListener('click', redirectToSignup);
+            document.querySelector('.hero-signin-btn').addEventListener('click', redirectToSignin);
+        });
+
+        // Function to redirect to signup page
+        function redirectToSignup() {
+            window.location.href = 'auth.aspx?mode=signup';
+        }
+
+        // Function to redirect to signin page
+        function redirectToSignin() {
+            window.location.href = 'auth.aspx?mode=signin';
+        }
+    </script>
 </html>

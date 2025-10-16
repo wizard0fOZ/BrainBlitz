@@ -252,11 +252,22 @@
             }
         }
 
-        // Add click event listeners to toggle buttons
+        // Toggle Button Event Listener
         document.addEventListener('DOMContentLoaded', function () {
             const toggleBtns = document.querySelectorAll('.toggle-btn');
             toggleBtns[0].addEventListener('click', () => toggleForm('signin'));
             toggleBtns[1].addEventListener('click', () => toggleForm('signup'));
+
+            // URL parameter check to determine which form to show
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            if (mode === 'signup') {
+                toggleForm('signup');
+            } else if (mode === 'signin') {
+                toggleForm('signin');
+            }
+            // If no parameter, default signin form is already shown
         });
     </script>
 </body>
