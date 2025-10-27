@@ -48,7 +48,7 @@
         }
 
         .header-logout-btn {
-            width: 107px;
+            width: 115px;
             right: 70px;
         }
 
@@ -94,7 +94,7 @@
             justify-content: center;
             align-items: center;
             padding: 0px 60px 0px 20px;
-            gap: 25px;
+            gap: 40px;
             position: absolute;
             width: 100%;
             height: 177px;
@@ -134,7 +134,7 @@
 
 <body>
     <form id="form1" runat="server">
-        <!-- Dashboard Container -->
+            <!-- Dashboard Container -->
         <div class="dashboard-container">
 
             <!-- Header -->
