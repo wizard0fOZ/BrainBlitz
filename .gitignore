@@ -262,16 +262,10 @@ ServiceFabricBackup/
 *.rptproj.bak
 
 # SQL Server files
-*.mdf
-*.ldf
-*.ndf
-*.db
-*sqlite
-*sqlite3
+#*.mdf
+#*.ldf
+#*.ndf
 
-#Allow our database
-!BrainBlitz.mdf
-!BrainBlitz_log.ldf
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
