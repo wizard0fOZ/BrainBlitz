@@ -192,48 +192,58 @@
     <!-- Forms Container -->
     <div class="form-container">
         <!-- Sign In Form -->
-        <div class="signin-div" id="signinForm">
+        <form class="signin-div visible" id="signinForm" method="POST" action="/api/signin">
             <div class="title">Welcome Back</div>
             <div class="subtitle">Sign in to your account to continue</div>
             
+            <div class="success-message" id="signinSuccess"></div>
+            
             <div class="input-container">
                 <div class="input-label">Email</div>
-                <input type="email" class="input-field" placeholder="your@email.com">
+                <input type="email" name="email" class="input-field" placeholder="your@email.com" required>
+                <div class="error-message" id="signinEmailError"></div>
                 
                 <div class="input-label">Password</div>
-                <input type="password" class="input-field" placeholder="****************************">
+                <input type="password" name="password" class="input-field" placeholder="****************************" required>
+                <div class="error-message" id="signinPasswordError"></div>
             </div>
 
-            <button class="submit-btn">Sign In</button>
-        </div>
+            <button type="submit" class="submit-btn">Sign In</button>
+        </form>
 
         <!-- Sign Up Form -->
-        <div class="signup-div" id="signupForm">
+        <form class="signup-div hidden" id="signupForm" method="POST" action="/api/signup">
             <div class="title">Create Account</div>
             <div class="subtitle">Sign up to get started with BrainBlitz</div>
             
+            <div class="success-message" id="signupSuccess"></div>
+            
             <div class="input-container">
                 <div class="input-label">Full Name</div>
-                <input type="text" class="input-field" placeholder="Full Name">
+                <input type="text" name="fullName" class="input-field" placeholder="Full Name" required>
+                <div class="error-message" id="signupNameError"></div>
                 
                 <div class="input-label">Email</div>
-                <input type="email" class="input-field" placeholder="your@email.com">
+                <input type="email" name="email" class="input-field" placeholder="your@email.com" required>
+                <div class="error-message" id="signupEmailError"></div>
                 
                 <div class="input-label">Password</div>
-                <input type="password" class="input-field" placeholder="****************************">
+                <input type="password" name="password" class="input-field" placeholder="****************************" required minlength="6">
+                <div class="error-message" id="signupPasswordError"></div>
                 
                 <div class="input-label">I am a...</div>
-                <select class="input-field">
-                    <option value="">Student</option>
-                    <option value="teacher">Teacher</option>
+                <select name="role" class="input-field" required>
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
                 </select>
             </div>
 
-            <button class="submit-btn">Sign Up</button>
-        </div>
+            <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
     </div>
 
     <script>
+        // Form Toggle Functionality
         function toggleForm(formType) {
             const signinForm = document.getElementById('signinForm');
             const signupForm = document.getElementById('signupForm');
