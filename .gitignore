@@ -264,7 +264,7 @@ ServiceFabricBackup/
 # SQL Server files
 *.mdf
 *.ldf
-.ndf
+*.ndf
 
 # Business Intelligence projects
 *.rdl.data
@@ -365,3 +365,7 @@ FodyWeavers.xsd
 #Web Config
 Web.config
 /Web.config
+
+# --- Allow my project database (.mdf) but keep ignoring log files ---
+!App_Data/BrainBlitz.mdf
+App_Data/*.ldf
