@@ -11,367 +11,423 @@
     <link rel="stylesheet" href="Content/Site.css">
 
 <style>
-        /* Dashboard Container - For content *below* the header */
-        .dashboard-container {
-            position: relative;
-            width: 100%;
-            min-height: calc(1024px - 75px); /* Adjust height since header is outside */
-            background: #F3F3F3;
-            margin: 0 auto; /* Centers the container */
-            padding-bottom: 40px;
-            max-width: 1440px; /* Max width of the content area */
-        }
+    /* Dashboard Container - For content *below* the header */
+    .dashboard-container {
+        position: relative;
+        width: 100%;
+        min-height: calc(1024px - 75px);
+        background: #F3F3F3;
+        margin: 0 auto;
+        padding-bottom: 40px;
+        max-width: 1440px;
+        box-sizing: border-box;
+    }
 
-        /* ============================
-           FULL WIDTH HEADER STYLES
-        ============================ */
-        .header {
-            position: relative; /* Normal flow, not absolute */
-            width: 100%;
-            height: 75px;
-            background: #FFFFFF;
-            box-sizing: border-box;
-             /* Ensures it sits above the light gray background */
-             z-index: 10;
-        }
+    /* ============================
+       FULL WIDTH HEADER STYLES
+    ============================ */
+    .header {
+        position: relative;
+        width: 100%;
+        height: 75px;
+        background: #FFFFFF;
+        box-sizing: border-box;
+        z-index: 10;
+    }
 
-        /* Inner container for alignment within the header */
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1440px; /* Matches dashboard container width */
-            height: 100%;
-            margin: 0 auto;    /* Centers this inner container */
-            padding: 0 50px;   /* Consistent side padding */
-            box-sizing: border-box;
-        }
+    /* Inner container for alignment within the header */
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1440px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 0 50px;
+        box-sizing: border-box;
+    }
 
-        /* Logo styling */
-        .brainblitz {
-            position: relative; /* Not absolute */
-            left: auto;
-            top: auto;
-            width: 312px;
-            height: 60px;
-            background: url('../Images/BrainBlitz.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            margin: 0; /* Remove default margins */
-            display: block; /* Ensure it behaves like a block element */
-        }
-         /* Optional: Remove global hover effect if desired */
-        .brainblitz:hover {
-            transform: none;
-            box-shadow: none;
-        }
+    /* Logo styling */
+    .brainblitz {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 312px;
+        height: 60px;
+        background: url('../Images/BrainBlitz.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        margin: 0;
+        display: block;
+        text-decoration: none;
+    }
+    .brainblitz:hover {
+        transform: none;
+        box-shadow: none;
+    }
 
-        /* NEW: Wrapper for buttons for flex alignment */
-        .header-buttons-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 48px; /* Spacing between buttons */
-        }
+    /* Wrapper for buttons for flex alignment */
+    .header-buttons-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+    }
 
-        /* Update Buttons - Remove absolute positioning */
-        .header-home-btn,
-        .header-logout-btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 9px 38px;
-            position: relative; /* REMOVED absolute */
-            height: 40px;
-            top: auto;          /* REMOVED top */
-            right: auto;         /* REMOVED right */
-            background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
-            border-radius: 10px;
-            cursor: pointer;
-            color: #fff;
-            font-family: 'Sansation';
-            font-weight: 700;
-            font-size: 20px;
-            text-align: center;
-            text-decoration: none;
-             width: 132px; /* Set width for Home */
-        }
-        .header-logout-btn {
-             width: 107px; /* Set width for Logout */
-        }
+    /* Update Buttons */
+    .header-home-btn,
+    .header-logout-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 9px 38px;
+        position: relative;
+        height: 40px;
+        top: auto;
+        right: auto;
+        background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
+        border-radius: 10px;
+        cursor: pointer;
+        color: #fff;
+        font-family: 'Sansation';
+        font-weight: 700;
+        font-size: 20px;
+        text-align: center;
+        text-decoration: none;
+        width: 132px;
+    }
+    .header-logout-btn {
+        width: 145px;
+    }
 
+    .header-home-btn:hover,
+    .header-logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
+    }
+    /* ============================
+       END HEADER STYLES
+    ============================ */
 
-        .header-home-btn:hover,
-        .header-logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
-        }
-        /* ============================
-           END HEADER STYLES
-        ============================ */
+    /* Slogan Section */
+    .slogan-div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 5px 50px 20px;
+        box-sizing: border-box;
+        margin-top: 15px;
+    }
 
-        /* Slogan Section */
-        .slogan-div {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 5px 50px 20px; /* Consistent 50px side padding */
-            box-sizing: border-box;
-            margin-top: 15px; /* Spacing below header */
-        }
+    .dashboard-title {
+        font-family: 'Sansation';
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 40px;
+        color: #000;
+    }
 
-        .dashboard-title {
-            font-family: 'Sansation';
-            font-weight: 700;
-            font-size: 36px;
-            line-height: 40px;
-            color: #000;
-        }
+    .dashboard-subtitle {
+        font-family: 'Sansation';
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 22px;
+        color: #8D97AA;
+    }
 
-        .dashboard-subtitle {
-            font-family: 'Sansation';
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 22px;
-            color: #8D97AA;
-        }
+    /* ===== Summary Section ===== */
+    .summary-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 50px;
+        box-sizing: border-box;
+        margin-top: 30px;
+    }
 
-        /* ===== Summary Section ===== */
-        .summary-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between; /* Spreads cards to edges */
-            align-items: center;
-            padding: 0 50px; /* Consistent 50px side padding */
-            box-sizing: border-box;
-            margin-top: 30px; /* Position below slogan */
-        }
+    .summary-card {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 30px 40px;
+        gap: 20px;
+        width: 307px;
+        height: 177px;
+        background: #FFFFFF;
+        border-radius: 10px;
+        box-sizing: border-box;
+    }
 
-        .summary-card {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 30px 40px;
-            gap: 20px;
-            width: 307px;
-            height: 177px;
-            background: #FFFFFF;
-            border-radius: 10px;
-            box-sizing: border-box;
-        }
+    .summary-title {
+        font-family: 'Sansation';
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 27px;
+        color: #8D97AA;
+        margin: 0;
+    }
 
-        .summary-title {
-            font-family: 'Sansation';
-            font-weight: 700;
-            font-size: 24px;
-            line-height: 27px;
-            color: #8D97AA;
-            margin: 0;
-        }
+    .summary-value {
+        font-family: 'Sansation';
+        font-weight: 400;
+        font-size: 36px;
+        line-height: 40px;
+        color: #000000;
+    }
 
-        .summary-value {
-            font-family: 'Sansation';
-            font-weight: 400;
-            font-size: 36px;
-            line-height: 40px;
-            color: #000000;
-        }
+    /* =================================
+     MY SUBJECTS & RECENT ACTIVITY
+    ================================= */
 
-        /* =================================
-         MY SUBJECTS & RECENT ACTIVITY
-        =================================
-        */
+    /* Main 2-Column Container */
+    .main-content-container {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        padding: 0 50px;
+        box-sizing: border-box;
+        justify-content: center;
+        margin-top: 30px;
+    }
 
-        /* Main 2-Column Container */
-        .main-content-container {
-            display: flex;
-            flex-direction: row;
-            gap: 30px;
-            padding: 0 50px; /* Consistent 50px side padding */
-            box-sizing: border-box;
-            justify-content: center;
-            margin-top: 30px; /* Position below summary */
-        }
+    /* Base Card for both columns */
+    .list-card {
+        background: #FFFFFF;
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        font-family: 'Sansation';
+    }
 
-        /* Base Card for both columns */
-        .list-card {
-            background: #FFFFFF;
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            font-family: 'Sansation';
-        }
+    /* Column 1: My Subjects */
+    .subjects-container {
+        flex-basis: 655px;
+    }
 
-        /* Column 1: My Subjects */
-        .subjects-container {
-            flex-basis: 655px; /* Corrected width for alignment */
-        }
+    .list-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        padding: 0 10px;
+    }
 
-        .list-header {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-            padding: 0 10px;
-        }
+    .list-header-title {
+        font-weight: 700;
+        font-size: 32px;
+        line-height: 36px;
+        color: #000000;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-        .list-header-title {
-            font-weight: 700;
-            font-size: 32px;
-            line-height: 36px;
-            color: #000000;
-             /* --- ADDED FOR ICON --- */
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            /* --- END ICON --- */
-        }
+    /* Icon for "My Subjects" */
+    .subjects-container .list-header-title::before {
+        content: "";
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        background-image: url('../Images/Teachers.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 
-        /* --- ADDED ICON STYLES --- */
-        /* Icon for "My Subjects" */
-        .subjects-container .list-header-title::before {
-             content: "";
-             display: inline-block;
-             width: 32px;
-             height: 32px;
-             background-image: url('/Images/Teachers.png'); /* <<<--- PATH TO YOUR ICON */
-             background-size: contain;
-             background-repeat: no-repeat;
-             background-position: center;
-        }
+    /* Icon for "Recent Activity" */
+    .activity-container .list-header-title::before {
+        content: "";
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        background-image: url('../Images/barchart.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 
-        /* Icon for "Recent Activity" */
-        .activity-container .list-header-title::before {
-             content: "";
-             display: inline-block;
-             width: 32px;
-             height: 32px;
-             background-image: url('/Images/barchart.png'); /* <<<--- PATH TO YOUR ICON */
-             background-size: contain;
-             background-repeat: no-repeat;
-             background-position: center;
-        }
-        /* --- END ICON STYLES --- */
+    .subject-card {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+        background: #FFFFFF;
+        border: 1px solid #8D97AA;
+        border-radius: 10px;
+    }
 
+    .subject-card-title {
+        font-weight: 700;
+        font-size: 28px;
+        line-height: 31px;
+        color: #000000;
+    }
 
-        .subject-card {
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            gap: 20px;
-            background: #FFFFFF;
-            border: 1px solid #8D97AA;
-            border-radius: 10px;
-        }
+    .subject-stats-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 20px;
+    }
 
-        .subject-card-title {
-            font-weight: 700;
-            font-size: 28px;
-            line-height: 31px;
-            color: #000000;
-        }
+    .stat-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #000000;
+    }
 
-        .subject-stats-row {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between; /* Better distribution */
-            padding-right: 20px;
-        }
+    .stat-group-label {
+        font-size: 16px;
+        font-weight: 400;
+        color: #8D97AA;
+    }
 
-        .stat-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 5px;
-            font-size: 24px;
-            font-weight: 700;
-            color: #000000;
-        }
+    /* Column 2: Recent Activity */
+    .activity-container {
+        flex-basis: 655px;
+    }
 
-        .stat-group-label {
-            font-size: 16px;
-            font-weight: 400;
-            color: #8D97AA;
-        }
+    .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
 
+    .activity-item {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        background: #F5F3FE;
+        border-radius: 8px;
+    }
 
-        /* Column 2: Recent Activity */
-        .activity-container {
-            flex-basis: 655px; /* Corrected width for alignment */
-        }
+    .activity-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
 
-        .activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+    .activity-name {
+        font-weight: 700;
+        font-size: 16px;
+        color: #000000;
+    }
 
-        .activity-item {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            background: #F5F3FE;
-            border-radius: 8px;
-        }
+    .activity-details {
+        font-weight: 400;
+        font-size: 14px;
+        color: #555;
+    }
 
-        .activity-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+    .activity-time {
+        font-weight: 400;
+        font-size: 14px;
+        color: #8D97AA;
+    }
 
-        .activity-name {
-            font-weight: 700;
-            font-size: 16px;
-            color: #000000;
-        }
+    .activity-score {
+        font-weight: 700;
+        font-size: 18px;
+    }
 
-        .activity-details {
-            font-weight: 400;
-            font-size: 14px;
-            color: #555;
-        }
+    .activity-score-good { color: #29CF48; }
+    .activity-score-bad { color: #FF0000; }
 
-        .activity-time {
-            font-weight: 400;
-            font-size: 14px;
-            color: #8D97AA;
-        }
+    .view-all-button {
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 9px 20px;
+        width: 100%;
+        height: 40px;
+        background: #F3F3F3;
+        border: 1px solid #8D97AA;
+        border-radius: 10px;
+        font-size: 20px;
+        color: #000000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .view-all-button:hover {
+        background: #e9e9e9;
+    }
 
-        .activity-score {
-            font-weight: 700;
-            font-size: 18px;
-        }
+    /* ============================
+       ACTION CARDS STYLES
+    ============================ */
+    .action-cards-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
+        padding: 0 50px;
+        margin-top: 30px;
+        box-sizing: border-box;
+    }
 
-        .activity-score-good { color: #29CF48; }
-        .activity-score-bad { color: #FF0000; }
+    .action-card {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px;
+        background: #FFFFFF;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        text-decoration: none;
+        color: inherit;
+        width: 426px;
+        min-width: 0;
+        gap: 8px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        .view-all-button {
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 9px 20px;
-            width: 100%;
-            height: 40px;
-            background: #F3F3F3;
-            border: 1px solid #8D97AA;
-            border-radius: 10px;
-            font-size: 20px;
-            color: #000000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .view-all-button:hover {
-            background: #e9e9e9;
-        }
-    </style>
+    .action-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-card-icon {
+        width: 40px;
+        height: 40px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-bottom: 8px;
+    }
+
+    /* Specific icons */
+    .create-quiz-icon { background-image: url('/Images/pluspink.png'); }
+    .upload-resource-icon { background-image: url('/Images/Teachers.png'); }
+    .view-analytics-icon { background-image: url('/Images/chartgreen.png'); }
+
+    .action-card-title {
+        font-family: 'Sansation';
+        font-weight: 700;
+        font-size: 20px;
+        color: #000000;
+    }
+
+    .action-card-subtitle {
+        font-family: 'Sansation';
+        font-weight: 400;
+        font-size: 14px;
+        color: #8D97AA;
+        line-height: 1.4;
+    }
+</style>
+
 </head>
 
 <body>
@@ -464,12 +520,31 @@
                 </div>
                 
             </div>
-        </div> </form>
+
+            <!-- Action Cards -->
+            <div class="action-cards-container">
+                <a href="CreateQuiz.aspx" class="action-card">
+                    <div class="action-card-icon create-quiz-icon"></div>
+                    <span class="action-card-title">Create Quiz</span>
+                    <span class="action-card-subtitle">Build a new quiz for your students</span>
+                </a>
+                <a href="UploadResource.aspx" class="action-card">
+                    <div class="action-card-icon upload-resource-icon"></div>
+                    <span class="action-card-title">Upload Resource</span>
+                    <span class="action-card-subtitle">Add learning materials for students</span>
+                </a>
+                <a href="Analytics.aspx" class="action-card">
+                    <div class="action-card-icon view-analytics-icon"></div>
+                    <span class="action-card-title">View Analytics</span>
+                    <span class="action-card-subtitle">Review student performance data</span>
+                </a>
+            </div>
+
+        </div>
+    </form>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Home button click
-            // Check if element exists before adding listener
             const homeBtn = document.querySelector('.header-home-btn');
             if (homeBtn) {
                 homeBtn.addEventListener('click', function () {
@@ -477,8 +552,6 @@
                 });
             }
 
-            // Logout button click
-            // Check if element exists before adding listener
             const logoutBtn = document.querySelector('.header-logout-btn');
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', function () {
