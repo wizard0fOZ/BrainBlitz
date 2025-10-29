@@ -176,6 +176,19 @@
         color: #000000;
     }
 
+    .summary-card-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Keep original text color */
+    display: flex; /* Ensure it behaves like the original div */
+    /* Add hover effect if desired */
+    transition: transform 0.2s ease;
+    }
+
+    .summary-card-link:hover {
+     transform: translateY(-3px);
+     box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional hover shadow */
+    }
+
     /* =================================
      MY SUBJECTS & RECENT ACTIVITY
     ================================= */
@@ -455,10 +468,10 @@
                     <div class="summary-title">Total Students</div>
                     <asp:Label ID="lblTotalStudents" runat="server" CssClass="summary-value" Text="--"></asp:Label>
                 </div>
-                <div class="summary-card">
+                <a href="TeacherQuiz.aspx" class="summary-card summary-card-link">
                     <div class="summary-title">Active Quizzes</div>
-                    <asp:Label ID="lblActiveQuizzes" runat="server" CssClass="summary-value" Text="--"></asp:Label>
-                </div>
+                        <asp:Label ID="lblActiveQuizzes" runat="server" CssClass="summary-value" Text="--"></asp:Label>
+                </a>
                 <div class="summary-card">
                     <div class="summary-title">Resources</div>
                     <asp:Label ID="lblResources" runat="server" CssClass="summary-value" Text="--"></asp:Label>

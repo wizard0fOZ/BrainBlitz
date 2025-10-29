@@ -289,6 +289,8 @@
                 <p class="page-subtitle">Create and manage your quizzes</p>
             </div>
 
+            <asp:Label ID="lblErrorMessage" runat="server" CssClass="error-message" ForeColor="Red" Visible="false" EnableViewState="false"></asp:Label>
+
             <div class="top-bar">
                 <div class="search-input-wrapper">
                     <i class="fas fa-search"></i> <%-- Font Awesome Search Icon --%>
@@ -317,7 +319,6 @@
                         <div class="quiz-table-row">
                             <div class="col-quiz-title">
                                 <%# Eval("QuizTitle") %>
-                                <div class="quiz-subtitle"><%# Eval("QuizDuration") %> minutes</div> <%-- Placeholder for duration --%>
                             </div>
                             <div class="col-subject">
                                 <%-- Apply CSS class based on subject name --%>
@@ -355,9 +356,9 @@
                     </ItemTemplate>
                      <FooterTemplate>
                          <%-- Optional: Add if no quizzes found --%>
-                         <asp:Panel ID="pnlNoQuizzes" runat="server" Visible='<%# rptQuizzes.Items.Count == 0 %>' Style="text-align: center; padding: 20px; color: #888;">
-                             No quizzes found.
-                         </asp:Panel>
+                                <asp:Panel ID="pnlNoQuizzes" runat="server" Visible="false" Style="text-align: center; padding: 40px; color: #888; border-top: 1px solid #EAEAEA;">
+                                        No quizzes found matching your criteria.
+                                </asp:Panel>
                      </FooterTemplate>
                 </asp:Repeater>
             </div>

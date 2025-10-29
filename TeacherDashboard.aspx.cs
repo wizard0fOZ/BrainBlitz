@@ -11,6 +11,12 @@ namespace BrainBlitz
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // --- Session Check ---
+            if (Session["UserID"] == null || Session["Role"] == null || Session["Role"].ToString() != "Teacher")
+            {
+                Response.Redirect("~/Auth.aspx");
+            }
+
             if (!IsPostBack)
             {
                 RegisterAsyncTask(new PageAsyncTask(LoadDashboardStats));
@@ -19,7 +25,8 @@ namespace BrainBlitz
 
         private async Task LoadDashboardStats()
         {
-            int teacherId = 1; // FOR TESTING: Hardcoding teacher's userID
+            int teacherId = (int)Session["UserID"];
+            //int teacherId = 3 !!!FOR TESTING!!!
             string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -171,7 +178,7 @@ namespace BrainBlitz
         FROM 
             QuizAttempts qa
         JOIN 
-            [User] u ON qa.userID = u.userID  -- <-- THIS IS THE FIX
+            [Users] u ON qa.userID = u.userID  -- <-- THIS IS THE FIX
         JOIN
             Quizzes q ON qa.quizID = q.quizID
         JOIN

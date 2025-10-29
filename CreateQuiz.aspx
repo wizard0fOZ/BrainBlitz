@@ -135,7 +135,8 @@
         /* Form Layout */
         .form-row {
             display: flex;
-            gap: 54px; /* Gap between fields in a row */
+            gap: 25px;
+            align-items: flex-start;
         }
         .form-group {
             display: flex;

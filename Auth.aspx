@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Auth.aspx.cs" Inherits="BrainBlitz.Auth" %>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -174,64 +175,136 @@
             appearance: none;
             cursor: pointer;
         }
+
+        .error-message {
+            color: #FF0000;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            color: #00FF00;
+            font-size: 16px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <!-- Logo and Name Header -->
-    <div class="auth-header">
-        <div class="logo"></div>
-        <div class="name"></div>
-    </div>
-
-    <!-- Sign In / Sign Up Toggle -->
-    <div class="toggle-div">
-        <div class="toggle-btn active">Sign In</div>
-        <div class="toggle-btn">Sign Up</div>
-    </div>
-
-    <!-- Forms Container -->
-    <div class="form-container">
-        <!-- Sign In Form -->
-        <div class="signin-div" id="signinForm">
-            <div class="title">Welcome Back</div>
-            <div class="subtitle">Sign in to your account to continue</div>
-            
-            <div class="input-container">
-                <div class="input-label">Email</div>
-                <input type="email" class="input-field" placeholder="your@email.com">
-                
-                <div class="input-label">Password</div>
-                <input type="password" class="input-field" placeholder="****************************">
-            </div>
-
-            <button class="submit-btn">Sign In</button>
+    <form id="form1" runat="server">
+        <!-- Logo and Name Header -->
+        <div class="auth-header">
+            <div class="logo"></div>
+            <div class="name"></div>
         </div>
 
-        <!-- Sign Up Form -->
-        <div class="signup-div" id="signupForm">
-            <div class="title">Create Account</div>
-            <div class="subtitle">Sign up to get started with BrainBlitz</div>
-            
-            <div class="input-container">
-                <div class="input-label">Full Name</div>
-                <input type="text" class="input-field" placeholder="Full Name">
+        <!-- Sign In / Sign Up Toggle -->
+        <div class="toggle-div">
+            <div class="toggle-btn active" id="btnSignInToggle">Sign In</div>
+            <div class="toggle-btn" id="btnSignUpToggle">Sign Up</div>
+        </div>
+
+        <!-- Forms Container -->
+        <div class="form-container">
+            <!-- Sign In Form -->
+            <div class="signin-div" id="signinForm">
+                <div class="title">Welcome Back</div>
+                <div class="subtitle">Sign in to your account to continue</div>
                 
-                <div class="input-label">Email</div>
-                <input type="email" class="input-field" placeholder="your@email.com">
+                <div class="input-container">
+                    <div class="input-label">Email</div>
+                    <asp:TextBox ID="txtSignInEmail" runat="server" CssClass="input-field" 
+                                 placeholder="your@email.com" TextMode="Email"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvSignInEmail" runat="server" 
+                                              ControlToValidate="txtSignInEmail" 
+                                              ErrorMessage="Email is required" 
+                                              CssClass="error-message"
+                                              Display="Dynamic"
+                                              ValidationGroup="SignIn"></asp:RequiredFieldValidator>
+                    
+                    <div class="input-label">Password</div>
+                    <asp:TextBox ID="txtSignInPassword" runat="server" CssClass="input-field" 
+                                 placeholder="****************************" TextMode="Password"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvSignInPassword" runat="server" 
+                                              ControlToValidate="txtSignInPassword" 
+                                              ErrorMessage="Password is required" 
+                                              CssClass="error-message"
+                                              Display="Dynamic"
+                                              ValidationGroup="SignIn"></asp:RequiredFieldValidator>
+                </div>
+
+                <asp:Button ID="btnSignIn" runat="server" Text="Sign In" 
+                           CssClass="submit-btn" OnClick="btnSignIn_Click" 
+                           ValidationGroup="SignIn" />
                 
-                <div class="input-label">Password</div>
-                <input type="password" class="input-field" placeholder="****************************">
-                
-                <div class="input-label">I am a...</div>
-                <select class="input-field">
-                    <option value="">Student</option>
-                    <option value="teacher">Teacher</option>
-                </select>
+                <asp:Label ID="lblSignInMessage" runat="server" CssClass="error-message" 
+                          Visible="false"></asp:Label>
             </div>
 
-            <button class="submit-btn">Sign Up</button>
+            <!-- Sign Up Form -->
+            <div class="signup-div" id="signupForm">
+                <div class="title">Create Account</div>
+                <div class="subtitle">Sign up to get started with BrainBlitz</div>
+                
+                <div class="input-container">
+                    <div class="input-label">Full Name</div>
+                    <asp:TextBox ID="txtFullName" runat="server" CssClass="input-field" 
+                                 placeholder="Full Name"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvFullName" runat="server" 
+                                              ControlToValidate="txtFullName" 
+                                              ErrorMessage="Full name is required" 
+                                              CssClass="error-message"
+                                              Display="Dynamic"
+                                              ValidationGroup="SignUp"></asp:RequiredFieldValidator>
+                    
+                    <div class="input-label">Email</div>
+                    <asp:TextBox ID="txtSignUpEmail" runat="server" CssClass="input-field" 
+                                 placeholder="your@email.com" TextMode="Email"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvSignUpEmail" runat="server" 
+                                              ControlToValidate="txtSignUpEmail" 
+                                              ErrorMessage="Email is required" 
+                                              CssClass="error-message"
+                                              Display="Dynamic"
+                                              ValidationGroup="SignUp"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="revEmail" runat="server" 
+                                                   ControlToValidate="txtSignUpEmail" 
+                                                   ErrorMessage="Invalid email format" 
+                                                   CssClass="error-message"
+                                                   Display="Dynamic"
+                                                   ValidationExpression="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
+                                                   ValidationGroup="SignUp"></asp:RegularExpressionValidator>
+                    
+                    <div class="input-label">Password</div>
+                    <asp:TextBox ID="txtSignUpPassword" runat="server" CssClass="input-field" 
+                                 placeholder="****************************" TextMode="Password"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvSignUpPassword" runat="server" 
+                                              ControlToValidate="txtSignUpPassword" 
+                                              ErrorMessage="Password is required" 
+                                              CssClass="error-message"
+                                              Display="Dynamic"
+                                              ValidationGroup="SignUp"></asp:RequiredFieldValidator>
+                    
+                    <div class="input-label">I am a...</div>
+                    <asp:DropDownList ID="ddlRole" runat="server" CssClass="input-field">
+                        <asp:ListItem Value="Student" Selected="True">Student</asp:ListItem>
+                        <asp:ListItem Value="Teacher">Teacher</asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:RequiredFieldValidator ID="rfvRole" runat="server" 
+                                              ControlToValidate="ddlRole" 
+                                              ErrorMessage="Please select a role" 
+                                              CssClass="error-message"
+                                              Display="Dynamic"
+                                              ValidationGroup="SignUp"></asp:RequiredFieldValidator>
+                </div>
+
+                <asp:Button ID="btnSignUp" runat="server" Text="Sign Up" 
+                           CssClass="submit-btn" OnClick="btnSignUp_Click" 
+                           ValidationGroup="SignUp" />
+                
+                <asp:Label ID="lblSignUpMessage" runat="server" CssClass="error-message" 
+                          Visible="false"></asp:Label>
+            </div>
         </div>
-    </div>
+    </form>
 
     <script>
         function toggleForm(formType) {

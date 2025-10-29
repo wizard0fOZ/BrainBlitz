@@ -12,48 +12,71 @@ namespace BrainBlitz
 {
     public partial class CreateQuiz : System.Web.UI.Page
     {
-        // Use ViewState to track the number of questions
+        // Class-level variable to store the validated teacher ID
+        private int CurrentTeacherId = -1; // Initialize to invalid ID
+
+        // --- State stored in Session to make it available during OnInit ---
         private int NumberOfQuestions
         {
-            get { return (int)(ViewState["QuestionCount"] ?? 1); } // Start with 1 question
-            set { ViewState["QuestionCount"] = value; }
+            get
+            {
+                object o = Session["QuestionCount"];
+                return (o == null) ? 1 : (int)o;
+            }
+            set { Session["QuestionCount"] = value; }
         }
 
-        // Store question data to persist across postbacks
         private Dictionary<int, QuestionData> SavedQuestions
         {
             get
             {
-                if (ViewState["SavedQuestions"] == null)
-                    ViewState["SavedQuestions"] = new Dictionary<int, QuestionData>();
-                return (Dictionary<int, QuestionData>)ViewState["SavedQuestions"];
+                if (Session["SavedQuestions"] == null)
+                    Session["SavedQuestions"] = new Dictionary<int, QuestionData>();
+                return (Dictionary<int, QuestionData>)Session["SavedQuestions"];
             }
-            set { ViewState["SavedQuestions"] = value; }
+            set { Session["SavedQuestions"] = value; }
         }
 
-        // Track which questions are deleted (by their original number)
         private HashSet<int> DeletedQuestions
         {
             get
             {
-                if (ViewState["DeletedQuestions"] == null)
-                    ViewState["DeletedQuestions"] = new HashSet<int>();
-                return (HashSet<int>)ViewState["DeletedQuestions"];
+                if (Session["DeletedQuestions"] == null)
+                    Session["DeletedQuestions"] = new HashSet<int>();
+                return (HashSet<int>)Session["DeletedQuestions"];
             }
-            set { ViewState["DeletedQuestions"] = value; }
+            set { Session["DeletedQuestions"] = value; }
         }
+        // --- End session-backed state ---
 
+        // Recreate dynamic controls as early as possible so ViewState & post data bind correctly
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            // Ensure controls exist before LoadViewState/LoadPostData
+            CreateQuestionControls();
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Save current form data before recreating controls (on postback)
+            // --- Session Check ---
+            if (Session["UserID"] == null || Session["Role"] == null || Session["Role"].ToString() != "Teacher")
+            {
+                Response.Redirect("~/Auth.aspx");
+                return;
+            }
+            else
+            {
+                CurrentTeacherId = (int)Session["UserID"];
+            }
+            // --- End Session Check ---
+
+            // Now the dynamic controls exist (recreated in OnInit).
+            // Read posted values into our Session-backed SavedQuestions if this is a postback.
             if (IsPostBack)
             {
                 SaveCurrentFormData();
             }
-
-            // Always recreate controls
-            CreateQuestionControls();
 
             if (!IsPostBack)
             {
@@ -63,11 +86,12 @@ namespace BrainBlitz
 
         private void LoadSubjects()
         {
-            int teacherId = 1; // --- TODO: Get actual teacher ID ---
+            int teacherId = CurrentTeacherId;
+            if (teacherId <= 0) return;
+
             string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                // Ensure table name [User] or [Users] is correct
                 string query = "SELECT subjectID, name FROM Subjects WHERE assignedTo = @TeacherId ORDER BY name";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -85,7 +109,7 @@ namespace BrainBlitz
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine("Error loading subjects: " + ex.Message);
+                        System.Diagnostics.Debug.WriteLine("Error loading subjects: " + ex.ToString());
                         lblErrorMessage.Text = "Error loading subjects. Please try again later.";
                         lblErrorMessage.Visible = true;
                     }
@@ -94,71 +118,75 @@ namespace BrainBlitz
             ddlSubject.Items.Insert(0, new ListItem("-- Select Subject --", ""));
         }
 
-        // Save form data before controls are recreated
+        // Save posted form data from dynamic controls into Session-backed SavedQuestions
         private void SaveCurrentFormData()
         {
             var saved = SavedQuestions;
             var deleted = DeletedQuestions;
 
-            // Iterate through the controls that were present *before* this postback
-            // (Controls added *during* this postback won't be in phQuestions yet)
             for (int i = 1; i <= NumberOfQuestions; i++)
             {
-                // Find the card for this question number, even if it might be deleted later
                 Panel questionCard = (Panel)phQuestions.FindControl("QuestionCard_" + i);
-
-                // If the card doesn't exist (e.g., if it was deleted on a previous postback
-                // and not recreated this time), skip it.
                 if (questionCard == null) continue;
 
-                int qNum = i; // Use the loop index as the question number
-
-                // Skip if marked as deleted in ViewState
-                if (deleted.Contains(qNum))
-                    continue;
+                int qNum = i;
+                if (deleted.Contains(qNum)) continue;
 
                 TextBox txtQuestion = (TextBox)questionCard.FindControl("txtQuestionText_" + qNum);
-                if (txtQuestion == null) // Should not happen if card exists
-                    continue;
+                TextBox txtPoints = (TextBox)questionCard.FindControl("txtPoints_" + qNum);
+
+                if (txtQuestion == null || txtPoints == null) continue;
 
                 QuestionData qData = new QuestionData
                 {
                     QuestionText = txtQuestion.Text,
-                    Options = new Dictionary<string, string>()
+                    Options = new Dictionary<string, string>(),
+                    Points = 10
                 };
 
-                // Get selected radio button for THIS card
-                string radioGroupName = "CorrectAnswerGroup_Q" + qNum;
-                // Use Request.Form to get the submitted value
-                string selectedValue = Request.Form[radioGroupName];
-                qData.CorrectAnswer = selectedValue ?? "A"; // Default to A if nothing selected (shouldn't happen with radios)
+                if (int.TryParse(txtPoints.Text, out int pointsValue) && pointsValue > 0)
+                {
+                    qData.Points = pointsValue;
+                }
 
-
-                // Get option values
+                // Read radio button checked values (reliable because controls were created in OnInit)
                 string[] optionLetters = { "A", "B", "C", "D" };
+                string selected = null;
+                foreach (var letter in optionLetters)
+                {
+                    RadioButton rb = (RadioButton)questionCard.FindControl($"rbOption_{qNum}_{letter}");
+                    if (rb != null && rb.Checked)
+                    {
+                        selected = letter;
+                        break;
+                    }
+                }
+                qData.CorrectAnswer = selected ?? "A";
+
+                // Read option texts
                 foreach (string letter in optionLetters)
                 {
                     TextBox txtOpt = (TextBox)questionCard.FindControl($"txtOption_{qNum}_{letter}");
                     if (txtOpt != null)
                         qData.Options[letter] = txtOpt.Text;
+                    else
+                        qData.Options[letter] = string.Empty;
                 }
 
-                saved[qNum] = qData; // Store/Update data for this question number
+                saved[qNum] = qData;
             }
 
-            SavedQuestions = saved; // Update ViewState
+            SavedQuestions = saved;
         }
 
-
-        // Creates ALL question controls based on ViewState count
+        // Recreate all question controls based on current NumberOfQuestions & DeletedQuestions
         private void CreateQuestionControls()
         {
-            phQuestions.Controls.Clear(); // Clear existing controls first
+            phQuestions.Controls.Clear();
             var deleted = DeletedQuestions;
 
             for (int i = 1; i <= NumberOfQuestions; i++)
             {
-                // Only create controls for non-deleted questions
                 if (!deleted.Contains(i))
                 {
                     AddSingleQuestionControlSet(i);
@@ -166,61 +194,98 @@ namespace BrainBlitz
             }
         }
 
-
-        // Creates the controls for ONE question
+        // Create controls for a single question number
         private void AddSingleQuestionControlSet(int questionNumber)
         {
             Panel questionCard = new Panel { CssClass = "form-card question-card" };
             questionCard.ID = "QuestionCard_" + questionNumber;
 
-            // --- Question Title Row ---
             Panel titleRow = new Panel { CssClass = "question-title-row" };
-            titleRow.Controls.Add(new Literal { Text = $"<h2 class=\"card-title\">Question {questionNumber}</h2>" });
 
-            // --- Delete Button (Only if more than one active question) ---
+            // compute human-friendly sequential display index (1-based) based on current non-deleted order
+            int displayIndex = questionNumber;
+            try
+            {
+                var active = new List<int>();
+                for (int i = 1; i <= NumberOfQuestions; i++)
+                {
+                    if (!DeletedQuestions.Contains(i)) active.Add(i);
+                }
+
+                int idx = active.IndexOf(questionNumber);
+                displayIndex = (idx >= 0) ? idx + 1 : questionNumber;
+                if (displayIndex <= 0) displayIndex = 1;
+            }
+            catch
+            {
+                displayIndex = questionNumber;
+            }
+
+            titleRow.Controls.Add(new Literal { Text = $"<h2 class=\"card-title\">Question {displayIndex}</h2>" });
+
+
             int activeQuestionCount = NumberOfQuestions - DeletedQuestions.Count;
-            if (activeQuestionCount > 1) // Only show if deleting won't leave zero questions
+            if (activeQuestionCount > 1)
             {
                 LinkButton btnDelete = new LinkButton
                 {
                     ID = "btnDeleteQuestion_" + questionNumber,
                     CssClass = "delete-question-button",
-                    Text = "<i class=\"fas fa-trash-alt\"></i> Delete", // Font Awesome icon
+                    Text = "<i class=\"fas fa-trash-alt\"></i> Delete",
                     CommandName = "DeleteQuestion",
                     CommandArgument = questionNumber.ToString(),
-                    CausesValidation = false // Important!
+                    CausesValidation = false
                 };
                 btnDelete.Click += new EventHandler(DeleteQuestion_Click);
                 titleRow.Controls.Add(btnDelete);
             }
             questionCard.Controls.Add(titleRow);
 
+            Panel questionRow = new Panel { CssClass = "form-row" };
 
-            // --- Question Text Group ---
             Panel textGroup = new Panel { CssClass = "form-group" };
+            textGroup.Style.Add("flex", "5");
             Label lblText = new Label { AssociatedControlID = "txtQuestionText_" + questionNumber, CssClass = "form-label", Text = "Question Text" };
             TextBox txtText = new TextBox { ID = "txtQuestionText_" + questionNumber, CssClass = "textarea-field", TextMode = TextBoxMode.MultiLine };
             txtText.Attributes.Add("placeholder", "Enter your question here...");
             textGroup.Controls.Add(lblText);
             textGroup.Controls.Add(txtText);
-            questionCard.Controls.Add(textGroup);
+            questionRow.Controls.Add(textGroup);
 
-            // --- Answer Options Group ---
+            Panel pointsGroup = new Panel { CssClass = "form-group" };
+            pointsGroup.Style.Add("flex", "1");
+            Label lblPoints = new Label { AssociatedControlID = "txtPoints_" + questionNumber, CssClass = "form-label", Text = "Points" };
+            TextBox txtPoints = new TextBox { ID = "txtPoints_" + questionNumber, CssClass = "input-field", TextMode = TextBoxMode.Number, Text = "10" };
+            RangeValidator rvPoints = new RangeValidator
+            {
+                ControlToValidate = txtPoints.ID,
+                MinimumValue = "1",
+                MaximumValue = "100",
+                Type = ValidationDataType.Integer,
+                ErrorMessage = "Points must be between 1-100",
+                ForeColor = System.Drawing.Color.Red,
+                Display = ValidatorDisplay.Dynamic
+            };
+            pointsGroup.Controls.Add(lblPoints);
+            pointsGroup.Controls.Add(txtPoints);
+            pointsGroup.Controls.Add(rvPoints);
+            questionRow.Controls.Add(pointsGroup);
+            questionCard.Controls.Add(questionRow);
+
             Panel optionsGroup = new Panel { CssClass = "form-group" };
             optionsGroup.Controls.Add(new Literal { Text = "<span class=\"form-label\">Answer Options</span>" });
-
             Panel optionsListDiv = new Panel { CssClass = "options-list" };
-            string radioGroupName = "CorrectAnswerGroup_Q" + questionNumber; // Unique group name PER question
-
             string[] optionLetters = { "A", "B", "C", "D" };
+            string radioGroupName = "CorrectAnswerGroup_Q" + questionNumber;
+
             for (int j = 0; j < optionLetters.Length; j++)
             {
+                string letter = optionLetters[j];
                 Panel optionRow = new Panel { CssClass = "option-row" };
-                RadioButton rb = new RadioButton { ID = $"rbOption_{questionNumber}_{optionLetters[j]}", GroupName = radioGroupName };
-                rb.Attributes["value"] = optionLetters[j]; // Store A, B, C, D in value
-                TextBox txtOpt = new TextBox { ID = $"txtOption_{questionNumber}_{optionLetters[j]}", CssClass = "input-field" };
-                txtOpt.Attributes.Add("placeholder", $"Option {optionLetters[j]}");
-
+                RadioButton rb = new RadioButton { ID = $"rbOption_{questionNumber}_{letter}", GroupName = radioGroupName };
+                rb.Attributes["value"] = letter;
+                TextBox txtOpt = new TextBox { ID = $"txtOption_{questionNumber}_{letter}", CssClass = "input-field" };
+                txtOpt.Attributes.Add("placeholder", $"Option {letter}");
                 optionRow.Controls.Add(rb);
                 optionRow.Controls.Add(txtOpt);
                 optionsListDiv.Controls.Add(optionRow);
@@ -229,12 +294,13 @@ namespace BrainBlitz
             optionsGroup.Controls.Add(new Literal { Text = "<span class=\"helper-text\">Select the radio button for the correct answer</span>" });
             questionCard.Controls.Add(optionsGroup);
 
-            // --- RESTORE saved data ---
+            // Restore saved data (if any)
             var saved = SavedQuestions;
             if (saved.ContainsKey(questionNumber))
             {
                 QuestionData qData = saved[questionNumber];
                 txtText.Text = qData.QuestionText;
+                txtPoints.Text = qData.Points.ToString();
 
                 foreach (string letter in optionLetters)
                 {
@@ -245,48 +311,44 @@ namespace BrainBlitz
                         txtOpt.Text = qData.Options[letter];
 
                     if (rb != null)
-                        rb.Checked = (letter == qData.CorrectAnswer); // Set checked based on saved data
+                        rb.Checked = (letter == qData.CorrectAnswer);
                 }
             }
             else
             {
-                // Default first option checked for NEW questions not yet in ViewState
+                txtPoints.Text = "10";
                 RadioButton firstRb = (RadioButton)questionCard.FindControl($"rbOption_{questionNumber}_A");
-                if (firstRb != null)
-                    firstRb.Checked = true;
+                if (firstRb != null) firstRb.Checked = true;
             }
-
 
             phQuestions.Controls.Add(questionCard);
         }
 
-        // Event Handler for the delete button
         protected void DeleteQuestion_Click(object sender, EventArgs e)
         {
             LinkButton btnDelete = (LinkButton)sender;
-            int questionNumberToDelete = int.Parse(btnDelete.CommandArgument);
+            if (!int.TryParse(btnDelete.CommandArgument, out int questionNumberToDelete)) return;
 
-            // Mark as deleted in ViewState (don't rely on Visible property alone)
             var deleted = DeletedQuestions;
             deleted.Add(questionNumberToDelete);
             DeletedQuestions = deleted;
 
-            // Optionally remove from saved data immediately
             var saved = SavedQuestions;
             saved.Remove(questionNumberToDelete);
             SavedQuestions = saved;
 
             System.Diagnostics.Debug.WriteLine($"Marked Question {questionNumberToDelete} for deletion.");
 
-            // The control won't be recreated on the next CreateQuestionControls() call
+            // Recreate controls for this same request so UI updates immediately
+            CreateQuestionControls();
         }
 
         protected void btnAddQuestion_Click(object sender, EventArgs e)
         {
+            // Increase count and create the new question control immediately
             NumberOfQuestions++;
-            // Don't need to call AddSingleQuestionControlSet here,
-            // SaveCurrentFormData() saved previous state,
-            // Page_Load will call CreateQuestionControls() which adds the new one.
+            AddSingleQuestionControlSet(NumberOfQuestions);
+
             System.Diagnostics.Debug.WriteLine($"Add Question clicked. Question count is now: {NumberOfQuestions}");
         }
 
@@ -300,22 +362,14 @@ namespace BrainBlitz
                 return;
             }
 
-            // Ensure latest data is saved before processing
+            // Ensure latest data captured
             SaveCurrentFormData();
 
-            // Validate at least one complete *non-deleted* question exists
             var saved = SavedQuestions;
             var deleted = DeletedQuestions;
-            int validQuestionCount = 0;
-            foreach (var kvp in saved)
-            {
-                if (!deleted.Contains(kvp.Key) &&
-                    !string.IsNullOrWhiteSpace(kvp.Value.QuestionText) &&
-                    kvp.Value.Options.Values.Any(opt => !string.IsNullOrWhiteSpace(opt)))
-                {
-                    validQuestionCount++;
-                }
-            }
+            int validQuestionCount = saved.Count(kvp => !deleted.Contains(kvp.Key) &&
+                                                        !string.IsNullOrWhiteSpace(kvp.Value.QuestionText) &&
+                                                        kvp.Value.Options.Values.Any(opt => !string.IsNullOrWhiteSpace(opt)));
 
             if (validQuestionCount == 0)
             {
@@ -327,95 +381,122 @@ namespace BrainBlitz
             lblErrorMessage.Visible = false;
 
             string quizTitle = txtQuizTitle.Text;
-            int subjectId = int.Parse(ddlSubject.SelectedValue);
+            if (!int.TryParse(ddlSubject.SelectedValue, out int subjectId) || subjectId <= 0)
+            {
+                lblErrorMessage.Text = "Please select a valid subject.";
+                lblErrorMessage.Visible = true;
+                return;
+            }
             string difficulty = ddlDifficulty.SelectedValue;
-            int teacherId = 1; // --- TODO: Get actual teacher ID ---
+            int teacherId = CurrentTeacherId;
+            if (teacherId <= 0)
+            {
+                lblErrorMessage.Text = "Session error. Please log in again.";
+                lblErrorMessage.Visible = true;
+                return;
+            }
 
             string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
-            int newQuizId = -1;
+            bool savedSuccessfully = false;
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
-                SqlTransaction transaction = con.BeginTransaction();
-                try
+                using (SqlTransaction transaction = con.BeginTransaction())
                 {
-                    // 1. Save Quiz Header
-                    string insertQuizQuery = @"INSERT INTO Quizzes (userID, subjectID, title, isPublished, difficulty)
-                                               OUTPUT INSERTED.quizID
-                                               VALUES (@UserID, @SubjectID, @Title, @IsPublished, @Difficulty)";
-                    using (SqlCommand cmdQuiz = new SqlCommand(insertQuizQuery, con, transaction))
+                    try
                     {
-                        cmdQuiz.Parameters.AddWithValue("@UserID", teacherId);
-                        cmdQuiz.Parameters.AddWithValue("@SubjectID", subjectId);
-                        cmdQuiz.Parameters.AddWithValue("@Title", quizTitle);
-                        cmdQuiz.Parameters.AddWithValue("@IsPublished", 0); // Default to Draft
-                        cmdQuiz.Parameters.AddWithValue("@Difficulty", difficulty);
-                        newQuizId = (int)cmdQuiz.ExecuteScalar();
-                    }
-                    if (newQuizId <= 0) throw new Exception("Failed to create quiz header.");
-
-                    // 2. Save Questions from SavedQuestions in ViewState
-                    foreach (var kvp in saved)
-                    {
-                        int questionNumber = kvp.Key;
-                        QuestionData qData = kvp.Value;
-
-                        // Skip deleted or invalid questions
-                        if (deleted.Contains(questionNumber) ||
-                            string.IsNullOrWhiteSpace(qData.QuestionText) ||
-                            !qData.Options.Values.Any(opt => !string.IsNullOrWhiteSpace(opt)))
+                        // 1. Save Quiz Header
+                        string insertQuizQuery = @"INSERT INTO Quizzes (userID, subjectID, title, isPublished, difficulty)
+                                                   OUTPUT INSERTED.quizID
+                                                   VALUES (@UserID, @SubjectID, @Title, @IsPublished, @Difficulty)";
+                        int newQuizId;
+                        using (SqlCommand cmdQuiz = new SqlCommand(insertQuizQuery, con, transaction))
                         {
-                            continue;
+                            cmdQuiz.Parameters.AddWithValue("@UserID", teacherId);
+                            cmdQuiz.Parameters.AddWithValue("@SubjectID", subjectId);
+                            cmdQuiz.Parameters.AddWithValue("@Title", quizTitle);
+                            cmdQuiz.Parameters.AddWithValue("@IsPublished", 1);
+                            cmdQuiz.Parameters.AddWithValue("@Difficulty", difficulty);
+                            newQuizId = (int)cmdQuiz.ExecuteScalar();
                         }
+                        if (newQuizId <= 0) throw new Exception("Failed to create quiz header.");
 
-                        int newQuestionId = -1;
-
-                        // 3. Save Question (Get generated ID)
-                        string insertQuestionQuery = @"INSERT INTO Questions (quizID, text, points)
-                                                       OUTPUT INSERTED.questionID
-                                                       VALUES (@QuizID, @Text, @Points)";
-                        using (SqlCommand cmdQuestion = new SqlCommand(insertQuestionQuery, con, transaction))
+                        // 2. Save Questions + Options
+                        foreach (var kvp in saved)
                         {
-                            cmdQuestion.Parameters.AddWithValue("@QuizID", newQuizId);
-                            cmdQuestion.Parameters.AddWithValue("@Text", qData.QuestionText);
-                            cmdQuestion.Parameters.AddWithValue("@Points", 10); // Default points
-                            newQuestionId = (int)cmdQuestion.ExecuteScalar();
-                        }
-                        if (newQuestionId <= 0) throw new Exception($"Failed to create question number {questionNumber}.");
+                            int questionNumber = kvp.Key;
+                            QuestionData qData = kvp.Value;
 
-                        // 4. Save Options
-                        string insertOptionQuery = @"INSERT INTO Options (questionID, optionText, isCorrect)
-                                                     VALUES (@QuestionID, @OptionText, @IsCorrect)";
-                        foreach (var option in qData.Options)
-                        {
-                            if (!string.IsNullOrWhiteSpace(option.Value))
+                            if (deleted.Contains(questionNumber) ||
+                                string.IsNullOrWhiteSpace(qData.QuestionText) ||
+                                !qData.Options.Values.Any(opt => !string.IsNullOrWhiteSpace(opt)))
                             {
-                                using (SqlCommand cmdOption = new SqlCommand(insertOptionQuery, con, transaction))
+                                continue;
+                            }
+
+                            int newQuestionId;
+                            string insertQuestionQuery = @"INSERT INTO Questions (quizID, text, points)
+                                                           OUTPUT INSERTED.questionID
+                                                           VALUES (@QuizID, @Text, @Points)";
+                            using (SqlCommand cmdQuestion = new SqlCommand(insertQuestionQuery, con, transaction))
+                            {
+                                cmdQuestion.Parameters.AddWithValue("@QuizID", newQuizId);
+                                cmdQuestion.Parameters.AddWithValue("@Text", qData.QuestionText);
+                                cmdQuestion.Parameters.AddWithValue("@Points", qData.Points);
+                                newQuestionId = (int)cmdQuestion.ExecuteScalar();
+                            }
+                            if (newQuestionId <= 0) throw new Exception($"Failed to create question number {questionNumber}.");
+
+                            string insertOptionQuery = @"INSERT INTO Options (questionID, optionText, isCorrect)
+                                                         VALUES (@QuestionID, @OptionText, @IsCorrect)";
+                            foreach (var option in qData.Options)
+                            {
+                                if (!string.IsNullOrWhiteSpace(option.Value))
                                 {
-                                    cmdOption.Parameters.AddWithValue("@QuestionID", newQuestionId);
-                                    cmdOption.Parameters.AddWithValue("@OptionText", option.Value);
-                                    cmdOption.Parameters.AddWithValue("@IsCorrect", option.Key == qData.CorrectAnswer);
-                                    cmdOption.ExecuteNonQuery();
+                                    using (SqlCommand cmdOption = new SqlCommand(insertOptionQuery, con, transaction))
+                                    {
+                                        cmdOption.Parameters.AddWithValue("@QuestionID", newQuestionId);
+                                        cmdOption.Parameters.AddWithValue("@OptionText", option.Value);
+                                        cmdOption.Parameters.AddWithValue("@IsCorrect", option.Key == qData.CorrectAnswer);
+                                        cmdOption.ExecuteNonQuery();
+                                    }
                                 }
                             }
                         }
-                    } // End foreach question
 
-                    transaction.Commit();
-                    Response.Redirect("Quizzes.aspx"); // Redirect after successful save
+                        transaction.Commit();
+                        savedSuccessfully = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Try rollback safely
+                        try
+                        {
+                            if (transaction != null && transaction.Connection != null)
+                                transaction.Rollback();
+                        }
+                        catch (Exception rbEx)
+                        {
+                            System.Diagnostics.Debug.WriteLine("Rollback Error: " + rbEx.ToString());
+                        }
 
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    System.Diagnostics.Debug.WriteLine("Error saving quiz: " + ex.Message);
-                    lblErrorMessage.Text = "Error saving quiz: " + ex.Message;
-                    lblErrorMessage.Visible = true;
-                }
+                        System.Diagnostics.Debug.WriteLine("Error saving quiz: " + ex.ToString());
+                        lblErrorMessage.Text = "Error saving quiz: " + ex.Message;
+                        lblErrorMessage.Visible = true;
+                        // Return so we do not redirect
+                        return;
+                    }
+                } // transaction disposed
+            } // connection disposed
+
+            if (savedSuccessfully)
+            {
+                // Redirect after successful save. Use false + CompleteRequest to avoid ThreadAbortException while debugging.
+                Response.Redirect("TeacherQuiz.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
-
 
         private int GetQuestionNumberFromID(string controlId)
         {
@@ -430,23 +511,25 @@ namespace BrainBlitz
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            // TODO: Add real logout logic
+            // TODO: Add real logout logic (Session.Clear(), etc.)
             Response.Redirect("Login.aspx");
         }
     }
 
-    // Helper class to store question data (must be Serializable for ViewState)
+    // Helper class to store question data (must be Serializable for Session if you choose)
     [Serializable]
     public class QuestionData
     {
         public string QuestionText { get; set; }
         public Dictionary<string, string> Options { get; set; }
         public string CorrectAnswer { get; set; } // Stores "A", "B", "C", or "D"
+        public int Points { get; set; }
 
         public QuestionData()
         {
             Options = new Dictionary<string, string>();
-            CorrectAnswer = "A"; // Default
+            CorrectAnswer = "A";
+            Points = 10; // Default points
         }
     }
 }
