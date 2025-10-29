@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Auth.aspx.cs" Inherits="BrainBlitz.Auth" %>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +15,7 @@
 
         .auth-header {
             display: flex;
-            flex-direction: column;
+            flex-direction: column; 
             align-items: center;
             padding-top: 80px;
             margin-bottom: 30px;
@@ -174,99 +176,172 @@
             appearance: none;
             cursor: pointer;
         }
+
+        .success-message {
+            color: #28a745;
+            font-size: 16px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
-    <!-- Logo and Name Header -->
-    <div class="auth-header">
-        <div class="logo"></div>
-        <div class="name"></div>
-    </div>
+    <form id="form1" runat="server">
+        <!-- Logo and Name Header -->
+        <div class="auth-header">
+            <div class="logo"></div>
+            <div class="name"></div>
+        </div>
 
-    <!-- Sign In / Sign Up Toggle -->
-    <div class="toggle-div">
-        <div class="toggle-btn active">Sign In</div>
-        <div class="toggle-btn">Sign Up</div>
-    </div>
+        <!-- Sign In / Sign Up Toggle -->
+        <div class="toggle-div">
+            <div class="toggle-btn active" id="btnSignInToggle">Sign In</div>
+            <div class="toggle-btn" id="btnSignUpToggle">Sign Up</div>
+        </div>
 
-    <!-- Forms Container -->
-    <div class="form-container">
-        <!-- Sign In Form -->
-        <form class="signin-div visible" id="signinForm" method="POST" action="/api/signin">
-            <div class="title">Welcome Back</div>
-            <div class="subtitle">Sign in to your account to continue</div>
-            
-            <div class="success-message" id="signinSuccess"></div>
-            
-            <div class="input-container">
-                <div class="input-label">Email</div>
-                <input type="email" name="email" class="input-field" placeholder="your@email.com" required>
-                <div class="error-message" id="signinEmailError"></div>
+        <!-- Forms Container -->
+        <div class="form-container">
+            <!-- Sign In Form -->
+            <div class="signin-div" id="signinDiv">
+                <div class="title">Welcome Back</div>
+                <div class="subtitle">Sign in to your account to continue</div>
                 
-                <div class="input-label">Password</div>
-                <input type="password" name="password" class="input-field" placeholder="****************************" required>
-                <div class="error-message" id="signinPasswordError"></div>
+                <asp:Label ID="lblSignInSuccess" runat="server" CssClass="success-message"></asp:Label>
+                
+                <div class="input-container">
+                    <div class="input-label">Email</div>
+                    <asp:TextBox ID="txtSignInEmail" runat="server" CssClass="input-field" 
+                                 placeholder="your@email.com" TextMode="Email"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvSignInEmail" runat="server" 
+                                                ControlToValidate="txtSignInEmail"
+                                                ErrorMessage="Email is required" 
+                                                CssClass="error-message"
+                                                Display="Dynamic"
+                                                ValidationGroup="SignIn"></asp:RequiredFieldValidator>
+                    <asp:Label ID="lblSignInEmailError" runat="server" CssClass="error-message"></asp:Label>
+                    
+                    <div class="input-label">Password</div>
+                    <asp:TextBox ID="txtSignInPassword" runat="server" CssClass="input-field" 
+                                 placeholder="****************************" TextMode="Password"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvSignInPassword" runat="server" 
+                                                ControlToValidate="txtSignInPassword"
+                                                ErrorMessage="Password is required" 
+                                                CssClass="error-message"
+                                                Display="Dynamic"
+                                                ValidationGroup="SignIn"></asp:RequiredFieldValidator>
+                    <asp:Label ID="lblSignInPasswordError" runat="server" CssClass="error-message"></asp:Label>
+                </div>
+
+                <asp:Button ID="btnSignIn" runat="server" Text="Sign In" CssClass="submit-btn" 
+                            OnClick="btnSignIn_Click" ValidationGroup="SignIn" />
             </div>
 
-            <button type="submit" class="submit-btn">Sign In</button>
-        </form>
+            <!-- Sign Up Form -->
+            <div class="signup-div" id="signupDiv">
+                <div class="title">Create Account</div>
+                <div class="subtitle">Sign up to get started with BrainBlitz</div>
+                
+                <asp:Label ID="lblSignUpSuccess" runat="server" CssClass="success-message"></asp:Label>
+                
+                <div class="input-container">
+                    <div class="input-label">Full Name</div>
+                    <asp:TextBox ID="txtFullName" runat="server" CssClass="input-field" 
+                                 placeholder="Full Name"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvFullName" runat="server" 
+                                                ControlToValidate="txtFullName"
+                                                ErrorMessage="Full name is required" 
+                                                CssClass="error-message"
+                                                Display="Dynamic"
+                                                ValidationGroup="SignUp"></asp:RequiredFieldValidator>
+                    <asp:Label ID="lblSignUpNameError" runat="server" CssClass="error-message"></asp:Label>
+                    
+                    <div class="input-label">Email</div>
+                    <asp:TextBox ID="txtSignUpEmail" runat="server" CssClass="input-field" 
+                                 placeholder="your@email.com" TextMode="Email"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvSignUpEmail" runat="server" 
+                                                ControlToValidate="txtSignUpEmail"
+                                                ErrorMessage="Email is required" 
+                                                CssClass="error-message"
+                                                Display="Dynamic"
+                                                ValidationGroup="SignUp"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="revSignUpEmail" runat="server"
+                                                    ControlToValidate="txtSignUpEmail"
+                                                    ErrorMessage="Invalid email format"
+                                                    CssClass="error-message"
+                                                    Display="Dynamic"
+                                                    ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
+                                                    ValidationGroup="SignUp"></asp:RegularExpressionValidator>
+                    <asp:Label ID="lblSignUpEmailError" runat="server" CssClass="error-message"></asp:Label>
+                    
+                    <div class="input-label">Password</div>
+                    <asp:TextBox ID="txtSignUpPassword" runat="server" CssClass="input-field" 
+                                 placeholder="****************************" TextMode="Password"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvSignUpPassword" runat="server" 
+                                                ControlToValidate="txtSignUpPassword"
+                                                ErrorMessage="Password is required" 
+                                                CssClass="error-message"
+                                                Display="Dynamic"
+                                                ValidationGroup="SignUp"></asp:RequiredFieldValidator>
+                    <asp:RegularExpressionValidator ID="revSignUpPassword" runat="server"
+                                                    ControlToValidate="txtSignUpPassword"
+                                                    ErrorMessage="Password must be at least 6 characters"
+                                                    CssClass="error-message"
+                                                    Display="Dynamic"
+                                                    ValidationExpression=".{6,}"
+                                                    ValidationGroup="SignUp"></asp:RegularExpressionValidator>
+                    <asp:Label ID="lblSignUpPasswordError" runat="server" CssClass="error-message"></asp:Label>
+                    
+                    <div class="input-label">I am a...</div>
+                    <asp:DropDownList ID="ddlRole" runat="server" CssClass="input-field">
+                        <asp:ListItem Value="Student" Selected="True">Student</asp:ListItem>
+                        <asp:ListItem Value="Teacher">Teacher</asp:ListItem>
+                    </asp:DropDownList>
+                </div>
 
-        <!-- Sign Up Form -->
-        <form class="signup-div hidden" id="signupForm" method="POST" action="/api/signup">
-            <div class="title">Create Account</div>
-            <div class="subtitle">Sign up to get started with BrainBlitz</div>
-            
-            <div class="success-message" id="signupSuccess"></div>
-            
-            <div class="input-container">
-                <div class="input-label">Full Name</div>
-                <input type="text" name="fullName" class="input-field" placeholder="Full Name" required>
-                <div class="error-message" id="signupNameError"></div>
-                
-                <div class="input-label">Email</div>
-                <input type="email" name="email" class="input-field" placeholder="your@email.com" required>
-                <div class="error-message" id="signupEmailError"></div>
-                
-                <div class="input-label">Password</div>
-                <input type="password" name="password" class="input-field" placeholder="****************************" required minlength="6">
-                <div class="error-message" id="signupPasswordError"></div>
-                
-                <div class="input-label">I am a...</div>
-                <select name="role" class="input-field" required>
-                    <option value="Student">Student</option>
-                    <option value="Teacher">Teacher</option>
-                </select>
+                <asp:Button ID="btnSignUp" runat="server" Text="Sign Up" CssClass="submit-btn" 
+                            OnClick="btnSignUp_Click" ValidationGroup="SignUp" />
             </div>
+        </div>
 
-            <button type="submit" class="submit-btn">Sign Up</button>
-        </form>
-    </div>
-
+        <asp:HiddenField ID="hfCurrentForm" runat="server" Value="signin" />
+    </form>
     <script>
         // Form Toggle Functionality
         function toggleForm(formType) {
-            const signinForm = document.getElementById('signinForm');
-            const signupForm = document.getElementById('signupForm');
-            const toggleBtns = document.querySelectorAll('.toggle-btn');
+            const signinDiv = document.getElementById('signinDiv');
+            const signupDiv = document.getElementById('signupDiv');
+            const btnSignInToggle = document.getElementById('btnSignInToggle');
+            const btnSignUpToggle = document.getElementById('btnSignUpToggle');
+            const hfCurrentForm = document.getElementById('<%= hfCurrentForm.ClientID %>');
 
             if (formType === 'signin') {
-                signinForm.style.visibility = 'visible';
-                signupForm.style.visibility = 'hidden';
-                toggleBtns[0].classList.add('active');
-                toggleBtns[1].classList.remove('active');
+                signinDiv.style.visibility = 'visible';
+                signupDiv.style.visibility = 'hidden';
+                btnSignInToggle.classList.add('active');
+                btnSignUpToggle.classList.remove('active');
+                hfCurrentForm.value = 'signin';
             } else {
-                signinForm.style.visibility = 'hidden';
-                signupForm.style.visibility = 'visible';
-                toggleBtns[0].classList.remove('active');
-                toggleBtns[1].classList.add('active');
+                signinDiv.style.visibility = 'hidden';
+                signupDiv.style.visibility = 'visible';
+                btnSignInToggle.classList.remove('active');
+                btnSignUpToggle.classList.add('active');
+                hfCurrentForm.value = 'signup';
             }
         }
 
         // Toggle Button Event Listener
         document.addEventListener('DOMContentLoaded', function () {
-            const toggleBtns = document.querySelectorAll('.toggle-btn');
-            toggleBtns[0].addEventListener('click', () => toggleForm('signin'));
-            toggleBtns[1].addEventListener('click', () => toggleForm('signup'));
+            const btnSignInToggle = document.getElementById('btnSignInToggle');
+            const btnSignUpToggle = document.getElementById('btnSignUpToggle');
+
+            btnSignInToggle.addEventListener('click', () => toggleForm('signin'));
+            btnSignUpToggle.addEventListener('click', () => toggleForm('signup'));
 
             // URL parameter check to determine which form to show
             const urlParams = new URLSearchParams(window.location.search);
