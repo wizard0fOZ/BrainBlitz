@@ -102,9 +102,7 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="App_Data\BrainBlitz.mdf" />
-    <Content Include="App_Data\BrainBlitz_log.ldf">
-      <DependentUpon>BrainBlitz.mdf</DependentUpon>
-    </Content>
+    <Content Include="App_Data\BrainBlitz_log.ldf" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
