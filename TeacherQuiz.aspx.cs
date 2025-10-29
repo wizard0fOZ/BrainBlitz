@@ -69,7 +69,7 @@ namespace BrainBlitz
                                 FROM QuizAttempts qa_avg
                                 WHERE qa_avg.quizID = q.quizID AND qa_avg.finishedAt IS NOT NULL), 0) AS AverageScore,
                         -- Determine status
-                        CASE WHEN q.isPublished = 1 THEN 'Active' ELSE 'Draft' END AS Status
+                        CASE WHEN q.isPublished = 1 THEN 'Active' ELSE 'Inactive' END AS Status
                     FROM
                         Quizzes q
                     LEFT JOIN
@@ -161,24 +161,91 @@ namespace BrainBlitz
         protected void rptQuizzes_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandArgument == null) return;
-            string quizId = e.CommandArgument.ToString();
+            string commandArgument = e.CommandArgument.ToString();
 
-            if (e.CommandName == "View")
+            if (e.CommandName == "ToggleStatus")
             {
-                // TODO: Redirect to a page to view quiz details/results
-                // Example: Response.Redirect($"ViewQuiz.aspx?quizID={quizId}");
-                System.Diagnostics.Debug.WriteLine($"View action for Quiz ID: {quizId}"); // Placeholder
+                // CommandArgument is "QuizID,Status" (e.g., "10,Active")
+                string[] args = commandArgument.Split(',');
+                if (args.Length == 2)
+                {
+                    string quizIdStr = args[0];
+                    string currentStatus = args[1];
+
+                    // Determine the NEW status (toggle it)
+                    bool newIsPublished = (currentStatus.ToLower() == "inactive");
+
+                    ToggleQuizStatus(quizIdStr, newIsPublished); // Call the update method
+                    LoadQuizzes(txtSearchQuizzes.Text.Trim()); // Refresh the list
+                }
+            }
+            else if (e.CommandName == "View")
+            {
+                string quizId = commandArgument; // View/Edit/Delete only pass QuizID
+                Response.Redirect($"ViewQuiz.aspx?quizID={quizId}");
             }
             else if (e.CommandName == "Edit")
             {
-                // TODO: Redirect to the Edit Quiz page
-                Response.Redirect($"EditQuiz.aspx?quizID={quizId}"); // Example URL for Edit page
+                string quizId = commandArgument;
+                Response.Redirect($"EditQuiz.aspx?quizID={quizId}");
             }
             else if (e.CommandName == "Delete")
             {
-                // Implement secure delete logic
+                string quizId = commandArgument;
                 DeleteQuiz(quizId);
-                LoadQuizzes(txtSearchQuizzes.Text.Trim()); // Refresh the list
+                LoadQuizzes(txtSearchQuizzes.Text.Trim());
+            }
+        }
+
+        // --- NEW METHOD to update the status in the DB ---
+        private void ToggleQuizStatus(string quizId, bool newIsPublished)
+        {
+            // Ensure teacherId is valid (should be set in Page_Load)
+            int teacherId = CurrentTeacherId;
+            if (teacherId <= 0)
+            {
+                lblErrorMessage.Text = "Session error. Cannot update status.";
+                lblErrorMessage.Visible = true;
+                return;
+            }
+
+            lblErrorMessage.Text = ""; // Clear previous errors
+            lblErrorMessage.Visible = false;
+
+            string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                // Update the isPublished status for the specific quiz owned by this teacher
+                string query = @"UPDATE Quizzes
+                             SET isPublished = @NewStatus
+                             WHERE quizID = @QuizId AND userID = @TeacherId";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@NewStatus", newIsPublished); // bool is automatically converted (1 or 0)
+                    cmd.Parameters.AddWithValue("@QuizId", quizId);
+                    cmd.Parameters.AddWithValue("@TeacherId", teacherId); // Security check: Ensure teacher owns this quiz
+                    try
+                    {
+                        con.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected == 0)
+                        {
+                            // Quiz not found or doesn't belong to this teacher
+                            lblErrorMessage.Text = "Could not update status. Quiz not found or permission denied.";
+                            lblErrorMessage.Visible = true;
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Toggled status for Quiz ID: {quizId} to {newIsPublished}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error toggling quiz status: {ex.Message}");
+                        lblErrorMessage.Text = "An error occurred while updating the quiz status.";
+                        lblErrorMessage.Visible = true;
+                    }
+                }
             }
         }
 
@@ -245,8 +312,8 @@ namespace BrainBlitz
             switch (subjectName?.ToLower())
             {
                 case "mathematics": return "tag tag-subject-math";
-                case "science": return "tag tag-subject-science"; // Added Science example
-                // Add more cases for other subjects
+                case "science": return "tag tag-subject-science";
+                case "english": return "tag tag-subject-english";
                 default: return "tag tag-subject-default";
             }
         }
@@ -256,7 +323,7 @@ namespace BrainBlitz
             switch (status?.ToLower())
             {
                 case "active": return "tag tag-status-active";
-                case "draft": return "tag tag-status-draft";
+                case "inactive": return "tag tag-status-inactive";
                 default: return "tag";
             }
         }

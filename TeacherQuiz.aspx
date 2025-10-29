@@ -235,17 +235,18 @@
             min-width: 60px; /* Ensure tags have some width */
         }
         .tag-subject-math { background-color: #E6B9FF; color: #6A009C; }
-        .tag-subject-physics { background-color: #B9E6FF; color: #006A9C; } /* Example */
-        .tag-subject-default { background-color: #E0E0E0; color: #555; } /* Fallback */
+        .tag-subject-science { background-color: #B9E6FF; color: #006A9C; }
+        .tag-subject-english { background-color: aquamarine; color: darkcyan; }
+        .tag-subject-default { background-color: #610099; color: #E6B9FF; } /* Fallback */
 
         .tag-status-active { background-color: #82F797; color: #006D1A; }
-        .tag-status-draft { background-color: #E0E0E0; color: #555; }
+        .tag-status-inactive { background-color: #E0E0E0; color: #555; }
 
 
          /* Score Coloring */
-        .score-good { color: #28A745; } /* Green */
-        .score-medium { color: #FFA500; } /* Orange */
-        .score-bad { color: #DC3545; } /* Red */
+        .score-good { color: #28A745; }
+        .score-medium { color: #FFA500; } 
+        .score-bad { color: #DC3545; } 
 
 
         /* Action Buttons */
@@ -274,7 +275,6 @@
             <div class="header-content">
                 <a href="TeacherDashboard.aspx" class="brainblitz"></a>
                 <div class="header-buttons-wrapper">
-                    <%-- Use LinkButton for ASP.NET navigation --%>
                     <asp:LinkButton ID="btnHome" runat="server" CssClass="header-home-btn" OnClick="btnHome_Click">Home</asp:LinkButton>
                     <asp:LinkButton ID="btnLogout" runat="server" CssClass="header-logout-btn" OnClick="btnLogout_Click">Log out</asp:LinkButton>
                 </div>
@@ -293,17 +293,17 @@
 
             <div class="top-bar">
                 <div class="search-input-wrapper">
-                    <i class="fas fa-search"></i> <%-- Font Awesome Search Icon --%>
+                    <i class="fas fa-search"></i>
                     <asp:TextBox ID="txtSearchQuizzes" runat="server" CssClass="search-input" placeholder="Search Quizzes..." AutoPostBack="true" OnTextChanged="txtSearchQuizzes_TextChanged"></asp:TextBox>
                 </div>
                 <asp:LinkButton ID="btnCreateQuiz" runat="server" CssClass="create-quiz-button" OnClick="btnCreateQuiz_Click">
-                     <i class="fas fa-plus"></i> Create Quiz <%-- Font Awesome Plus Icon --%>
+                     <i class="fas fa-plus"></i> Create Quiz
                 </asp:LinkButton>
             </div>
 
             <div class="quiz-list-table">
                 <%-- Repeater for the Quiz List --%>
-                <asp:Repeater ID="rptQuizzes" runat="server">
+                <asp:Repeater ID="rptQuizzes" runat="server" OnItemCommand="rptQuizzes_ItemCommand">
                     <HeaderTemplate>
                         <div class="quiz-table-header">
                             <span class="col-quiz-title">Quiz Title</span>
@@ -321,44 +321,44 @@
                                 <%# Eval("QuizTitle") %>
                             </div>
                             <div class="col-subject">
-                                <%-- Apply CSS class based on subject name --%>
-                                <span class='<%# GetSubjectTagClass(Eval("SubjectName").ToString()) %>'>
-                                    <%# Eval("SubjectName") %>
+                                <span class='<%# GetSubjectTagClass(Eval("SubjectName") == DBNull.Value ? "" : Eval("SubjectName").ToString()) %>'>
+                                    <%# Eval("SubjectName") == DBNull.Value ? "N/A" : Eval("SubjectName") %>
                                 </span>
                             </div>
                             <div class="col-questions"><%# Eval("QuestionCount") %></div>
                             <div class="col-attempts"><%# Eval("AttemptCount") %></div>
                             <div class="col-avg-score">
-                                <%-- Apply CSS class based on score value --%>
-                                <span class='<%# GetScoreClass(Convert.ToInt32(Eval("AverageScore"))) %>'>
-                                    <%# Eval("AverageScore") %>%
+                                 <%-- Updated Eval for safety --%>
+                                <span class='<%# GetScoreClass(Eval("AverageScore")) %>'>
+                                     <%# Convert.IsDBNull(Eval("AverageScore")) ? "0.0%" : string.Format("{0:N1}%", Eval("AverageScore")) %>
                                 </span>
                             </div>
                             <div class="col-status">
-                                <%-- Apply CSS class based on status --%>
-                                <span class='<%# GetStatusTagClass(Eval("Status").ToString()) %>'>
-                                     <%# Eval("Status") %>
-                                </span>
+                                <asp:LinkButton ID="btnToggleStatus" runat="server"
+                                    CommandName="ToggleStatus"
+                                    CommandArgument='<%# Eval("QuizID") + "," + Convert.ToString(Eval("Status") ?? "Draft") %>'
+                                    CssClass='<%# GetStatusTagClass(Convert.ToString(Eval("Status") ?? "Draft")) %>'
+                                    ToolTip='<%# (Convert.ToString(Eval("Status") ?? "Draft") == "Active") ? "Click to set as Draft" : "Click to set as Active" %>'>
+                                    <%# Convert.ToString(Eval("Status") ?? "Draft") %>
+                                </asp:LinkButton>
                             </div>
                             <div class="col-actions action-buttons">
-                                <%-- Use LinkButtons or ImageButtons for actions --%>
                                 <asp:LinkButton ID="btnView" runat="server" CssClass="action-button" CommandName="View" CommandArgument='<%# Eval("QuizID") %>' ToolTip="View Quiz Details">
-                                    <i class="fas fa-eye"></i> <%-- Font Awesome Eye Icon --%>
+                                    <i class="fas fa-eye"></i>
                                 </asp:LinkButton>
                                 <asp:LinkButton ID="btnEdit" runat="server" CssClass="action-button" CommandName="Edit" CommandArgument='<%# Eval("QuizID") %>' ToolTip="Edit Quiz">
-                                     <i class="fas fa-pencil-alt"></i> <%-- Font Awesome Pencil Icon --%>
+                                     <i class="fas fa-pencil-alt"></i>
                                 </asp:LinkButton>
                                 <asp:LinkButton ID="btnDelete" runat="server" CssClass="action-button delete" CommandName="Delete" CommandArgument='<%# Eval("QuizID") %>' OnClientClick="return confirm('Are you sure you want to delete this quiz?');" ToolTip="Delete Quiz">
-                                     <i class="fas fa-trash-alt"></i> <%-- Font Awesome Trash Icon --%>
+                                     <i class="fas fa-trash-alt"></i>
                                 </asp:LinkButton>
                             </div>
                         </div>
                     </ItemTemplate>
                      <FooterTemplate>
-                         <%-- Optional: Add if no quizzes found --%>
-                                <asp:Panel ID="pnlNoQuizzes" runat="server" Visible="false" Style="text-align: center; padding: 40px; color: #888; border-top: 1px solid #EAEAEA;">
-                                        No quizzes found matching your criteria.
-                                </asp:Panel>
+                         <asp:Panel ID="pnlNoQuizzes" runat="server" Visible="false" Style="text-align: center; padding: 40px; color: #888; border-top: 1px solid #EAEAEA;">
+                             No quizzes found matching your criteria.
+                         </asp:Panel>
                      </FooterTemplate>
                 </asp:Repeater>
             </div>
