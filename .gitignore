@@ -365,7 +365,3 @@ FodyWeavers.xsd
 #Web Config
 Web.config
 /Web.config
-
-/Web.config
-/App_Data/BrainBlitz.mdf
-/App_Data/BrainBlitz_log.ldf
