@@ -249,11 +249,11 @@ namespace BrainBlitz
             }
         }
 
-        // --- Delete Logic (Requires careful implementation) ---
+        // --- Delete Logic (Fixed) ---
         private void DeleteQuiz(string quizId)
         {
-            System.Diagnostics.Debug.WriteLine($"Attempting to delete Quiz ID: {quizId}. Requires DB implementation.");
-            lblErrorMessage.Text = ""; // Clear previous errors
+            System.Diagnostics.Debug.WriteLine($"Attempting to delete Quiz ID: {quizId}");
+            lblErrorMessage.Text = "";
             lblErrorMessage.Visible = false;
 
             string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
@@ -263,46 +263,101 @@ namespace BrainBlitz
                 SqlTransaction transaction = con.BeginTransaction();
                 try
                 {
-                    // Important: Delete child records first! Order matters due to Foreign Keys.
-                    string deleteQuery = @"
-                        -- Delete answers for attempts related to this quiz
-                        DELETE FROM AttemptAnswers WHERE attemptID IN (SELECT attemptID FROM QuizAttempts WHERE quizID = @QuizId);
-                        -- Delete attempts for this quiz
-                        DELETE FROM QuizAttempts WHERE quizID = @QuizId;
-                        -- Delete options for questions related to this quiz
-                        DELETE FROM Options WHERE questionID IN (SELECT questionID FROM Questions WHERE quizID = @QuizId);
-                        -- Delete questions for this quiz
-                        DELETE FROM Questions WHERE quizID = @QuizId;
-                        -- Finally delete the quiz itself (only if owned by current teacher for security)
-                        DELETE FROM Quizzes WHERE quizID = @QuizId AND userID = @TeacherId;
-                   ";
-                    using (SqlCommand cmd = new SqlCommand(deleteQuery, con, transaction))
+                    // First, verify the quiz exists and belongs to this teacher
+                    string checkQuery = "SELECT COUNT(*) FROM Quizzes WHERE quizID = @QuizId AND userID = @TeacherId";
+                    int quizExists = 0;
+                    using (SqlCommand cmdCheck = new SqlCommand(checkQuery, con, transaction))
+                    {
+                        cmdCheck.Parameters.AddWithValue("@QuizId", quizId);
+                        cmdCheck.Parameters.AddWithValue("@TeacherId", CurrentTeacherId);
+                        quizExists = (int)cmdCheck.ExecuteScalar();
+                    }
+
+                    if (quizExists == 0)
+                    {
+                        transaction.Rollback();
+                        lblErrorMessage.Text = "Quiz not found or you do not have permission to delete it.";
+                        lblErrorMessage.Visible = true;
+                        return;
+                    }
+
+                    // Delete child records first (in order to respect foreign keys)
+
+                    // 1. Delete AttemptAnswers
+                    string deleteAnswersQuery = "DELETE FROM AttemptAnswers WHERE attemptID IN (SELECT attemptID FROM QuizAttempts WHERE quizID = @QuizId)";
+                    using (SqlCommand cmd = new SqlCommand(deleteAnswersQuery, con, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@QuizId", quizId);
+                        int answersDeleted = cmd.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine($"Deleted {answersDeleted} attempt answers");
+                    }
+
+                    // 2. Delete QuizAttempts
+                    string deleteAttemptsQuery = "DELETE FROM QuizAttempts WHERE quizID = @QuizId";
+                    using (SqlCommand cmd = new SqlCommand(deleteAttemptsQuery, con, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@QuizId", quizId);
+                        int attemptsDeleted = cmd.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine($"Deleted {attemptsDeleted} quiz attempts");
+                    }
+
+                    // 3. Delete Options
+                    string deleteOptionsQuery = "DELETE FROM Options WHERE questionID IN (SELECT questionID FROM Questions WHERE quizID = @QuizId)";
+                    using (SqlCommand cmd = new SqlCommand(deleteOptionsQuery, con, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@QuizId", quizId);
+                        int optionsDeleted = cmd.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine($"Deleted {optionsDeleted} options");
+                    }
+
+                    // 4. Delete Questions
+                    string deleteQuestionsQuery = "DELETE FROM Questions WHERE quizID = @QuizId";
+                    using (SqlCommand cmd = new SqlCommand(deleteQuestionsQuery, con, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@QuizId", quizId);
+                        int questionsDeleted = cmd.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine($"Deleted {questionsDeleted} questions");
+                    }
+
+                    // 5. Finally, delete the Quiz itself
+                    string deleteQuizQuery = "DELETE FROM Quizzes WHERE quizID = @QuizId AND userID = @TeacherId";
+                    using (SqlCommand cmd = new SqlCommand(deleteQuizQuery, con, transaction))
                     {
                         cmd.Parameters.AddWithValue("@QuizId", quizId);
                         cmd.Parameters.AddWithValue("@TeacherId", CurrentTeacherId);
-                        int rowsAffected = cmd.ExecuteNonQuery();
-                        // Check rowsAffected if needed, especially the last delete to confirm ownership.
-                        if (rowsAffected < 1) // Check if the final delete affected rows (meaning the quiz existed and belonged to the teacher)
+                        int quizDeleted = cmd.ExecuteNonQuery();
+
+                        if (quizDeleted == 0)
                         {
-                            // This might happen if the quiz didn't belong to the teacher or was already deleted
-                            // Throw an exception to trigger rollback or handle appropriately
-                            // throw new Exception("Quiz not found or you do not have permission to delete it.");
-                            System.Diagnostics.Debug.WriteLine($"Delete affected {rowsAffected} rows for Quiz ID {quizId}. May indicate quiz not found or permission issue.");
+                            // This should not happen since we checked earlier, but safety check
+                            throw new Exception("Quiz deletion failed - ownership verification failed.");
                         }
                     }
-                    transaction.Commit(); // Commit only if all deletes succeed
-                    System.Diagnostics.Debug.WriteLine($"Successfully deleted Quiz ID: {quizId} and related data.");
+
+                    transaction.Commit();
+                    System.Diagnostics.Debug.WriteLine($"Successfully deleted Quiz ID: {quizId} and all related data.");
+
+                    // Optional: Show success message
+                    // lblSuccessMessage.Text = "Quiz deleted successfully.";
+                    // lblSuccessMessage.Visible = true;
                 }
                 catch (Exception ex)
                 {
-                    try { if (transaction.Connection != null) transaction.Rollback(); }
-                    catch (Exception rbEx) { System.Diagnostics.Debug.WriteLine("Rollback Error during delete: " + rbEx.Message); }
+                    try
+                    {
+                        if (transaction != null && transaction.Connection != null)
+                            transaction.Rollback();
+                    }
+                    catch (Exception rbEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Rollback Error during delete: " + rbEx.Message);
+                    }
 
                     System.Diagnostics.Debug.WriteLine("Error deleting quiz: " + ex.Message);
-                    lblErrorMessage.Text = "Error deleting quiz. It might be in use or no longer exist.";
+                    lblErrorMessage.Text = "Error deleting quiz: " + ex.Message;
                     lblErrorMessage.Visible = true;
                 }
-            } // using SqlConnection
+            }
         }
 
 

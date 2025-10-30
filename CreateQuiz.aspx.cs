@@ -467,6 +467,10 @@ namespace BrainBlitz
 
                         transaction.Commit();
                         savedSuccessfully = true;
+
+                        Session.Remove("QuestionCount");
+                        Session.Remove("SavedQuestions");
+                        Session.Remove("DeletedQuestions");
                     }
                     catch (Exception ex)
                     {
