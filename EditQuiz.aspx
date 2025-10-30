@@ -5,7 +5,7 @@
 <head runat="server">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Quiz - BrainBlitz</title>
+    <title>Edit  Quiz - BrainBlitz</title>
     <link href="https://fonts.googleapis.com/css2?family=Sansation:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Content/Site.css"> <%-- Link to global CSS --%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" /> <%-- Font Awesome --%>
@@ -303,8 +303,8 @@
         <div class="create-quiz-container">
 
             <div class="page-header">
-                <h1 class="page-title">Create New Quiz</h1>
-                <p class="page-subtitle">Build an engaging quiz for your students</p>
+                <h1 class="page-title">Edit Quiz</h1>
+                <p class="page-subtitle">Make changes to your quizzes here.</p>
             </div>
 
             <%-- Quiz Info Card --%>
