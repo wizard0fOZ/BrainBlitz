@@ -41,41 +41,40 @@ namespace BrainBlitz // Assuming this namespace
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                // Query updated to get all new data points
                 string query = @"
-                    SELECT DISTINCT
-                        q.quizID AS QuizID,
-                        q.title AS QuizTitle,
-                        q.difficulty AS Difficulty,
-                        s.name AS SubjectName,
-                        (SELECT COUNT(questionID) FROM Questions qu WHERE qu.quizID = q.quizID) AS QuestionCount,
-                         
-                        -- Get count of all attempts by this user
-                        (SELECT COUNT(attemptID) 
-                         FROM QuizAttempts qa 
-                         WHERE qa.quizID = q.quizID AND qa.userID = @StudentID) AS AttemptCount,
-                        
-                        -- Get best score by this user (or 0 if no attempts)
-                        ISNULL((SELECT MAX(score) 
-                                FROM QuizAttempts qa_max 
-                                WHERE qa_max.quizID = q.quizID AND qa_max.userID = @StudentID), 0) AS BestScore
-                    FROM 
-                        Quizzes q
-                    JOIN 
-                        Subjects s ON q.subjectID = s.subjectID
-                    JOIN 
-                        SubjectEnrollments se ON s.subjectID = se.subjectID
-                    WHERE 
-                        q.isPublished = 1 
-                        AND se.userID = @StudentID
-                ";
+                SELECT DISTINCT
+                    q.quizID AS QuizID,
+                    q.title AS QuizTitle,
+                    q.difficulty AS Difficulty,
+                    s.name AS SubjectName,
+                    (SELECT COUNT(questionID) FROM Questions qu WHERE qu.quizID = q.quizID) AS QuestionCount,
+                    
+                    -- ADDED: Get TOTAL possible points for the quiz
+                    ISNULL((SELECT SUM(points) FROM Questions qu_pts WHERE qu_pts.quizID = q.quizID), 0) AS MaxPoints,
+                    
+                    (SELECT COUNT(attemptID) 
+                     FROM QuizAttempts qa 
+                     WHERE qa.quizID = q.quizID AND qa.userID = @StudentID) AS AttemptCount,
+                    
+                    -- Renamed to make it clear this is points
+                    ISNULL((SELECT MAX(score) 
+                            FROM QuizAttempts qa_max 
+                            WHERE qa_max.quizID = q.quizID AND qa_max.userID = @StudentID), 0) AS BestScorePoints
+                FROM 
+                    Quizzes q
+                JOIN 
+                    Subjects s ON q.subjectID = s.subjectID
+                JOIN 
+                    SubjectEnrollments se ON s.subjectID = se.subjectID
+                WHERE 
+                    q.isPublished = 1 
+                    AND se.userID = @StudentID
+            ";
 
-                // Add search filter
                 if (!string.IsNullOrEmpty(searchTerm))
                 {
                     query += " AND q.title LIKE @SearchTerm";
                 }
-
                 query += " ORDER BY s.name, q.title";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
@@ -103,9 +102,34 @@ namespace BrainBlitz // Assuming this namespace
 
             rptStudentQuizzes.DataSource = dtQuizzes;
             rptStudentQuizzes.DataBind();
-
-            // Show/hide the "no quizzes" panel
             pnlNoQuizzes.Visible = (dtQuizzes.Rows.Count == 0);
+        }
+        protected string CalculatePercentage(object pointsEarned, object maxPoints)
+        {
+            // Check for null or DBNull values
+            if (pointsEarned == DBNull.Value || maxPoints == DBNull.Value || pointsEarned == null || maxPoints == null)
+            {
+                return "N/A";
+            }
+
+            try
+            {
+                decimal earned = Convert.ToDecimal(pointsEarned);
+                decimal max = Convert.ToDecimal(maxPoints);
+
+                if (max == 0)
+                {
+                    return "N/A"; // Avoid division by zero
+                }
+
+                decimal percentage = (earned / max) * 100;
+                // "N0" formats as a whole number (e.g., 75)
+                return $"{percentage:N0}%";
+            }
+            catch (Exception)
+            {
+                return "N/A"; // In case of any conversion error
+            }
         }
 
         // --- Event Handlers ---

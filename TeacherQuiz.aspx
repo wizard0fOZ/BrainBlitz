@@ -281,17 +281,12 @@
                                 <%# Eval("QuizTitle") %>
                             </div>
                             <div class="col-subject">
-                                <span class='<%# GetSubjectTagClass(Eval("SubjectName") == DBNull.Value ? "" : Eval("SubjectName").ToString()) %>'>
-                                    <%# Eval("SubjectName") == DBNull.Value ? "N/A" : Eval("SubjectName") %>
-                                </span>
+                                <span class='<%# GetSubjectTagClass(Eval("SubjectName") == DBNull.Value ? "" : Eval("SubjectName").ToString()) %>'><%# Eval("SubjectName") == DBNull.Value ? "N/A" : Eval("SubjectName") %></span>
                             </div>
                             <div class="col-questions"><%# Eval("QuestionCount") %></div>
                             <div class="col-attempts"><%# Eval("AttemptCount") %></div>
                             <div class="col-avg-score">
-                                 <%-- Updated Eval for safety --%>
-                                <span class='<%# GetScoreClass(Eval("AverageScore")) %>'>
-                                     <%# Convert.IsDBNull(Eval("AverageScore")) ? "0.0%" : string.Format("{0:N1}%", Eval("AverageScore")) %>
-                                </span>
+                                    <span class='<%# GetScoreClass(CalculatePercentage(Eval("AverageScorePoints"), Eval("MaxPoints"))) %>'> <%# CalculatePercentage(Eval("AverageScorePoints"), Eval("MaxPoints")) %></span>
                             </div>
                             <div class="col-status">
                                 <asp:LinkButton ID="btnToggleStatus" runat="server"

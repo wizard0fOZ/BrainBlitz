@@ -53,21 +53,27 @@ namespace BrainBlitz
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // SQL Query joining Quizzes and Subjects, using subqueries for counts/averages
-                // Removed QuizDuration
+                // --- THIS QUERY IS NOW CORRECTED ---
                 string query = @"
                     SELECT
                         q.quizID AS QuizID,
                         q.title AS QuizTitle,
                         ISNULL(s.name, 'N/A') AS SubjectName,
+                        
                         -- Count questions efficiently
                         (SELECT COUNT(questionID) FROM Questions qu WHERE qu.quizID = q.quizID) AS QuestionCount,
+                        
                         -- Count attempts efficiently
                         (SELECT COUNT(attemptID) FROM QuizAttempts qa WHERE qa.quizID = q.quizID) AS AttemptCount,
-                        -- Calculate average score efficiently (handle division by zero if no attempts)
+                        
+                        -- Get total possible points for the quiz
+                        ISNULL((SELECT SUM(points) FROM Questions qu_pts WHERE qu_pts.quizID = q.quizID), 0) AS MaxPoints, 
+                        
+                        -- Get average *raw score* (points earned), not percentage
                         ISNULL((SELECT AVG(CAST(score AS DECIMAL(5,2)))
                                 FROM QuizAttempts qa_avg
-                                WHERE qa_avg.quizID = q.quizID AND qa_avg.finishedAt IS NOT NULL), 0) AS AverageScore,
+                                WHERE qa_avg.quizID = q.quizID AND qa_avg.finishedAt IS NOT NULL), 0) AS AverageScorePoints,
+                        
                         -- Determine status
                         CASE WHEN q.isPublished = 1 THEN 'Active' ELSE 'Inactive' END AS Status
                     FROM
@@ -76,6 +82,7 @@ namespace BrainBlitz
                         Subjects s ON q.subjectID = s.subjectID
                     WHERE
                         q.userID = @TeacherId"; // Filter quizzes CREATED BY this teacher
+                // --- END OF CORRECTED QUERY ---
 
                 // Add search filter if searchTerm is provided
                 if (!string.IsNullOrEmpty(searchTerm))
@@ -396,6 +403,34 @@ namespace BrainBlitz
             if (score >= 80) return "score-good";
             if (score >= 60) return "score-medium";
             return "score-bad";
+        }
+
+        protected string CalculatePercentage(object pointsEarned, object maxPoints)
+        {
+            // Check for null or DBNull values
+            if (pointsEarned == DBNull.Value || maxPoints == DBNull.Value || pointsEarned == null || maxPoints == null)
+            {
+                return "N/A";
+            }
+
+            try
+            {
+                decimal earned = Convert.ToDecimal(pointsEarned);
+                decimal max = Convert.ToDecimal(maxPoints);
+
+                if (max == 0)
+                {
+                    return "N/A"; // Avoid division by zero
+                }
+
+                decimal percentage = (earned / max) * 100;
+                // "N0" formats as a whole number (e.g., 75)
+                return $"{percentage:N0}%";
+            }
+            catch (Exception)
+            {
+                return "N/A"; // In case of any conversion error
+            }
         }
 
     }

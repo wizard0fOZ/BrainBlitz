@@ -123,9 +123,10 @@
 
         /* NEW Quiz Card Grid */
         .quiz-card-container {
-            display: grid;
-            /* Creates 2 responsive columns, min 400px wide */
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 30px;
         }
 
@@ -135,8 +136,9 @@
             padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 20px; /* Space between header, details, button */
+            gap: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            flex-basis: 655px;
         }
 
         .quiz-card-header .quiz-title {
@@ -169,7 +171,7 @@
 
         .quiz-card-details {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 columns for details */
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             border-top: 1px solid #F3F3F3;
             padding-top: 20px;
@@ -281,7 +283,7 @@
                                 </div>
                                 <div class="detail-item detail-item-best-score">
                                     <i class="fas fa-trophy"></i>
-                                    <span>Best: <%# Eval("BestScore") %>%</span>
+                                        <span>Best: <%# CalculatePercentage(Eval("BestScorePoints"), Eval("MaxPoints")) %></span>
                                 </div>
                             </div>
 
