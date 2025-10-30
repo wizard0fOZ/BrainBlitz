@@ -33,48 +33,93 @@ namespace BrainBlitz
         protected global::System.Web.UI.WebControls.Label lblTotalStudents;
 
         /// <summary>
-        /// lblActiveQuizzes control.
+        /// lblTotalSubjects control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblActiveQuizzes;
+        protected global::System.Web.UI.WebControls.Label lblTotalSubjects;
 
         /// <summary>
-        /// lblResources control.
+        /// lblTotalResources control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblResources;
+        protected global::System.Web.UI.WebControls.Label lblTotalResources;
 
         /// <summary>
-        /// lblAverageScore control.
+        /// lblTotalQuizzes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAverageScore;
+        protected global::System.Web.UI.WebControls.Label lblTotalQuizzes;
 
         /// <summary>
-        /// rptSubjects control.
+        /// lblStudentsCount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptSubjects;
+        protected global::System.Web.UI.WebControls.Label lblStudentsCount;
 
         /// <summary>
-        /// rptRecentActivity control.
+        /// lblActiveStudents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptRecentActivity;
+        protected global::System.Web.UI.WebControls.Label lblActiveStudents;
+
+        /// <summary>
+        /// lblTeachersCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTeachersCount;
+
+        /// <summary>
+        /// lblActiveTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblActiveTeachers;
+
+        /// <summary>
+        /// lblAdminsCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAdminsCount;
+
+        /// <summary>
+        /// lblActiveAdmins control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblActiveAdmins;
+
+        /// <summary>
+        /// rptRecentUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptRecentUsers;
     }
 }

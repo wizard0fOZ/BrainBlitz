@@ -1,16 +1,13 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminDashboard.aspx.cs" Inherits="BrainBlitz.AdminDashboard" Async="true" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard - BrainBlitz</title>
+    <title>Admin Dashboard - BrainBlitz</title>
     <link href="https://fonts.googleapis.com/css2?family=Sansation:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Content/Site.css">
-
 <style>
-    /* Dashboard Container - For content *below* the header */
     .dashboard-container {
         position: relative;
         width: 100%;
@@ -22,14 +19,12 @@
         box-sizing: border-box;
     }
 
-    /* Wrapper for buttons for flex alignment */
     .header-buttons-wrapper {
         display: flex;
         align-items: center;
         gap: 48px;
     }
 
-    /* Update Buttons */
     .header-home-btn,
     .header-logout-btn {
         display: flex;
@@ -60,11 +55,7 @@
         transform: translateY(-2px);
         box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
     }
-    /* ============================
-       END HEADER STYLES
-    ============================ */
 
-    /* Slogan Section */
     .slogan-div {
         display: flex;
         flex-direction: column;
@@ -91,7 +82,6 @@
         color: #8D97AA;
     }
 
-    /* ===== Summary Section ===== */
     .summary-container {
         display: flex;
         flex-direction: row;
@@ -133,23 +123,17 @@
     }
 
     .summary-card-link {
-    text-decoration: none; /* Remove underline */
-    color: inherit; /* Keep original text color */
-    display: flex; /* Ensure it behaves like the original div */
-    /* Add hover effect if desired */
+    text-decoration: none;
+    color: inherit;
+    display: flex;
     transition: transform 0.2s ease;
     }
 
     .summary-card-link:hover {
      transform: translateY(-3px);
-     box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional hover shadow */
+     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    /* =================================
-     MY SUBJECTS & RECENT ACTIVITY
-    ================================= */
-
-    /* Main 2-Column Container */
     .main-content-container {
         display: flex;
         flex-direction: row;
@@ -160,7 +144,6 @@
         margin-top: 30px;
     }
 
-    /* Base Card for both columns */
     .list-card {
         background: #FFFFFF;
         border-radius: 10px;
@@ -171,7 +154,6 @@
         font-family: 'Sansation';
     }
 
-    /* Column 1: My Subjects */
     .subjects-container {
         flex-basis: 655px;
     }
@@ -194,19 +176,17 @@
         gap: 10px;
     }
 
-    /* Icon for "My Subjects" */
     .subjects-container .list-header-title::before {
         content: "";
         display: inline-block;
         width: 32px;
         height: 32px;
-        background-image: url('../Images/Teachers.png');
+        background-image: url('../Images/Students.png');
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
     }
 
-    /* Icon for "Recent Activity" */
     .activity-container .list-header-title::before {
         content: "";
         display: inline-block;
@@ -260,7 +240,6 @@
         color: #8D97AA;
     }
 
-    /* Column 2: Recent Activity */
     .activity-container {
         flex-basis: 655px;
     }
@@ -333,9 +312,6 @@
         background: #e9e9e9;
     }
 
-    /* ============================
-       ACTION CARDS STYLES
-    ============================ */
     .action-cards-container {
         display: flex;
         flex-direction: row;
@@ -376,10 +352,8 @@
         margin-bottom: 8px;
     }
 
-    /* Specific icons */
-    .create-quiz-icon { background-image: url('/Images/pluspink.png'); }
-    .upload-resource-icon { background-image: url('/Images/Teachers.png'); }
-    .view-analytics-icon { background-image: url('/Images/chartgreen.png'); }
+    .manage-users-icon { background-image: url('/Images/Students.png'); }
+    .manage-subjects-icon { background-image: url('/Images/Teachers.png'); }
 
     .action-card-title {
         font-family: 'Sansation';
@@ -396,15 +370,12 @@
         line-height: 1.4;
     }
 </style>
-
 </head>
-
 <body>
     <form id="form1" runat="server">
-
         <div class="header">
             <div class="header-content">
-                <a href="TeacherDashboard.aspx" class="brainblitz"></a>
+                <a href="AdminDashboard.aspx" class="brainblitz"></a>
                 <div class="header-buttons-wrapper">
                     <div class="header-home-btn"><span>Home</span></div>
                     <div class="header-logout-btn"><span>Log out</span></div>
@@ -412,103 +383,115 @@
             </div>
         </div>
 
-        <div class="dashboard-container">
 
+        <!-- BrainBlitz Info -->
+        <div class="dashboard-container">
             <div class="slogan-div">
-                <div class="dashboard-title">Teacher Dashboard</div>
+                <div class="dashboard-title">Admin Dashboard</div>
                 <div class="dashboard-subtitle">Manage your courses and track student progress</div>
             </div>
 
             <div class="summary-container">
-                <div class="summary-card">
-                    <div class="summary-title">Total Students</div>
+                <a href="AdminUsers.aspx" class="summary-card summary-card-link">
+                    <div class="summary-title">Total Users</div>
                     <asp:Label ID="lblTotalStudents" runat="server" CssClass="summary-value" Text="--"></asp:Label>
-                </div>
-                <a href="TeacherQuiz.aspx" class="summary-card summary-card-link">
-                    <div class="summary-title">Active Quizzes</div>
-                        <asp:Label ID="lblActiveQuizzes" runat="server" CssClass="summary-value" Text="--"></asp:Label>
+                </a>
+                <a href="AdminSubjects.aspx" class="summary-card summary-card-link">
+                    <div class="summary-title">Total Subjects</div>
+                        <asp:Label ID="lblTotalSubjects" runat="server" CssClass="summary-value" Text="--"></asp:Label>
                 </a>
                 <div class="summary-card">
-                    <div class="summary-title">Resources</div>
-                    <asp:Label ID="lblResources" runat="server" CssClass="summary-value" Text="--"></asp:Label>
+                    <div class="summary-title">Total Resources</div>
+                    <asp:Label ID="lblTotalResources" runat="server" CssClass="summary-value" Text="--"></asp:Label>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-title">Average Score</div>
-                    <asp:Label ID="lblAverageScore" runat="server" CssClass="summary-value" Text="--"></asp:Label>
+                    <div class="summary-title">Total Quizzes</div>
+                    <asp:Label ID="lblTotalQuizzes" runat="server" CssClass="summary-value" Text="--"></asp:Label>
                 </div>
             </div>
             
+            <!-- User Overview and Recent Activities -->
             <div class="main-content-container">
-                
                 <div class="list-card subjects-container">
                     <div class="list-header">
-                        <span class="list-header-title">My Subjects</span>
+                        <span class="list-header-title">User Overview</span>
                     </div>
-                    <asp:Repeater ID="rptSubjects" runat="server">
-                        <ItemTemplate>
-                            <div class="subject-card">
-                                <span class="subject-card-title"><%# Eval("SubjectName") %></span>
-                                <div class="subject-stats-row">
-                                    <div class="stat-group">
-                                        <span class="stat-group-label">Quizzes</span>
-                                        <span><%# Eval("QuizCount") %></span>
-                                    </div>
-                                    <div class="stat-group">
-                                        <span class="stat-group-label">Resources</span>
-                                        <span><%# Eval("ResourceCount") %></span>
-                                    </div>
-                                    <div class="stat-group">
-                                        <span class="stat-group-label">Students</span>
-                                        <span><%# Eval("StudentCount") %></span>
-                                    </div>
-                                </div>
+                    <div class="subject-card">
+                        <span class="subject-card-title">Students</span>
+                        <div class="subject-stats-row">
+                            <div class="stat-group">
+                                <span class="stat-group-label">Total Count</span>
+                                <asp:Label ID="lblStudentsCount" runat="server" Text="--"></asp:Label>
                             </div>
-                        </ItemTemplate>
-                    </asp:Repeater>
+                            <div class="stat-group">
+                                <span class="stat-group-label">Active</span>
+                                <asp:Label ID="lblActiveStudents" runat="server" Text="--"></asp:Label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subject-card">
+                        <span class="subject-card-title">Teachers</span>
+                        <div class="subject-stats-row">
+                            <div class="stat-group">
+                                <span class="stat-group-label">Total Count</span>
+                                <asp:Label ID="lblTeachersCount" runat="server" Text="--"></asp:Label>
+                            </div>
+                            <div class="stat-group">
+                                <span class="stat-group-label">Active</span>
+                                <asp:Label ID="lblActiveTeachers" runat="server" Text="--"></asp:Label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subject-card">
+                        <span class="subject-card-title">Admins</span>
+                        <div class="subject-stats-row">
+                            <div class="stat-group">
+                                <span class="stat-group-label">Total Count</span>
+                                <asp:Label ID="lblAdminsCount" runat="server" Text="--"></asp:Label>
+                            </div>
+                            <div class="stat-group">
+                                <span class="stat-group-label">Active</span>
+                                <asp:Label ID="lblActiveAdmins" runat="server" Text="--"></asp:Label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="list-card activity-container">
                     <div class="list-header">
-                        <span class="list-header-title">Recent Activity</span>
+                        <span class="list-header-title">Recently Created Users</span>
                     </div>
                     <div class="activity-list">
-                        <asp:Repeater ID="rptRecentActivity" runat="server">
+                        <asp:Repeater ID="rptRecentUsers" runat="server">
                             <ItemTemplate>
                                 <div class="activity-item">
                                     <div class="activity-info">
-                                        <span class="activity-name"><%# Eval("StudentName") %></span>
-                                        <span class="activity-details"><%# Eval("QuizTitle") %></span>
+                                        <span class="activity-name"><%# Eval("UserName") %></span>
+                                        <span class="activity-details"><%# Eval("Email") %></span>
                                         <span class="activity-time"><%# Eval("TimeAgo") %></span>
                                     </div>
-                                    <span class='<%# Eval("ScoreClass") %>'><%# Eval("ScoreDisplay") %></span>
+                                    <span class="activity-score"><%# Eval("RoleDisplay") %></span>
                                 </div>
                             </ItemTemplate>
                         </asp:Repeater>
                     </div>
-                    <a href="Performance.aspx" class="view-all-button">View All Performance</a>
+                    <a href="AdminUsers.aspx" class="view-all-button">View All Users</a>
                 </div>
-                
             </div>
 
-            <!-- Action Cards -->
+            <!-- Action Buttons -->
             <div class="action-cards-container">
-                <a href="CreateQuiz.aspx" class="action-card">
-                    <div class="action-card-icon create-quiz-icon"></div>
-                    <span class="action-card-title">Create Quiz</span>
-                    <span class="action-card-subtitle">Build a new quiz for your students</span>
+                <a href="AdminUsers.aspx" class="action-card">
+                    <div class="action-card-icon manage-users-icon"></div>
+                    <span class="action-card-title">Manage Users</span>
+                    <span class="action-card-subtitle">Manager Users here</span>
                 </a>
-                <a href="UploadResource.aspx" class="action-card">
-                    <div class="action-card-icon upload-resource-icon"></div>
-                    <span class="action-card-title">Upload Resource</span>
-                    <span class="action-card-subtitle">Add learning materials for students</span>
-                </a>
-                <a href="Analytics.aspx" class="action-card">
-                    <div class="action-card-icon view-analytics-icon"></div>
-                    <span class="action-card-title">View Analytics</span>
-                    <span class="action-card-subtitle">Review student performance data</span>
+                <a href="AdminSubjects.aspx" class="action-card">
+                    <div class="action-card-icon manage-subjects-icon"></div>
+                    <span class="action-card-title">Manage Subjects</span>
+                    <span class="action-card-subtitle">Manage Subjects for Student & Teachers</span>
                 </a>
             </div>
-
         </div>
     </form>
 
