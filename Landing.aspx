@@ -438,7 +438,7 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <div class="brainblitz"></div>
+        <a href="TeacherDashboard.aspx" class="brainblitz"></a>
         <div class="header-signin-btn">
             <span>Sign In</span>
         </div>

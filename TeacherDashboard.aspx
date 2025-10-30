@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Dashboard - BrainBlitz</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Sansation:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Content/Site.css">
 
@@ -21,49 +20,6 @@
         padding-bottom: 40px;
         max-width: 1440px;
         box-sizing: border-box;
-    }
-
-    /* ============================
-       FULL WIDTH HEADER STYLES
-    ============================ */
-    .header {
-        position: relative;
-        width: 100%;
-        height: 75px;
-        background: #FFFFFF;
-        box-sizing: border-box;
-        z-index: 10;
-    }
-
-    /* Inner container for alignment within the header */
-    .header-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1440px;
-        height: 100%;
-        margin: 0 auto;
-        padding: 0 50px;
-        box-sizing: border-box;
-    }
-
-    /* Logo styling */
-    .brainblitz {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 312px;
-        height: 60px;
-        background: url('../Images/BrainBlitz.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        margin: 0;
-        display: block;
-        text-decoration: none;
-    }
-    .brainblitz:hover {
-        transform: none;
-        box-shadow: none;
     }
 
     /* Wrapper for buttons for flex alignment */
