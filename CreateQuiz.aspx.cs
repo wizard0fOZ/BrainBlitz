@@ -515,21 +515,4 @@ namespace BrainBlitz
             Response.Redirect("Login.aspx");
         }
     }
-
-    // Helper class to store question data (must be Serializable for Session if you choose)
-    [Serializable]
-    public class QuestionData
-    {
-        public string QuestionText { get; set; }
-        public Dictionary<string, string> Options { get; set; }
-        public string CorrectAnswer { get; set; } // Stores "A", "B", "C", or "D"
-        public int Points { get; set; }
-
-        public QuestionData()
-        {
-            Options = new Dictionary<string, string>();
-            CorrectAnswer = "A";
-            Points = 10; // Default points
-        }
-    }
 }
