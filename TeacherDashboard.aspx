@@ -75,6 +75,12 @@
         margin-top: 15px;
     }
 
+    .teacher-name-title {
+        font-weight: 400;
+        font-size: 32px;
+        color: #555;
+}
+
     .dashboard-title {
         font-family: 'Sansation';
         font-weight: 700;
@@ -415,8 +421,10 @@
         <div class="dashboard-container">
 
             <div class="slogan-div">
+                <asp:Label ID="lblTeacherName" runat="server" CssClass="teacher-name-title"></asp:Label>
                 <div class="dashboard-title">Teacher Dashboard</div>
                 <div class="dashboard-subtitle">Manage your courses and track student progress</div>
+
             </div>
 
             <div class="summary-container">

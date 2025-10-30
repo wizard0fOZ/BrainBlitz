@@ -15,6 +15,12 @@ namespace BrainBlitz
             if (Session["UserID"] == null || Session["Role"] == null || Session["Role"].ToString() != "Teacher")
             {
                 Response.Redirect("~/Auth.aspx");
+                return;
+            }
+
+            if (!IsPostBack && Session["FullName"] != null)
+            {
+                lblTeacherName.Text = "Welcome, " + Session["FullName"].ToString() + " (" + Session["UserID"].ToString() + ")";
             }
 
             if (!IsPostBack)
