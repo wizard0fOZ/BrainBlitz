@@ -100,8 +100,6 @@ namespace BrainBlitz
                 string password = txtSignUpPassword.Text;
                 string role = ddlRole.SelectedValue;
 
-                // --- TODO: Add password complexity validation if desired ---
-
                 try
                 {
                     string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
@@ -160,28 +158,23 @@ namespace BrainBlitz
         }
 
         // --- Helper Methods ---
-
-        // NEW METHOD: Redirects based on role stored in Session
         private void RedirectUserBasedOnRole(string role)
         {
-            // Ensure case matches exactly what's in your database/dropdown
             switch (role)
             {
                 case "Teacher":
                     Response.Redirect("~/TeacherDashboard.aspx");
                     break;
-                case "Student": // Or "User" or whatever your student role is called
-                    Response.Redirect("~/UserDashboard.aspx"); // Assuming page exists
+                case "Student":
+                    Response.Redirect("~/StudentDashboard.aspx");
                     break;
                 case "Admin":
-                    Response.Redirect("~/AdminDashboard.aspx"); // Assuming page exists
+                    Response.Redirect("~/AdminDashboard.aspx");
                     break;
                 default:
                     // Fallback for unknown roles or if role is null/empty
-                    ShowErrorMessage(lblSignInMessage, "Invalid user role detected. Redirecting to default page.");
-                    // Add a small delay so the user might see the message (optional)
-                    // System.Threading.Thread.Sleep(2000);
-                    Response.Redirect("~/Default.aspx"); // Or back to login with error
+                    ShowErrorMessage(lblSignInMessage, "Invalid user role detected. Please contact support.");
+                    Response.Redirect("~/Auth.aspx");
                     break;
             }
         }
@@ -190,12 +183,11 @@ namespace BrainBlitz
         private void ShowErrorMessage(Label labelControl, string message)
         {
             labelControl.Text = message;
-            labelControl.CssClass = "error-message"; // Ensure you have this CSS class
+            labelControl.CssClass = "error-message";
             labelControl.Visible = true;
         }
 
 
-        // --- Password Hashing (Placeholders - Replace with secure library) ---
         // Hash password using SHA256
         private string HashPassword(string password)
         {
@@ -211,7 +203,7 @@ namespace BrainBlitz
             }
         }
 
-        // Verify password against stored hash (Use corresponding verification)
+        // Verify password against stored hash
         private bool VerifyPassword(string password, string storedHash)
         {
             string hashOfInput = HashPassword(password);
