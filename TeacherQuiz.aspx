@@ -13,46 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <style>
-    .header {
-        position: relative;
-        width: 100%;
-        height: 75px;
-        background: #FFFFFF;
-        box-sizing: border-box;
-        z-index: 10;
-    }
-
-    /* Inner container for alignment within the header */
-    .header-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1440px;
-        height: 100%;
-        margin: 0 auto;
-        padding: 0 50px;
-        box-sizing: border-box;
-    }
-
-    /* Logo styling */
-    .brainblitz {
-        position: relative;
-        left: auto;
-        top: auto;
-        width: 312px;
-        height: 60px;
-        background: url('../Images/BrainBlitz.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        margin: 0;
-        display: block;
-        text-decoration: none;
-    }
-    .brainblitz:hover {
-        transform: none;
-        box-shadow: none;
-    }
-
     /* Wrapper for buttons for flex alignment */
     .header-buttons-wrapper {
         display: flex;

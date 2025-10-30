@@ -11,7 +11,7 @@ namespace BrainBlitz
 {
 
 
-    public partial class TeacherDashboard
+    public partial class StudentQuiz
     {
 
         /// <summary>
@@ -24,66 +24,48 @@ namespace BrainBlitz
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// lblTeacherName control.
+        /// btnLogout control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTeacherName;
+        protected global::System.Web.UI.WebControls.LinkButton btnLogout;
 
         /// <summary>
-        /// lblTotalStudents control.
+        /// lblErrorMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalStudents;
+        protected global::System.Web.UI.WebControls.Label lblErrorMessage;
 
         /// <summary>
-        /// lblActiveQuizzes control.
+        /// txtSearchQuizzes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblActiveQuizzes;
+        protected global::System.Web.UI.WebControls.TextBox txtSearchQuizzes;
 
         /// <summary>
-        /// lblResources control.
+        /// rptStudentQuizzes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblResources;
+        protected global::System.Web.UI.WebControls.Repeater rptStudentQuizzes;
 
         /// <summary>
-        /// lblAverageScore control.
+        /// pnlNoQuizzes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAverageScore;
-
-        /// <summary>
-        /// rptSubjects control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptSubjects;
-
-        /// <summary>
-        /// rptRecentActivity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptRecentActivity;
+        protected global::System.Web.UI.WebControls.Panel pnlNoQuizzes;
     }
 }
