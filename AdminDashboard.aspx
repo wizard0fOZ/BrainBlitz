@@ -187,7 +187,7 @@
         background-position: center;
     }
 
-    .activity-container .list-header-title::before {
+    .user-container .list-header-title::before {
         content: "";
         display: inline-block;
         width: 32px;
@@ -198,7 +198,7 @@
         background-position: center;
     }
 
-    .subject-card {
+    .user-card {
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -209,7 +209,7 @@
         border-radius: 10px;
     }
 
-    .subject-card-title {
+    .user-card-title {
         font-weight: 700;
         font-size: 28px;
         line-height: 31px;
@@ -240,17 +240,17 @@
         color: #8D97AA;
     }
 
-    .activity-container {
+    .user-container {
         flex-basis: 655px;
     }
 
-    .activity-list {
+    .user-list {
         display: flex;
         flex-direction: column;
         gap: 12px;
     }
 
-    .activity-item {
+    .user-item {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -260,37 +260,34 @@
         border-radius: 8px;
     }
 
-    .activity-info {
+    .user-info {
         display: flex;
         flex-direction: column;
         gap: 4px;
     }
 
-    .activity-name {
+    .user-name {
         font-weight: 700;
         font-size: 16px;
         color: #000000;
     }
 
-    .activity-details {
+    .user-details {
         font-weight: 400;
         font-size: 14px;
         color: #555;
     }
 
-    .activity-time {
+    .user-time {
         font-weight: 400;
         font-size: 14px;
         color: #8D97AA;
     }
 
-    .activity-score {
+    .user-type {
         font-weight: 700;
         font-size: 18px;
     }
-
-    .activity-score-good { color: #29CF48; }
-    .activity-score-bad { color: #FF0000; }
 
     .view-all-button {
         box-sizing: border-box;
@@ -416,8 +413,8 @@
                     <div class="list-header">
                         <span class="list-header-title">User Overview</span>
                     </div>
-                    <div class="subject-card">
-                        <span class="subject-card-title">Students</span>
+                    <div class="user-card">
+                        <span class="user-card-title">Students</span>
                         <div class="subject-stats-row">
                             <div class="stat-group">
                                 <span class="stat-group-label">Total Count</span>
@@ -429,8 +426,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="subject-card">
-                        <span class="subject-card-title">Teachers</span>
+                    <div class="user-card">
+                        <span class="user-card-title">Teachers</span>
                         <div class="subject-stats-row">
                             <div class="stat-group">
                                 <span class="stat-group-label">Total Count</span>
@@ -442,8 +439,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="subject-card">
-                        <span class="subject-card-title">Admins</span>
+                    <div class="user-card">
+                        <span class="user-card-title">Admins</span>
                         <div class="subject-stats-row">
                             <div class="stat-group">
                                 <span class="stat-group-label">Total Count</span>
@@ -457,20 +454,20 @@
                     </div>
                 </div>
 
-                <div class="list-card activity-container">
+                <div class="list-card user-container">
                     <div class="list-header">
                         <span class="list-header-title">Recently Created Users</span>
                     </div>
-                    <div class="activity-list">
+                    <div class="user-list">
                         <asp:Repeater ID="rptRecentUsers" runat="server">
                             <ItemTemplate>
-                                <div class="activity-item">
-                                    <div class="activity-info">
-                                        <span class="activity-name"><%# Eval("UserName") %></span>
-                                        <span class="activity-details"><%# Eval("Email") %></span>
-                                        <span class="activity-time"><%# Eval("TimeAgo") %></span>
+                                <div class="user-item">
+                                    <div class="user-info">
+                                        <span class="user-name"><%# Eval("UserName") %></span>
+                                        <span class="user-details"><%# Eval("Email") %></span>
+                                        <span class="user-time"><%# Eval("TimeAgo") %></span>
                                     </div>
-                                    <span class="activity-score"><%# Eval("RoleDisplay") %></span>
+                                    <span class="user-type"><%# Eval("RoleDisplay") %></span>
                                 </div>
                             </ItemTemplate>
                         </asp:Repeater>

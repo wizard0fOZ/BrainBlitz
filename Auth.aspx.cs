@@ -66,9 +66,7 @@ namespace BrainBlitz
                                         Session["Email"] = email;
                                         Session["Role"] = role; // Store the role
 
-                                        // --- REDIRECT BASED ON ROLE ---
                                         RedirectUserBasedOnRole(role);
-                                        // --- END REDIRECT ---
                                     }
                                     else
                                     {
@@ -143,9 +141,7 @@ namespace BrainBlitz
                             Session["Email"] = email;
                             Session["Role"] = role;
 
-                            // --- REDIRECT BASED ON ROLE ---
                             RedirectUserBasedOnRole(role);
-                            // --- END REDIRECT ---
                         }
                     }
                 }
