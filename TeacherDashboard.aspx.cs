@@ -4,12 +4,13 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Data;
+// Removed unused: using System.Web.Security;
+// Removed unused: using System.Globalization;
 
 namespace BrainBlitz
 {
     public partial class TeacherDashboard : System.Web.UI.Page
     {
-        // Add this class-level variable
         private int CurrentTeacherId = -1;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -22,27 +23,24 @@ namespace BrainBlitz
             }
             else
             {
-                // Store the ID for the rest of the page to use
                 CurrentTeacherId = (int)Session["UserID"];
             }
             // --- End Session Check ---
 
             if (!IsPostBack && Session["FullName"] != null)
             {
-                lblTeacherName.Text = "Welcome, " + Session["FullName"].ToString() + "."; 
+                lblTeacherName.Text = "Hello, " + Session["FullName"].ToString() + "!";
             }
 
             if (!IsPostBack)
             {
-                RegisterAsyncTask(new PageAsyncTask(LoadDashboardStats));
+                RegisterAsyncTask(new PageAsyncTask(async () => await LoadDashboardStats()));
             }
         }
 
         private async Task LoadDashboardStats()
         {
-            // Use the class-level variable
             int teacherId = CurrentTeacherId;
-
             string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -52,16 +50,16 @@ namespace BrainBlitz
                 var studentsTask = GetTotalStudentsAsync(connection, teacherId);
                 var quizzesTask = GetActiveQuizzesAsync(connection, teacherId);
                 var resourcesTask = GetTotalResourcesAsync(connection, teacherId);
-                var avgScoreTask = GetAverageScoreAsync(connection, teacherId); // <-- This is now fixed
+                var avgScoreTask = GetAverageScoreAsync(connection, teacherId);
                 var subjectsTask = LoadSubjectsAsync(connection, teacherId);
-                var activityTask = LoadRecentActivityAsync(connection, teacherId); // <-- This is now fixed
+                var activityTask = LoadRecentActivityAsync(connection, teacherId);
 
                 await Task.WhenAll(studentsTask, quizzesTask, resourcesTask, avgScoreTask, subjectsTask, activityTask);
 
                 lblTotalStudents.Text = studentsTask.Result.ToString();
                 lblActiveQuizzes.Text = quizzesTask.Result.ToString();
                 lblResources.Text = resourcesTask.Result.ToString();
-                lblAverageScore.Text = avgScoreTask.Result + "%"; // Will now be a percentage
+                lblAverageScore.Text = avgScoreTask.Result; // This result is already formatted (e.g., "80.0" or "N/A")
 
                 rptSubjects.DataSource = subjectsTask.Result;
                 rptSubjects.DataBind();
@@ -71,14 +69,16 @@ namespace BrainBlitz
             }
         }
 
-        // Card 1: Total Students (No change, this is correct)
+        // Card 1: Total Students
         private async Task<int> GetTotalStudentsAsync(SqlConnection connection, int teacherId)
         {
             string query = @"
                 SELECT COUNT(DISTINCT se.userID)
                 FROM SubjectEnrollments se
                 JOIN Subjects s ON se.subjectID = s.subjectID
-                WHERE s.assignedTo = @TeacherId";
+                JOIN [Users] u ON se.userID = u.userID   -- Join User table
+                WHERE s.assignedTo = @TeacherId
+                  AND u.role = 'Student'"; // Filter for role
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -88,7 +88,7 @@ namespace BrainBlitz
             }
         }
 
-        // Card 2: Active Quizzes (No change, this is correct)
+        // Card 2: Active Quizzes (This query is correct)
         private async Task<int> GetActiveQuizzesAsync(SqlConnection connection, int teacherId)
         {
             string query = @"
@@ -105,10 +105,10 @@ namespace BrainBlitz
             }
         }
 
-        // Card 3: Resources (Still a placeholder)
+        // Card 3: Resources (Updated to use correct table name)
         private async Task<int> GetTotalResourcesAsync(SqlConnection connection, int teacherId)
         {
-            // TODO: Replace with real query when Resources table is ready
+            // Querying the Resources table
             string query = "SELECT COUNT(resourceID) FROM Resources WHERE userID = @TeacherId";
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -116,14 +116,11 @@ namespace BrainBlitz
                 object result = await command.ExecuteScalarAsync();
                 return (result == DBNull.Value) ? 0 : (int)result;
             }
-            // await Task.Delay(1);
-            // return 0;
         }
 
-        // Card 4: Average Score (FIXED)
+        // Card 4: Average Score (This query is correct for calculating avg percentage)
         private async Task<string> GetAverageScoreAsync(SqlConnection connection, int teacherId)
         {
-            // This query calculates the percentage for each attempt *first*, then averages them.
             string query = @"
                 WITH QuizTotalPoints AS (
                     SELECT 
@@ -150,7 +147,7 @@ namespace BrainBlitz
                 WHERE 
                     s.assignedTo = @TeacherId 
                     AND qa.finishedAt IS NOT NULL 
-                    AND qt.TotalPoints > 0"; // Avoid division by zero
+                    AND qt.TotalPoints > 0";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -163,28 +160,27 @@ namespace BrainBlitz
                 }
                 else
                 {
-                    // Format the final average percentage to one decimal place
-                    return ((double)result).ToString("N1");
+                    return ((double)result).ToString("N2") + "%";
                 }
             }
         }
 
-        // "My Subjects" List (FIXED)
+        // "My Subjects" List (FIXED: StudentCount query now filters for 'Student' role)
         private async Task<DataTable> LoadSubjectsAsync(SqlConnection connection, int teacherId)
         {
-            // This query now fetches MaxPoints and AverageScorePoints
             string query = @"
                 SELECT 
                     s.name AS SubjectName,
                     (SELECT COUNT(q.quizID) 
                      FROM Quizzes q 
                      WHERE q.subjectID = s.subjectID AND q.userID = @TeacherId) AS QuizCount,
-                     
+                    
                     (SELECT COUNT(DISTINCT se.userID) 
-                     FROM SubjectEnrollments se 
-                     WHERE se.subjectID = s.subjectID) AS StudentCount,
+                     FROM SubjectEnrollments se
+                     JOIN [Users] u ON se.userID = u.userID -- Add join
+                     WHERE se.subjectID = s.subjectID
+                       AND u.role = 'Student') AS StudentCount, -- Add filter
                      
-                    -- TODO: Update with real query when Resources is ready
                     (SELECT COUNT(r.resourceID) FROM Resources r WHERE r.subjectID = s.subjectID AND r.userID = @TeacherId) AS ResourceCount
                 FROM 
                     Subjects s
@@ -202,10 +198,9 @@ namespace BrainBlitz
             }
         }
 
-        // "Recent Activity" List (FIXED)
+        // "Recent Activity" List (FIXED: Uses FormattingHelpers.CalculatePercentage)
         private async Task<DataTable> LoadRecentActivityAsync(SqlConnection connection, int teacherId)
         {
-            // 1. Update the Query to fetch MaxPoints
             string query = @"
                 WITH QuizTotalPoints AS (
                     SELECT 
@@ -218,7 +213,7 @@ namespace BrainBlitz
                     u.fullName AS StudentName,
                     q.title AS QuizTitle,
                     qa.finishedAt,
-                    qa.score AS PointsEarned, -- Renamed for clarity
+                    qa.score AS PointsEarned,
                     ISNULL(qt.TotalPoints, 0) AS MaxPoints
                 FROM 
                     QuizAttempts qa
@@ -239,12 +234,10 @@ namespace BrainBlitz
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@TeacherId", teacherId);
-
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
 
-                // 2. Add new columns for calculated values
                 dataTable.Columns.Add("TimeAgo", typeof(string));
                 dataTable.Columns.Add("ScoreDisplay", typeof(string));
                 dataTable.Columns.Add("ScoreClass", typeof(string));
@@ -253,11 +246,9 @@ namespace BrainBlitz
                 {
                     DateTime finishedAt = (DateTime)row["finishedAt"];
 
-                    // 3. Use the helper method for calculation
                     // Call the static helper class
                     string percentageStr = CalculatePercentage(row["PointsEarned"], row["MaxPoints"]);
-                    int percentageInt = 0;
-                    int.TryParse(percentageStr.Replace("%", ""), out percentageInt); // Get the int value for color logic
+                    int.TryParse(percentageStr.Replace("%", ""), out int percentageInt);
 
                     row["TimeAgo"] = FormatTimeAgo(DateTime.Now.Subtract(finishedAt));
                     row["ScoreDisplay"] = percentageStr; // Use the formatted string (e.g., "75%")

@@ -152,18 +152,6 @@
             gap: 10px;
             margin-top: 10px;
         }
-        .tag {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            text-align: center;
-        }
-        .tag-subject-math { background-color: #E6B9FF; color: #6A009C; }
-        .tag-subject-science { background-color: #B9E6FF; color: #006A9C; }
-        .tag-subject-english { background-color: aquamarine; color: darkcyan; }
-        .tag-subject-default { background-color: #610099; color: #E6B9FF; }
 
         .tag-difficulty-medium { background-color: #FFF3B9; color: #9C6F00; }
         .tag-difficulty-hard { background-color: #FFB9B9; color: #9C0000; }

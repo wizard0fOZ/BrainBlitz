@@ -64,3 +64,35 @@ body {
     background-repeat: no-repeat;
     background-position: center;
 }
+
+
+/*Tag Styling for Subjects*/
+.tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    min-width: 60px;
+}
+
+.tag-subject-math {
+    background-color: #E6B9FF;
+    color: #6A009C;
+}
+
+.tag-subject-science {
+    background-color: #B9E6FF;
+    color: #006A9C;
+}
+
+.tag-subject-english {
+    background-color: aquamarine;
+    color: darkcyan;
+}
+
+.tag-subject-default {
+    background-color: #610099;
+    color: #E6B9FF;
+}

@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BrainBlitz
+namespace BrainBlitz.Teacher
 {
 
 
-    public partial class Performance
+    public partial class StudentDetails
     {
 
         /// <summary>
@@ -51,13 +51,22 @@ namespace BrainBlitz
         protected global::System.Web.UI.WebControls.LinkButton btnLogout;
 
         /// <summary>
-        /// btnExportReport control.
+        /// lblStudentName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnExportReport;
+        protected global::System.Web.UI.WebControls.Label lblStudentName;
+
+        /// <summary>
+        /// btnBack control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBack;
 
         /// <summary>
         /// lblErrorMessage control.
@@ -69,31 +78,13 @@ namespace BrainBlitz
         protected global::System.Web.UI.WebControls.Label lblErrorMessage;
 
         /// <summary>
-        /// lblTotalStudents control.
+        /// lblOverallAverage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalStudents;
-
-        /// <summary>
-        /// lblClassAverage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblClassAverage;
-
-        /// <summary>
-        /// lblActiveThisWeek control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblActiveThisWeek;
+        protected global::System.Web.UI.WebControls.Label lblOverallAverage;
 
         /// <summary>
         /// lblTotalAttempts control.
@@ -105,21 +96,21 @@ namespace BrainBlitz
         protected global::System.Web.UI.WebControls.Label lblTotalAttempts;
 
         /// <summary>
-        /// txtSearchStudents control.
+        /// lblQuizzesTaken control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearchStudents;
+        protected global::System.Web.UI.WebControls.Label lblQuizzesTaken;
 
         /// <summary>
-        /// rptPerformance control.
+        /// rptStudentAttempts control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptPerformance;
+        protected global::System.Web.UI.WebControls.Repeater rptStudentAttempts;
     }
 }

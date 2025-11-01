@@ -238,17 +238,10 @@ namespace BrainBlitz
 
         protected void txtSearchStudents_TextChanged(object sender, EventArgs e)
         {
-            int subjectId = 0; // TODO: Get active subject filter ID
+            int subjectId = 0;
             RegisterAsyncTask(new PageAsyncTask(() => LoadAllPerformanceData(txtSearchStudents.Text.Trim(), subjectId)));
         }
 
-        protected void btnFilter_Click(object sender, EventArgs e)
-        {
-            LinkButton btn = (LinkButton)sender;
-            int subjectId = int.Parse(btn.CommandArgument);
-            // TODO: Update active CSS class on pills
-            RegisterAsyncTask(new PageAsyncTask(() => LoadAllPerformanceData(txtSearchStudents.Text.Trim(), subjectId)));
-        }
 
         protected void btnExportReport_Click(object sender, EventArgs e)
         {
@@ -288,10 +281,13 @@ namespace BrainBlitz
                 case "mathematics":
                     tag = "tag-subject-math";
                     break;
-                case "physics":
-                    tag = "tag-subject-physics";
+                case "english":
+                    tag = "tag-subject-english";
                     break;
                 case "science":
+                    tag = "tag-subject-science";
+                    break;
+                case "default":
                     tag = "tag-subject-default";
                     break;
             }

@@ -241,11 +241,6 @@
                     <i class="fas fa-search"></i>
                     <asp:TextBox ID="txtSearchStudents" runat="server" CssClass="search-input" placeholder="Search students..." AutoPostBack="true" OnTextChanged="txtSearchStudents_TextChanged"></asp:TextBox>
                 </div>
-                <div class="filter-pills">
-                    <%-- TODO: Add Repeater for subject filters --%>
-                    <asp:LinkButton ID="btnFilterAll" runat="server" CssClass="filter-pill active" OnClick="btnFilter_Click" CommandArgument="0">All Subjects</asp:LinkButton>
-                    <%-- (Other filter buttons) --%>
-                </div>
             </div>
 
             <%-- 5. Performance List Table --%>

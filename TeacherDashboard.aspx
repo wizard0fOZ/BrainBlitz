@@ -510,7 +510,7 @@
                     <span class="action-card-title">Upload Resource</span>
                     <span class="action-card-subtitle">Add learning materials for students</span>
                 </a>
-                <a href="Analytics.aspx" class="action-card">
+                <a href="Performance.aspx" class="action-card">
                     <div class="action-card-icon view-analytics-icon"></div>
                     <span class="action-card-title">View Analytics</span>
                     <span class="action-card-subtitle">Review student performance data</span>

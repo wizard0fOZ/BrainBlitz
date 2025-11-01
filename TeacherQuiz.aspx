@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Quizzes - BrainBlitz</title>
     <link href="https://fonts.googleapis.com/css2?family=Sansation:wght@400;700&display=swap" rel="stylesheet">
-    <%-- Link to your global Site.css --%>
     <link rel="stylesheet" href="Content/Site.css">
-    <%-- Add Font Awesome for icons (optional, but recommended) --%>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <style>
@@ -197,7 +195,7 @@
         .tag-subject-math { background-color: #E6B9FF; color: #6A009C; }
         .tag-subject-science { background-color: #B9E6FF; color: #006A9C; }
         .tag-subject-english { background-color: aquamarine; color: darkcyan; }
-        .tag-subject-default { background-color: #610099; color: #E6B9FF; } /* Fallback */
+        .tag-subject-default { background-color: #610099; color: #E6B9FF; }
 
         .tag-status-active { background-color: #82F797; color: #006D1A; }
         .tag-status-inactive { background-color: #E0E0E0; color: #555; }
@@ -286,7 +284,7 @@
                             <div class="col-questions"><%# Eval("QuestionCount") %></div>
                             <div class="col-attempts"><%# Eval("AttemptCount") %></div>
                             <div class="col-avg-score">
-                                    <span class='<%# GetScoreClass(CalculatePercentage(Eval("AverageScorePoints"), Eval("MaxPoints"))) %>'> <%# CalculatePercentage(Eval("AverageScorePoints"), Eval("MaxPoints")) %></span>
+                                <span class='<%# GetScoreClass(Eval("AverageScorePoints"), Eval("MaxPoints")) %>'><%#CalculatePercentage(Eval("AverageScorePoints"), Eval("MaxPoints")) %> </span>
                             </div>
                             <div class="col-status">
                                 <asp:LinkButton ID="btnToggleStatus" runat="server"
