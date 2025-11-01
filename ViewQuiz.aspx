@@ -37,13 +37,13 @@
         /* OPTIONS */
         .options-list { display: flex; flex-direction: column; gap: 15px; }
 
-        .option-item {
-            display: flex;
-            align-items: center;
+        /* This is the clickable block */
+        .options-list label {
+            display: flex; 
+            align-items: center; 
             padding: 18px 20px;
             border: 2px solid #E0E0E0;
             border-radius: 10px;
-            background: #FFF;
             cursor: default;
             transition: border-color 0.2s, background-color 0.2s;
         }
@@ -52,33 +52,46 @@
             font-weight: 700; color: #333; border: 1px solid #AAA;
             border-radius: 50%; width: 24px; height: 24px;
             display: inline-flex; justify-content: center; align-items: center;
-            margin-right: 15px; font-size: 14px;
+            margin-right: 15px; font-size: 14px; flex-shrink: 0;
+        }
+
+        /* Hide radio buttons */
+        .options-list input[type="radio"] {
+            display: none;
         }
 
         /* Correct answer highlight */
+        .correct-answer-highlight {
+            display: flex !important;
+            width: 100%;
+        }
+        
+        .correct-answer-highlight label {
+            border-color: #28A745 !important;
+            background: #F0FFF4 !important;
+        }
+        
+        .correct-answer-highlight label .option-letter {
+            background-color: #28A745 !important;
+            color: #fff !important;
+            border-color: #28A745 !important;
+        }
+        
+        /* Alternative selector based on checked state */
+        .options-list input[type="radio"]:checked + label {
+            border-color: #28A745 !important;
+            background: #F0FFF4 !important;
+        }
+        
+        .options-list input[type="radio"]:checked + label .option-letter {
+            background-color: #28A745 !important;
+            color: #fff !important;
+            border-color: #28A745 !important;
+        }
 
-.options-list[disabled] label {
-        opacity: 1.0; 
-        color: #000; /* Or your default text color */
-    }
-
-    /* This rule makes the disabled radio button itself look normal */
-    .options-list input[type="radio"]:disabled {
-        opacity: 0.8;
-    }
-
-    /* This targets the <span> wrapper ASP.NET creates */
-    .correct-answer-highlight label {
-        border-color: #28A745; /* Green border */
-        background: #F0FFF4; /* Light green background */
-    }
-    
-    /* This targets the letter inside the correct answer */
-    .correct-answer-highlight label .option-letter {
-        background-color: #28A745;
-        color: #fff;
-        border-color: #28A745;
-    }
+        .options-list[disabled] {
+            pointer-events: none;
+        }
 
         /* NAV BUTTONS */
         .quiz-navigation { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
