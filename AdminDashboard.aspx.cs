@@ -18,7 +18,8 @@ namespace BrainBlitz
         {
             if (!IsPostBack)
             {
-                 if (Session["Role"] == null || Session["Role"].ToString() != "Admin")
+                // Check if user is admin
+                if (Session["Role"] == null || Session["Role"].ToString() != "Admin")
                  {
                      Response.Redirect("Auth.aspx");
                      return;
