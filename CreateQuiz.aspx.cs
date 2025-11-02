@@ -508,15 +508,11 @@ namespace BrainBlitz
             catch { return 0; }
         }
 
-        protected void btnHome_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("TeacherDashboard.aspx");
-        }
-
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            // TODO: Add real logout logic (Session.Clear(), etc.)
-            Response.Redirect("Login.aspx");
+            Session.Clear();
+            Session.Abandon();
+            Response.Redirect("Auth.aspx");
         }
     }
 }

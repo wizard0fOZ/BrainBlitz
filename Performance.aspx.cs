@@ -273,11 +273,6 @@ namespace BrainBlitz
             return field;
         }
 
-        protected void btnHome_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("TeacherDashboard.aspx");
-        }
-
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             Session.Clear();

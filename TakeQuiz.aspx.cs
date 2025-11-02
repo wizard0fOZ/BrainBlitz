@@ -143,7 +143,7 @@ namespace BrainBlitz.Student
                     catch (Exception ex)
                     {
                         System.Diagnostics.Debug.WriteLine("Error loading quiz: " + ex.Message);
-                        // TODO: Show error
+                       
                     }
                 }
             }

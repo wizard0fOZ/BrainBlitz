@@ -259,6 +259,12 @@ namespace BrainBlitz
             }
         }
 
+        protected void btnLogout_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Session.Abandon();
+            Response.Redirect("Auth.aspx");
+        }
         // Helper function for formatting time
         private string FormatTimeAgo(TimeSpan timeSpan)
         {

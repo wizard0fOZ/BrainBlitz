@@ -30,7 +30,6 @@
     }
 
     /* Update Buttons */
-    .header-home-btn,
     .header-logout-btn {
         display: flex;
         justify-content: center;
@@ -49,13 +48,9 @@
         font-size: 20px;
         text-align: center;
         text-decoration: none;
-        width: 132px;
-    }
-    .header-logout-btn {
         width: 145px;
     }
 
-    .header-home-btn:hover,
     .header-logout-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
@@ -412,8 +407,7 @@
             <div class="header-content">
                 <a href="TeacherDashboard.aspx" class="brainblitz"></a>
                 <div class="header-buttons-wrapper">
-                    <div class="header-home-btn"><span>Home</span></div>
-                    <div class="header-logout-btn"><span>Log out</span></div>
+                    <asp:Button ID="btnLogout" runat="server" Text="Log out" CssClass="header-logout-btn" OnClick="btnLogout_Click" />
                 </div>
             </div>
         </div>
@@ -522,17 +516,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const homeBtn = document.querySelector('.header-home-btn');
-            if (homeBtn) {
-                homeBtn.addEventListener('click', function () {
-                    window.location.href = 'Default.aspx';
-                });
-            }
-
             const logoutBtn = document.querySelector('.header-logout-btn');
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', function () {
-                    window.location.href = 'Logout.aspx';
+                    window.location.href = 'Auth.aspx';
                 });
             }
         });

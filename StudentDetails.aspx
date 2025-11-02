@@ -31,7 +31,6 @@
     }
 
     /* Update Buttons */
-    .header-home-btn,
     .header-logout-btn {
         display: flex;
         justify-content: center;
@@ -50,13 +49,9 @@
         font-size: 20px;
         text-align: center;
         text-decoration: none;
-        width: 132px;
-    }
-    .header-logout-btn {
         width: 145px;
     }
 
-    .header-home-btn:hover,
     .header-logout-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
@@ -159,7 +154,6 @@
             <div class="header-content">
                 <a href="TeacherDashboard.aspx" class="brainblitz"></a>
                 <div class="header-buttons-wrapper">
-                    <asp:LinkButton ID="btnHome" runat="server" CssClass="header-home-btn" OnClick="btnHome_Click">Home</asp:LinkButton>
                     <asp:LinkButton ID="btnLogout" runat="server" CssClass="header-logout-btn" OnClick="btnLogout_Click">Log out</asp:LinkButton>
                 </div>
             </div>

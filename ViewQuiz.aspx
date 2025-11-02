@@ -13,14 +13,38 @@
         body { background-color: #F3F3F3; font-family: 'Sansation', sans-serif; }
 
         /* HEADER */
-        .header { height: 75px; background: #fff; display: flex; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1200px; padding: 0 40px; }
-        .brainblitz { width: 200px; height: 60px; background: url('../Images/BrainBlitz.png') no-repeat center / contain; display: block; }
-        .header-buttons-wrapper { display: flex; gap: 24px; }
-        .header-home-btn, .header-logout-btn {
-            padding: 9px 30px; border-radius: 10px; background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
-            color: #fff; font-weight: 700; font-size: 18px; text-decoration: none; text-align: center;
-        }
+    .header-buttons-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+    }
+
+    /* Update Buttons */
+    .header-logout-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 9px 38px;
+        position: relative;
+        height: 40px;
+        top: auto;
+        right: auto;
+        background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
+        border-radius: 10px;
+        cursor: pointer;
+        color: #fff;
+        font-family: 'Sansation';
+        font-weight: 700;
+        font-size: 20px;
+        text-align: center;
+        text-decoration: none;
+        width: 145px;
+    }
+
+    .header-logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
+    }
 
         /* QUIZ */
         .quiz-take-container { max-width: 1000px; margin: 30px auto; padding: 0 15px; }
@@ -114,7 +138,6 @@
             <div class="header-content">
                 <a href="TeacherDashboard.aspx" class="brainblitz"></a>
                 <div class="header-buttons-wrapper">
-                    <asp:LinkButton ID="btnHome" runat="server" CssClass="header-home-btn" OnClick="btnHome_Click">Home</asp:LinkButton>
                     <asp:LinkButton ID="btnLogout" runat="server" CssClass="header-logout-btn" OnClick="btnLogout_Click">Log out</asp:LinkButton>
                 </div>
             </div>

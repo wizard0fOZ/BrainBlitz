@@ -11,29 +11,50 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <style>
-        .header {
-            position: relative; width: 100%; height: 75px; background: #FFFFFF;
-            box-sizing: border-box; z-index: 10;
-        }
-        .header-content {
-            display: flex; justify-content: space-between; align-items: center;
-            max-width: 1440px; height: 100%; margin: 0 auto; padding: 0 50px;
-            box-sizing: border-box;
-        }
-        .brainblitz {
-             position: relative; left: auto; top: auto; width: 312px; height: 60px;
-             background: url('../Images/BrainBlitz.png') no-repeat center center / contain;
-             margin: 0; display: block; text-decoration: none;
-        }
-        .header-buttons-wrapper { display: flex; align-items: center; gap: 48px; }
-        .header-home-btn, .header-logout-btn {
-            display: flex; justify-content: center; align-items: center; padding: 9px 38px;
-            position: relative; height: 40px; background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
-            border-radius: 10px; cursor: pointer; color: #fff; font-family: 'Sansation';
-            font-weight: 700; font-size: 20px; text-align: center; text-decoration: none;
-        }
-        .header-home-btn { width: 132px; }
-        .header-logout-btn { width: 145px; }
+    .dashboard-container {
+        position: relative;
+        width: 100%;
+        min-height: calc(1024px - 75px);
+        background: #F3F3F3;
+        margin: 0 auto;
+        padding-bottom: 40px;
+        max-width: 1440px;
+        box-sizing: border-box;
+    }
+
+    /* Wrapper for buttons for flex alignment */
+    .header-buttons-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+    }
+
+    /* Update Buttons */
+    .header-logout-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 9px 38px;
+        position: relative;
+        height: 40px;
+        top: auto;
+        right: auto;
+        background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
+        border-radius: 10px;
+        cursor: pointer;
+        color: #fff;
+        font-family: 'Sansation';
+        font-weight: 700;
+        font-size: 20px;
+        text-align: center;
+        text-decoration: none;
+        width: 145px;
+    }
+
+    .header-logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
+    }
 
         /* Page Specific Styles */
         body { background-color: #F3F3F3; font-family: 'Sansation', sans-serif;}
