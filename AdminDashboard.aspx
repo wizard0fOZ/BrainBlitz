@@ -25,7 +25,6 @@
         gap: 48px;
     }
 
-    .header-home-btn,
     .header-logout-btn {
         display: flex;
         justify-content: center;
@@ -50,7 +49,6 @@
         width: 145px;
     }
 
-    .header-home-btn:hover,
     .header-logout-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
@@ -374,8 +372,9 @@
             <div class="header-content">
                 <a href="AdminDashboard.aspx" class="brainblitz"></a>
                 <div class="header-buttons-wrapper">
-                    <div class="header-home-btn"><span>Home</span></div>
-                    <div class="header-logout-btn"><span>Log out</span></div>
+                    <asp:LinkButton ID="btnLogout" runat="server" CssClass="header-logout-btn" OnClick="btnLogout_Click">
+                        <span>Log out</span>
+                    </asp:LinkButton>
                 </div>
             </div>
         </div>
@@ -491,23 +490,5 @@
             </div>
         </div>
     </form>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const homeBtn = document.querySelector('.header-home-btn');
-            if (homeBtn) {
-                homeBtn.addEventListener('click', function () {
-                    window.location.href = 'Default.aspx';
-                });
-            }
-
-            const logoutBtn = document.querySelector('.header-logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function () {
-                    window.location.href = 'Logout.aspx';
-                });
-            }
-        });
-    </script>
 </body>
 </html>
