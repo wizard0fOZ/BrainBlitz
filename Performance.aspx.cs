@@ -2,9 +2,12 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Globalization;
 
 namespace BrainBlitz
 {
@@ -30,7 +33,7 @@ namespace BrainBlitz
             }
         }
 
-        private async Task LoadAllPerformanceData(string searchTerm = "", int subjectFilterId = 0)
+        private async Task LoadAllPerformanceData(string searchTerm = "")
         {
             string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -38,13 +41,13 @@ namespace BrainBlitz
                 await connection.OpenAsync();
 
                 // Load summary cards
-                var totalStudentsTask = GetTotalStudents(connection, CurrentTeacherId, subjectFilterId);
-                var classAverageTask = GetClassAverage(connection, CurrentTeacherId, subjectFilterId);
-                var activeThisWeekTask = GetActiveThisWeek(connection, CurrentTeacherId, subjectFilterId);
-                var totalAttemptsTask = GetTotalAttempts(connection, CurrentTeacherId, subjectFilterId);
+                var totalStudentsTask = GetTotalStudents(connection, CurrentTeacherId);
+                var classAverageTask = GetClassAverage(connection, CurrentTeacherId);
+                var activeThisWeekTask = GetActiveThisWeek(connection, CurrentTeacherId);
+                var totalAttemptsTask = GetTotalAttempts(connection, CurrentTeacherId);
 
                 // Load main student list
-                var studentListTask = GetStudentPerformanceList(connection, CurrentTeacherId, searchTerm, subjectFilterId);
+                var studentListTask = GetStudentPerformanceList(connection, CurrentTeacherId, searchTerm);
 
                 await Task.WhenAll(totalStudentsTask, classAverageTask, activeThisWeekTask, totalAttemptsTask, studentListTask);
 
@@ -59,90 +62,78 @@ namespace BrainBlitz
                 rptPerformance.DataSource = dt;
                 rptPerformance.DataBind();
 
-                // Find and set visibility of "No students" panel in the footer
-                if (rptPerformance.Controls.Count > 0)
+                // Show "No students" panel if no records
+                Panel pnlNoStudents = (Panel)rptPerformance.Controls[rptPerformance.Controls.Count - 1].FindControl("pnlNoStudents");
+                if (pnlNoStudents != null)
                 {
-                    RepeaterItem footer = rptPerformance.Controls[rptPerformance.Controls.Count - 1] as RepeaterItem;
-                    if (footer != null && footer.ItemType == ListItemType.Footer)
-                    {
-                        Panel pnlNoStudents = footer.FindControl("pnlNoStudents") as Panel;
-                        if (pnlNoStudents != null)
-                        {
-                            pnlNoStudents.Visible = (dt.Rows.Count == 0);
-                        }
-                    }
+                    pnlNoStudents.Visible = (dt.Rows.Count == 0);
                 }
             }
         }
 
         #region Summary Card Queries
 
-        private async Task<int> GetTotalStudents(SqlConnection con, int teacherId, int subjectId)
+        private async Task<int> GetTotalStudents(SqlConnection con, int teacherId)
         {
             string query = @"
                 SELECT COUNT(DISTINCT se.userID)
                 FROM SubjectEnrollments se
                 JOIN Subjects s ON se.subjectID = s.subjectID
-                WHERE s.assignedTo = @TeacherId";
-            if (subjectId > 0) query += " AND s.subjectID = @SubjectID";
+                JOIN [Users] u ON se.userID = u.userID
+                WHERE s.assignedTo = @TeacherId AND u.role = 'Student'";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.Parameters.AddWithValue("@TeacherId", teacherId);
-                if (subjectId > 0) cmd.Parameters.AddWithValue("@SubjectID", subjectId);
                 object result = await cmd.ExecuteScalarAsync();
                 return (result == DBNull.Value) ? 0 : Convert.ToInt32(result);
             }
         }
 
-        private async Task<string> GetClassAverage(SqlConnection con, int teacherId, int subjectId)
+        private async Task<string> GetClassAverage(SqlConnection con, int teacherId)
         {
             string query = @"
                 WITH QuizTotalPoints AS (
                     SELECT quizID, SUM(points) AS TotalPoints FROM Questions GROUP BY quizID
                 )
-                SELECT ROUND(AVG(CASE WHEN qt.TotalPoints > 0 THEN (CAST(qa.score AS float) / qt.TotalPoints) * 100 ELSE 0 END), 2)
+                SELECT AVG(CASE WHEN qt.TotalPoints > 0 
+                                THEN (CAST(qa.score AS float) / qt.TotalPoints) * 100 
+                                ELSE 0 END)
                 FROM QuizAttempts qa
                 JOIN Quizzes q ON qa.quizID = q.quizID
                 JOIN Subjects s ON q.subjectID = s.subjectID
                 JOIN QuizTotalPoints qt ON q.quizID = qt.quizID
-                WHERE s.assignedTo = @TeacherId AND qa.finishedAt IS NOT NULL AND qt.TotalPoints > 0";
-            if (subjectId > 0) query += " AND s.subjectID = @SubjectID";
+                WHERE s.assignedTo = @TeacherId 
+                      AND qa.finishedAt IS NOT NULL 
+                      AND qt.TotalPoints > 0";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.Parameters.AddWithValue("@TeacherId", teacherId);
-                if (subjectId > 0) cmd.Parameters.AddWithValue("@SubjectID", subjectId);
                 object result = await cmd.ExecuteScalarAsync();
-
-                if (result == DBNull.Value || result == null)
-                    return "N/A";
-
-                double avgValue = Convert.ToDouble(result);
-                return $"{avgValue:F2}%";
+                return (result == DBNull.Value) ? "N/A" : $"{Convert.ToDouble(result):N2}%";
             }
         }
 
-        private async Task<int> GetActiveThisWeek(SqlConnection con, int teacherId, int subjectId)
+        private async Task<int> GetActiveThisWeek(SqlConnection con, int teacherId)
         {
             string query = @"
                 SELECT COUNT(DISTINCT qa.userID)
                 FROM QuizAttempts qa
                 JOIN Quizzes q ON qa.quizID = q.quizID
                 JOIN Subjects s ON q.subjectID = s.subjectID
-                WHERE s.assignedTo = @TeacherId AND qa.finishedAt >= DATEADD(day, -7, GETDATE())";
-            if (subjectId > 0) query += " AND s.subjectID = @SubjectID";
+                WHERE s.assignedTo = @TeacherId 
+                      AND qa.finishedAt >= DATEADD(day, -7, GETDATE())";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.Parameters.AddWithValue("@TeacherId", teacherId);
-                if (subjectId > 0) cmd.Parameters.AddWithValue("@SubjectID", subjectId);
                 object result = await cmd.ExecuteScalarAsync();
                 return (result == DBNull.Value) ? 0 : Convert.ToInt32(result);
             }
         }
 
-        private async Task<int> GetTotalAttempts(SqlConnection con, int teacherId, int subjectId)
+        private async Task<int> GetTotalAttempts(SqlConnection con, int teacherId)
         {
             string query = @"
                 SELECT COUNT(qa.attemptID)
@@ -150,12 +141,10 @@ namespace BrainBlitz
                 JOIN Quizzes q ON qa.quizID = q.quizID
                 JOIN Subjects s ON q.subjectID = s.subjectID
                 WHERE s.assignedTo = @TeacherId";
-            if (subjectId > 0) query += " AND s.subjectID = @SubjectID";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.Parameters.AddWithValue("@TeacherId", teacherId);
-                if (subjectId > 0) cmd.Parameters.AddWithValue("@SubjectID", subjectId);
                 object result = await cmd.ExecuteScalarAsync();
                 return (result == DBNull.Value) ? 0 : Convert.ToInt32(result);
             }
@@ -165,68 +154,61 @@ namespace BrainBlitz
 
         #region Main List Query
 
-        private async Task<DataTable> GetStudentPerformanceList(SqlConnection con, int teacherId, string searchTerm, int subjectId)
+        private async Task<DataTable> GetStudentPerformanceList(SqlConnection con, int teacherId, string searchTerm)
         {
             DataTable dt = new DataTable();
             string query = @"
                 WITH StudentAttempts AS (
                     SELECT 
-                        qa.userID,
-                        qa.quizID,
-                        qa.score,
-                        qa.finishedAt,
-                        s.name AS SubjectName,
+                        qa.userID, qa.quizID, qa.score, qa.finishedAt, s.name AS SubjectName,
                         (SELECT SUM(points) FROM Questions qn WHERE qn.quizID = q.quizID) AS MaxPoints
                     FROM QuizAttempts qa
                     JOIN Quizzes q ON qa.quizID = q.quizID
                     JOIN Subjects s ON q.subjectID = s.subjectID
-                    WHERE s.assignedTo = @TeacherId AND qa.finishedAt IS NOT NULL
-                        AND (@SubjectID = 0 OR s.subjectID = @SubjectID)
+                    WHERE s.assignedTo = @TeacherId 
+                          AND qa.finishedAt IS NOT NULL
                 ),
                 StudentAggregates AS (
                     SELECT 
                         userID,
                         COUNT(quizID) AS QuizzesTaken,
-                        ROUND(AVG(CASE WHEN MaxPoints > 0 THEN (CAST(score AS float) / MaxPoints) * 100 ELSE 0 END), 2) AS AvgPercentage,
+                        AVG(CASE WHEN MaxPoints > 0 
+                                 THEN (CAST(score AS float) / MaxPoints) * 100 
+                                 ELSE 0 END) AS AvgPercentage,
                         MAX(finishedAt) AS LastActivityDate,
-                        (SELECT TOP 1 sa.SubjectName FROM StudentAttempts sa WHERE sa.userID = StudentAttempts.userID ORDER BY sa.finishedAt DESC) AS LastSubjectName
+                        (SELECT TOP 1 sa.SubjectName 
+                         FROM StudentAttempts sa 
+                         WHERE sa.userID = StudentAttempts.userID 
+                         ORDER BY sa.finishedAt DESC) AS LastSubjectName
                     FROM StudentAttempts
                     GROUP BY userID
                 )
                 SELECT 
-                    u.userID,
-                    u.fullName AS StudentName,
-                    agg.QuizzesTaken,
-                    agg.AvgPercentage,
-                    agg.LastActivityDate,
-                    agg.LastSubjectName
+                    u.userID, u.fullName AS StudentName,
+                    agg.QuizzesTaken, agg.AvgPercentage,
+                    agg.LastActivityDate, agg.LastSubjectName
                 FROM StudentAggregates agg
                 JOIN [Users] u ON agg.userID = u.userID
                 WHERE (@SearchTerm = '' OR u.fullName LIKE @SearchTerm)
+                      AND u.role = 'Student'
                 ORDER BY agg.LastActivityDate DESC;
             ";
 
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.Parameters.AddWithValue("@TeacherId", teacherId);
-                cmd.Parameters.AddWithValue("@SubjectID", subjectId);
                 cmd.Parameters.AddWithValue("@SearchTerm", string.IsNullOrEmpty(searchTerm) ? "" : $"%{searchTerm}%");
 
                 SqlDataAdapter sda = new SqlDataAdapter(cmd);
                 sda.Fill(dt);
             }
 
-            // Add and format the TimeAgo column
             dt.Columns.Add("LastActivityTimeAgo", typeof(string));
             foreach (DataRow row in dt.Rows)
             {
                 if (row["LastActivityDate"] != DBNull.Value)
                 {
                     row["LastActivityTimeAgo"] = FormatTimeAgo(DateTime.Now.Subtract((DateTime)row["LastActivityDate"]));
-                }
-                else
-                {
-                    row["LastActivityTimeAgo"] = "Never";
                 }
             }
             return dt;
@@ -238,15 +220,57 @@ namespace BrainBlitz
 
         protected void txtSearchStudents_TextChanged(object sender, EventArgs e)
         {
-            int subjectId = 0;
-            RegisterAsyncTask(new PageAsyncTask(() => LoadAllPerformanceData(txtSearchStudents.Text.Trim(), subjectId)));
+            RegisterAsyncTask(new PageAsyncTask(async () => await LoadAllPerformanceData(txtSearchStudents.Text.Trim())));
         }
-
 
         protected void btnExportReport_Click(object sender, EventArgs e)
         {
-            // TODO: Implement report exporting logic
-            System.Diagnostics.Debug.WriteLine("Export button clicked.");
+            string searchTerm = txtSearchStudents.Text.Trim();
+            DataTable dt;
+
+            string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                dt = Task.Run(async () => await GetStudentPerformanceList(connection, CurrentTeacherId, searchTerm))
+                    .GetAwaiter().GetResult();
+            }
+
+            // Build CSV
+            StringBuilder csvBuilder = new StringBuilder();
+            csvBuilder.AppendLine("Student Name,Subject,Quizzes Taken,Avg Score (%),Last Activity");
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string studentName = EscapeCsvField(row["StudentName"].ToString());
+                string subject = EscapeCsvField(row["LastSubjectName"].ToString());
+                string quizzesTaken = row["QuizzesTaken"].ToString();
+                string avgScore = string.Format("{0:N2}", row["AvgPercentage"]);
+                string lastActivity = row["LastActivityTimeAgo"].ToString();
+
+                csvBuilder.AppendLine($"\"{studentName}\",\"{subject}\",{quizzesTaken},{avgScore},\"{lastActivity}\"");
+            }
+
+            HttpResponse response = HttpContext.Current.Response;
+            response.Clear();
+            response.Buffer = true;
+            response.ContentType = "text/csv";
+            response.AddHeader("Content-Disposition", "attachment;filename=StudentPerformanceReport.csv");
+            response.Charset = "";
+            response.Write(csvBuilder.ToString());
+            response.Flush();
+            response.SuppressContent = true;
+            HttpContext.Current.ApplicationInstance.CompleteRequest();
+        }
+
+        private string EscapeCsvField(string field)
+        {
+            if (string.IsNullOrEmpty(field)) return "";
+            if (field.Contains(",") || field.Contains("\""))
+            {
+                return $"\"{field.Replace("\"", "\"\"")}\"";
+            }
+            return field;
         }
 
         protected void btnHome_Click(object sender, EventArgs e)
@@ -281,13 +305,10 @@ namespace BrainBlitz
                 case "mathematics":
                     tag = "tag-subject-math";
                     break;
-                case "english":
-                    tag = "tag-subject-english";
+                case "physics":
+                    tag = "tag-subject-physics";
                     break;
                 case "science":
-                    tag = "tag-subject-science";
-                    break;
-                case "default":
                     tag = "tag-subject-default";
                     break;
             }

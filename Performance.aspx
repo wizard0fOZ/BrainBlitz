@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <style>
-        /* --- (Copy/paste your full header styles here) --- */
     .dashboard-container {
         position: relative;
         width: 100%;
@@ -23,14 +22,12 @@
         box-sizing: border-box;
     }
 
-    /* Wrapper for buttons for flex alignment */
     .header-buttons-wrapper {
         display: flex;
         align-items: center;
         gap: 48px;
     }
 
-    /* Update Buttons */
     .header-home-btn,
     .header-logout-btn {
         display: flex;
@@ -73,7 +70,7 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 30px; /* Space between elements */
+            gap: 30px;
         }
 
         .page-header {
@@ -95,7 +92,7 @@
         /* Summary Cards */
         .summary-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+            grid-template-columns: repeat(4, 1fr);
             gap: 25px;
         }
         .summary-card {
@@ -267,7 +264,7 @@
                             <div class="col-quizzes-taken"><%# Eval("QuizzesTaken") %></div>
                             <div class="col-avg-score">
                                 <span class='<%# GetScoreClass(Eval("AvgPercentage")) %>'>
-                                    <%# Eval("AvgPercentage") %>%
+                                    <%# Eval("AvgPercentage", "{0:N2}") %>%
                                 </span>
                             </div>
                             <div class="col-last-activity"><%# Eval("LastActivityTimeAgo") %></div>
