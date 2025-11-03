@@ -141,6 +141,7 @@
     .teacher-dropdown {
         width: 100%;
         padding: 8px 12px;
+        margin-bottom: 10px;
         font-family: 'Sansation', sans-serif;
         font-size: 14px;
         border: 1px solid #8D97AA;
