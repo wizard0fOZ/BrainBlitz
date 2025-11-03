@@ -159,7 +159,7 @@
     <Content Include="StudentDashboard.aspx" />
     <Content Include="AdminUsers.aspx" />
     <Content Include="AdminSubjects.aspx" />
-    <Content Include="AdminSubjectsTeacher.aspx" />
+    <Content Include="AdminSubjectsTeachers.aspx" />
     <Content Include="AdminSubjectsStudents.aspx" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <None Include="Scripts\jquery-3.7.1-vsdoc.js" />
@@ -348,12 +348,12 @@
     <Compile Include="AdminSubjects.aspx.designer.cs">
       <DependentUpon>AdminSubjects.aspx</DependentUpon>
     </Compile>
-    <Compile Include="AdminSubjectsTeacher.aspx.cs">
-      <DependentUpon>AdminSubjectsTeacher.aspx</DependentUpon>
+    <Compile Include="AdminSubjectsTeachers.aspx.cs">
+      <DependentUpon>AdminSubjectsTeachers.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AdminSubjectsTeacher.aspx.designer.cs">
-      <DependentUpon>AdminSubjectsTeacher.aspx</DependentUpon>
+    <Compile Include="AdminSubjectsTeachers.aspx.designer.cs">
+      <DependentUpon>AdminSubjectsTeachers.aspx</DependentUpon>
     </Compile>
     <Compile Include="AdminSubjectsStudents.aspx.cs">
       <DependentUpon>AdminSubjectsStudents.aspx</DependentUpon>
