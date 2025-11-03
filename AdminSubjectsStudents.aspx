@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminSubjectsStudents.aspx.cs" Inherits="BrainBlitz.WebForm1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminSubjectsStudents.aspx.cs" Inherits="BrainBlitz.AdminSubjectsStudents" %>
 
 <!DOCTYPE html>
 
