@@ -158,6 +158,9 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="StudentDashboard.aspx" />
     <Content Include="AdminUsers.aspx" />
+    <Content Include="AdminSubjects.aspx" />
+    <Content Include="AdminSubjectsTeacher.aspx" />
+    <Content Include="AdminSubjectsStudents.aspx" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <None Include="Scripts\jquery-3.7.1-vsdoc.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
@@ -337,6 +340,27 @@
     </Compile>
     <Compile Include="AdminUsers.aspx.designer.cs">
       <DependentUpon>AdminUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminSubjects.aspx.cs">
+      <DependentUpon>AdminSubjects.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminSubjects.aspx.designer.cs">
+      <DependentUpon>AdminSubjects.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminSubjectsTeacher.aspx.cs">
+      <DependentUpon>AdminSubjectsTeacher.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminSubjectsTeacher.aspx.designer.cs">
+      <DependentUpon>AdminSubjectsTeacher.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminSubjectsStudents.aspx.cs">
+      <DependentUpon>AdminSubjectsStudents.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminSubjectsStudents.aspx.designer.cs">
+      <DependentUpon>AdminSubjectsStudents.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
