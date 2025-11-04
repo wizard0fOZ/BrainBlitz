@@ -103,7 +103,6 @@ namespace BrainBlitz
                     ddl.DataValueField = "userID";
                     ddl.DataBind();
 
-                    // Add default option
                     ddl.Items.Insert(0, new ListItem("-- Select Student --", "0"));
                 }
             }
@@ -127,6 +126,9 @@ namespace BrainBlitz
                 {
                     int studentId = Convert.ToInt32(ddlStudents.SelectedValue);
                     EnrollStudent(subjectId, studentId);
+
+                    // Force page refresh
+                    Response.Redirect(Request.RawUrl);
                 }
                 else
                 {
@@ -181,18 +183,17 @@ namespace BrainBlitz
 
                     if (rowsAffected > 0)
                     {
-                        ShowMessage("Student enrolled successfully!", true);
-                        BindSubjectsGrid();
+                        Session["SuccessMessage"] = "Student enrolled successfully!";
                     }
                     else
                     {
-                        ShowMessage("Failed to enroll student.", false);
+                        Session["ErrorMessage"] = "Failed to enroll student.";
                     }
                 }
             }
             catch (Exception ex)
             {
-                ShowMessage("Error enrolling student: " + ex.Message, false);
+                Session["ErrorMessage"] = "Error enrolling student: " + ex.Message;
             }
         }
 
@@ -247,15 +248,8 @@ namespace BrainBlitz
                 int enrollmentId = Convert.ToInt32(e.CommandArgument);
                 RemoveEnrollment(enrollmentId);
 
-                // Reload the modal data
-                int subjectId = Convert.ToInt32(hfCurrentSubjectID.Value);
-                LoadEnrolledStudents(subjectId);
-
-                // Refresh the main grid
-                BindSubjectsGrid();
-
-                // Keep modal open
-                ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
+                // Force page refresh
+                Response.Redirect(Request.RawUrl);
             }
         }
 
@@ -276,17 +270,17 @@ namespace BrainBlitz
 
                     if (rowsAffected > 0)
                     {
-                        ShowMessage("Student removed from subject successfully.", true);
+                        Session["SuccessMessage"] = "Student removed from subject successfully.";
                     }
                     else
                     {
-                        ShowMessage("Failed to remove student.", false);
+                        Session["ErrorMessage"] = "Failed to remove student.";
                     }
                 }
             }
             catch (Exception ex)
             {
-                ShowMessage("Error removing student: " + ex.Message, false);
+                Session["ErrorMessage"] = "Error removing student: " + ex.Message;
             }
         }
 

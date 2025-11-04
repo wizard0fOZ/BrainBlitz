@@ -93,7 +93,6 @@ namespace BrainBlitz
                     ddl.DataValueField = "userID";
                     ddl.DataBind();
 
-                    // Add default option
                     ddl.Items.Insert(0, new ListItem("-- Select Teacher --", "0"));
                 }
             }
