@@ -204,15 +204,6 @@
         color: #8D97AA;
         font-style: italic;
     }
-
-    .empty-state {
-        text-align: center;
-        padding: 40px;
-        color: #8D97AA;
-        font-family: 'Sansation', sans-serif;
-        font-size: 16px;
-    }
-
     .action-cell {
         min-width: 300px;
     }
@@ -413,11 +404,6 @@
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
-                    <EmptyDataTemplate>
-                        <div class="empty-state">
-                            No subjects available. Please create subjects first.
-                        </div>
-                    </EmptyDataTemplate>
                 </asp:GridView>
             </div>
         </div>

@@ -280,14 +280,6 @@
         color: #8D97AA;
         line-height: 1.4;
     }
-
-    .empty-state {
-        text-align: center;
-        padding: 40px;
-        color: #8D97AA;
-        font-family: 'Sansation', sans-serif;
-        font-size: 16px;
-    }
 </style>
 </head>
 <body>
@@ -365,11 +357,6 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
-                        <EmptyDataTemplate>
-                            <div class="empty-state">
-                                No subjects found. Create your first subject using the form on the left!
-                            </div>
-                        </EmptyDataTemplate>
                     </asp:GridView>
                 </div>
             </div>

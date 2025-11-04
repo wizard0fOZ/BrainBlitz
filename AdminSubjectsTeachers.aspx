@@ -208,14 +208,6 @@
         font-style: italic;
     }
 
-    .empty-state {
-        text-align: center;
-        padding: 40px;
-        color: #8D97AA;
-        font-family: 'Sansation', sans-serif;
-        font-size: 16px;
-    }
-
     .teacher-cell {
         min-width: 200px;
     }
@@ -301,11 +293,6 @@
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>
-                    <EmptyDataTemplate>
-                        <div class="empty-state">
-                            No subjects available. Please create subjects first.
-                        </div>
-                    </EmptyDataTemplate>
                 </asp:GridView>
             </div>
         </div>
