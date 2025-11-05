@@ -52,17 +52,17 @@
 
         .create-quiz-container {
             width: 100%;
-            max-width: 1440px; /* Consistent max width */
-            margin: 0 auto; /* Center content */
-            padding: 30px 50px 50px; /* Consistent side padding, adjust top/bottom */
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 30px 50px 50px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 30px; /* Space between sections */
+            gap: 30px;
         }
 
         .page-header {
-            margin-bottom: 10px; /* Reduced margin */
+            margin-bottom: 10px;
         }
         .page-title {
             font-size: 36px; font-weight: 700; color: #000; margin-bottom: 5px;
@@ -78,13 +78,13 @@
             padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 20px; /* Space inside card */
+            gap: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .card-title {
             font-family: 'Sansation'; font-weight: 700; font-size: 24px;
-            color: #000000; margin-bottom: 10px; /* Add some space below title */
+            color: #000000; margin-bottom: 10px;
         }
 
         /* Form Layout */
@@ -96,9 +96,9 @@
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 4px; /* Space between label and input */
-            flex: 1; /* Allow fields to grow equally */
-             min-width: 0; /* Necessary for flex-grow */
+            gap: 4px;
+            flex: 1;
+             min-width: 0;
         }
         .form-label {
             font-family: 'Sansation'; font-weight: 700; font-size: 20px;
@@ -112,13 +112,13 @@
             background: #F5F3FE;
             border: 1px solid #8D97AA;
             border-radius: 8px;
-            padding: 10px 15px; /* Adjust padding */
+            padding: 10px 15px;
             font-family: 'Sansation'; font-size: 16px; color: #333;
         }
          .input-field::placeholder, .textarea-field::placeholder { color: #8D97AA; }
          .textarea-field {
-            height: 175px; /* Height for question text */
-            resize: vertical; /* Allow vertical resize */
+            height: 175px;
+            resize: vertical;
          }
 
 
@@ -126,23 +126,23 @@
         .options-list {
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Increased gap */
+            gap: 15px;
             margin-top: 10px;
         }
         .option-row {
             display: flex;
             align-items: center;
-            gap: 12px; /* Gap between radio and input */
+            gap: 12px;
         }
-        .option-row input[type="radio"] { /* Basic styling for radio */
+        .option-row input[type="radio"] {
              width: 20px;
              height: 20px;
-             accent-color: #610099; /* Match theme color */
+             accent-color: #610099;
              cursor: pointer;
         }
         .option-row .input-field {
-             flex-grow: 1; /* Input takes remaining space */
-             height: 50px; /* Match other inputs */
+             flex-grow: 1;
+             height: 50px;
         }
 
         .helper-text {
@@ -156,34 +156,33 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px; /* Space above buttons */
+            margin-top: 10px;
         }
 
-        /* --- Ensure these styles for the Delete Button are included --- */
         .question-title-row {
             display: flex;
-            justify-content: space-between; /* Pushes title left, button right */
-            align-items: center; /* Vertically aligns them */
-            width: 100%; /* Ensure it takes full width */
-            margin-bottom: 10px; /* Add space below title row if needed */
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 10px;
         }
 
         .delete-question-button {
-            color: #DC3545; /* Red color */
+            color: #DC3545;
             text-decoration: none;
-            font-size: 14px; /* Smaller font */
+            font-size: 14px;
             font-weight: normal;
             background: none;
             border: none;
             cursor: pointer;
-            padding: 5px; /* Add some clickable area */
-            margin-left: auto; /* Push button to the far right */
+            padding: 5px;
+            margin-left: auto
         }
-        .delete-question-button i { margin-right: 4px;} /* Space between icon and text */
+        .delete-question-button i { margin-right: 4px;}
 
         .delete-question-button:hover {
             text-decoration: underline;
-            color: #a71d2a; /* Darker red on hover */
+            color: #a71d2a;
         }
         /* --- End Delete Button Styles --- */
 
@@ -199,8 +198,8 @@
             border: 1px solid #8D97AA;
             cursor: pointer;
             text-decoration: none;
-            height: 42px; /* Match Figma height */
-             min-width: 170px; /* Match Figma width */
+            height: 42px;
+             min-width: 170px;
              box-sizing: border-box;
         }
         .add-question-button {
@@ -212,7 +211,7 @@
         .submit-quiz-button {
              background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
              color: #FFFFFF;
-             border: none; /* Remove border for gradient button */
+             border: none;
         }
          .submit-quiz-button i { color: #FFFFFF; }
 
@@ -251,14 +250,13 @@
                     <div class="form-group">
                         <asp:Label ID="lblQuizTitle" runat="server" AssociatedControlID="txtQuizTitle" CssClass="form-label">Quiz Title</asp:Label>
                         <asp:TextBox ID="txtQuizTitle" runat="server" CssClass="input-field" placeholder="e.g., Algebra Fundamentals"></asp:TextBox>
-                        <%-- Add Validation controls if needed --%>
                         <asp:RequiredFieldValidator ID="rfvQuizTitle" runat="server" ControlToValidate="txtQuizTitle"
                              ErrorMessage="Quiz Title is required." ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="lblSubject" runat="server" AssociatedControlID="ddlSubject" CssClass="form-label">Subject</asp:Label>
                         <asp:DropDownList ID="ddlSubject" runat="server" CssClass="dropdown-field">
-                            <%-- Populated from code-behind --%>
+
                         </asp:DropDownList>
                          <asp:RequiredFieldValidator ID="rfvSubject" runat="server" ControlToValidate="ddlSubject"
                              ErrorMessage="Subject is required." ForeColor="Red" Display="Dynamic" InitialValue=""></asp:RequiredFieldValidator>
@@ -274,14 +272,12 @@
                 </div>
             </div>
 
-            <%-- Placeholder for Dynamically Added Question Cards --%>
             <asp:PlaceHolder ID="phQuestions" runat="server"></asp:PlaceHolder>
 
 
             <%-- Action Buttons Row --%>
             <div class="action-buttons-row">
                  <asp:Button ID="btnAddQuestion" runat="server" Text="Add Question" CssClass="form-button add-question-button" OnClick="btnAddQuestion_Click" CausesValidation="false"/>
-                 <%-- CausesValidation="false" prevents required fields check when adding question --%>
 
                 <asp:Button ID="btnCreateQuizSubmit" runat="server" Text="Create Quiz" CssClass="form-button submit-quiz-button" OnClick="btnCreateQuizSubmit_Click" />
             </div>

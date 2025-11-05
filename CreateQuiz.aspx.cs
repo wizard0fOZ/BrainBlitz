@@ -12,10 +12,8 @@ namespace BrainBlitz
 {
     public partial class CreateQuiz : System.Web.UI.Page
     {
-        // Class-level variable to store the validated teacher ID
-        private int CurrentTeacherId = -1; // Initialize to invalid ID
+        private int CurrentTeacherId = -1;
 
-        // --- State stored in Session to make it available during OnInit ---
         private int NumberOfQuestions
         {
             get
@@ -47,7 +45,6 @@ namespace BrainBlitz
             }
             set { Session["DeletedQuestions"] = value; }
         }
-        // --- End session-backed state ---
 
         // Recreate dynamic controls as early as possible so ViewState & post data bind correctly
         protected override void OnInit(EventArgs e)
@@ -149,7 +146,7 @@ namespace BrainBlitz
                     qData.Points = pointsValue;
                 }
 
-                // Read radio button checked values (reliable because controls were created in OnInit)
+                // Read radio button checked values
                 string[] optionLetters = { "A", "B", "C", "D" };
                 string selected = null;
                 foreach (var letter in optionLetters)
@@ -294,7 +291,7 @@ namespace BrainBlitz
             optionsGroup.Controls.Add(new Literal { Text = "<span class=\"helper-text\">Select the radio button for the correct answer</span>" });
             questionCard.Controls.Add(optionsGroup);
 
-            // Restore saved data (if any)
+            // Restore saved data
             var saved = SavedQuestions;
             if (saved.ContainsKey(questionNumber))
             {
