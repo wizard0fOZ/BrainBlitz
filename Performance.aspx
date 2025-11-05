@@ -172,7 +172,6 @@
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         
-        <%-- 1. Reusable Header --%>
         <div class="header">
             <div class="header-content">
                 <a href="TeacherDashboard.aspx" class="brainblitz"></a>
@@ -182,7 +181,7 @@
             </div>
         </div>
 
-        <%-- 2. Main Content Area --%>
+
         <div class="performance-container">
 
             <div class="page-header">
@@ -195,7 +194,7 @@
 
             <asp:Label ID="lblErrorMessage" runat="server" CssClass="error-message" Visible="false"></asp:Label>
             
-            <%-- 3. Summary Cards --%>
+            <%-- Summary Cards --%>
             <div class="summary-container">
                 <div class="summary-card">
                     <span class="summary-title">Total Students</span>
@@ -215,7 +214,7 @@
                 </div>
             </div>
 
-            <%-- 4. Filter Bar --%>
+            <%-- Filter Bar --%>
             <div class="filter-bar">
                 <div class="search-input-wrapper">
                     <i class="fas fa-search"></i>
@@ -223,7 +222,7 @@
                 </div>
             </div>
 
-            <%-- 5. Performance List Table --%>
+            <%-- Performance List Table --%>
             <div class="performance-list-table">
                 <asp:Repeater ID="rptPerformance" runat="server">
                     <HeaderTemplate>
