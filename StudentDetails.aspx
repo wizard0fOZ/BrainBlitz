@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Details - BrainBlitz</title>
     <link href="https://fonts.googleapis.com/css2?family=Sansation:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../Content/Site.css"> <%-- Adjust path if needed --%>
+    <link rel="stylesheet" href="../Content/Site.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <style>
-    /* Dashboard Container - For content *below* the header */
+    /* Dashboard Container */
     .dashboard-container {
         position: relative;
         width: 100%;
@@ -23,14 +23,12 @@
         box-sizing: border-box;
     }
 
-    /* Wrapper for buttons for flex alignment */
     .header-buttons-wrapper {
         display: flex;
         align-items: center;
         gap: 48px;
     }
 
-    /* Update Buttons */
     .header-logout-btn {
         display: flex;
         justify-content: center;
@@ -57,7 +55,6 @@
         box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
     }
 
-        /* Page Specific Styles */
         body { background-color: #F3F3F3; font-family: 'Sansation', sans-serif;}
 
         .details-container {
@@ -88,10 +85,10 @@
         .back-link:hover { background-color: #f7f7f7; }
         .back-link i { font-size: 16px; }
 
-        /* Summary Cards (can reuse from performance page) */
+        /* Summary Cards */
         .summary-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columns for student */
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
         }
         .summary-card {
@@ -104,7 +101,7 @@
         .summary-value.positive { color: #28A745; }
         .summary-value.neutral { color: #000; }
 
-        /* List Table (can reuse from performance page) */
+        /* List Table */
         .list-table {
             background: #FFFFFF; border-radius: 10px;
             padding: 20px 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -112,7 +109,7 @@
         .table-header,
         .table-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr; /* 5 columns */
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             gap: 20px; align-items: center; padding: 15px 0;
             border-bottom: 1px solid #EAEAEA; font-size: 16px;
         }

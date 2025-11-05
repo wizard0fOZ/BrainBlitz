@@ -53,7 +53,6 @@
         transform: translateY(-2px);
         box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
     }
-        /* --- End Header Styles --- */
 
         body { background-color: #F3F3F3; font-family: 'Sansation', sans-serif;}
 
@@ -137,7 +136,6 @@
         .performance-table-header,
         .performance-table-row {
             display: grid;
-            /* Adjusted columns, removed Trend */
             grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
             gap: 20px; align-items: center; padding: 15px 0;
             border-bottom: 1px solid #EAEAEA; font-size: 16px;
