@@ -65,7 +65,7 @@
             font-size: 36px; font-weight: 700; color: #000; margin-bottom: 5px;
         }
         .page-subtitle {
-            font-size: 20px; color: #8D97AA; font-weight: 400; /* Lighter weight per design */
+            font-size: 20px; color: #8D97AA; font-weight: 400;
         }
 
         .top-bar {
@@ -83,7 +83,7 @@
         .search-input-wrapper {
             display: flex;
             align-items: center;
-            flex-grow: 1; /* Search takes up available space */
+            flex-grow: 1;
             gap: 15px;
         }
         .search-input-wrapper i { color: #8D97AA; font-size: 20px; }
@@ -91,7 +91,7 @@
             border: none;
             outline: none;
             font-family: 'Sansation';
-            font-size: 16px; /* Per design */
+            font-size: 16px;
             color: #333;
             width: 100%;
         }
@@ -114,7 +114,7 @@
             border: none;
         }
         .filter-pill.active {
-            background: #610099; /* Main purple color */
+            background: #610099;
             color: #FFFFFF;
         }
 
@@ -141,7 +141,7 @@
         .quiz-card-header .quiz-title {
             font-size: 24px;
             font-weight: 700;
-            color: #610099; /* Purple title */
+            color: #610099;
         }
         
         .quiz-card-tags {
@@ -168,15 +168,15 @@
             align-items: center;
             gap: 8px;
         }
-        .detail-item i { /* Font Awesome icons */
+        .detail-item i {
             font-size: 16px;
             color: #8D97AA;
-            width: 20px; /* Align icons */
+            width: 20px;
             text-align: center;
         }
         .detail-item-best-`ore {
             font-weight: 700;
-            color: #28A745; /* Green for best score */
+            color: #28A745;
         }
         .detail-item-best-score i { color: #28A745; }
 

@@ -5,9 +5,9 @@ using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace BrainBlitz // Assuming this namespace
+namespace BrainBlitz
 {
-    public partial class StudentQuiz : System.Web.UI.Page // Assuming this class name
+    public partial class StudentQuiz : System.Web.UI.Page
     {
         private int CurrentStudentId = -1;
 
@@ -31,7 +31,7 @@ namespace BrainBlitz // Assuming this namespace
             }
         }
 
-        // Updated method to load data (simplified)
+        // Updated method to load data
         private void LoadQuizzesForStudent(string searchTerm = "")
         {
             if (CurrentStudentId <= 0) return;
@@ -119,16 +119,16 @@ namespace BrainBlitz // Assuming this namespace
 
                 if (max == 0)
                 {
-                    return "N/A"; // Avoid division by zero
+                    return "N/A";
                 }
 
                 decimal percentage = (earned / max) * 100;
-                // "N0" formats as a whole number (e.g., 75)
+
                 return $"{percentage:N0}%";
             }
             catch (Exception)
             {
-                return "N/A"; // In case of any conversion error
+                return "N/A";
             }
         }
 

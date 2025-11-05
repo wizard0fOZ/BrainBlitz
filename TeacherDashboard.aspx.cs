@@ -88,7 +88,7 @@ namespace BrainBlitz
             }
         }
 
-        // Card 2: Active Quizzes (This query is correct)
+        // Card 2: Active Quizzes
         private async Task<int> GetActiveQuizzesAsync(SqlConnection connection, int teacherId)
         {
             string query = @"
@@ -105,7 +105,7 @@ namespace BrainBlitz
             }
         }
 
-        // Card 3: Resources (Updated to use correct table name)
+        // Card 3: Resources
         private async Task<int> GetTotalResourcesAsync(SqlConnection connection, int teacherId)
         {
             // Querying the Resources table
@@ -118,7 +118,7 @@ namespace BrainBlitz
             }
         }
 
-        // Card 4: Average Score (This query is correct for calculating avg percentage)
+        // Card 4: Average Score
         private async Task<string> GetAverageScoreAsync(SqlConnection connection, int teacherId)
         {
             string query = @"
@@ -165,7 +165,7 @@ namespace BrainBlitz
             }
         }
 
-        // "My Subjects" List (FIXED: StudentCount query now filters for 'Student' role)
+        // "My Subjects" List
         private async Task<DataTable> LoadSubjectsAsync(SqlConnection connection, int teacherId)
         {
             string query = @"
@@ -198,7 +198,7 @@ namespace BrainBlitz
             }
         }
 
-        // "Recent Activity" List (FIXED: Uses FormattingHelpers.CalculatePercentage)
+        // "Recent Activity" List
         private async Task<DataTable> LoadRecentActivityAsync(SqlConnection connection, int teacherId)
         {
             string query = @"
@@ -246,12 +246,12 @@ namespace BrainBlitz
                 {
                     DateTime finishedAt = (DateTime)row["finishedAt"];
 
-                    // Call the static helper class
+                
                     string percentageStr = CalculatePercentage(row["PointsEarned"], row["MaxPoints"]);
                     int.TryParse(percentageStr.Replace("%", ""), out int percentageInt);
 
                     row["TimeAgo"] = FormatTimeAgo(DateTime.Now.Subtract(finishedAt));
-                    row["ScoreDisplay"] = percentageStr; // Use the formatted string (e.g., "75%")
+                    row["ScoreDisplay"] = percentageStr;
                     row["ScoreClass"] = percentageInt >= 80 ? "activity-score activity-score-good" : "activity-score activity-score-bad";
                 }
 
@@ -265,7 +265,6 @@ namespace BrainBlitz
             Session.Abandon();
             Response.Redirect("Auth.aspx");
         }
-        // Helper function for formatting time
         private string FormatTimeAgo(TimeSpan timeSpan)
         {
             if (timeSpan.TotalDays > 1)
@@ -297,16 +296,15 @@ namespace BrainBlitz
 
                 if (max == 0)
                 {
-                    return "N/A"; // Avoid division by zero
+                    return "N/A"; 
                 }
 
                 decimal percentage = (earned / max) * 100;
-                // "N0" formats as a whole number (e.g., 75)
                 return $"{percentage:N0}%";
             }
             catch (Exception)
             {
-                return "N/A"; // In case of any conversion error
+                return "N/A"; 
             }
         }
     }
