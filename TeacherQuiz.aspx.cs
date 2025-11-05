@@ -279,7 +279,7 @@ namespace BrainBlitz
             switch (subjectName?.ToLower())
             {
                 case "mathematics": return "tag tag-subject-math";
-                case "science": return "tag tag-subject-science";
+                case "physics": return "tag tag-subject-physics";
                 case "english": return "tag tag-subject-english";
                 default: return "tag tag-subject-default";
             }

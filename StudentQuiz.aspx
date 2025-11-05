@@ -19,7 +19,6 @@
     }
 
     /* Update Buttons */
-    .header-home-btn,
     .header-logout-btn {
         display: flex;
         justify-content: center;
@@ -44,13 +43,11 @@
         width: 145px;
     }
 
-    .header-home-btn:hover,
     .header-logout-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
     }
 
-        /* Page Specific Styles */
         body { background-color: #F3F3F3; font-family: 'Sansation', sans-serif;}
 
         .quiz-page-container {
@@ -177,7 +174,7 @@
             width: 20px; /* Align icons */
             text-align: center;
         }
-        .detail-item-best-score {
+        .detail-item-best-`ore {
             font-weight: 700;
             color: #28A745; /* Green for best score */
         }

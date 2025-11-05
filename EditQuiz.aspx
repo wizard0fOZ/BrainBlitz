@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditQuiz.aspx.cs" Inherits="BrainBlitz.EditQuiz" Async="true" %>
+﻿    <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditQuiz.aspx.cs" Inherits="BrainBlitz.EditQuiz" Async="true" %>
 
 <!DOCTYPE html>
 <html lang="en">

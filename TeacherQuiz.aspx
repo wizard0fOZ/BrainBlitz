@@ -177,21 +177,6 @@
         .col-status { grid-column: 6; text-align: center;}
         .col-actions { grid-column: 7; text-align: right; }
 
-        /* Tag Styling */
-        .tag {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            text-align: center;
-            min-width: 60px; /* Ensure tags have some width */
-        }
-        .tag-subject-math { background-color: #E6B9FF; color: #6A009C; }
-        .tag-subject-science { background-color: #B9E6FF; color: #006A9C; }
-        .tag-subject-english { background-color: aquamarine; color: darkcyan; }
-        .tag-subject-default { background-color: #610099; color: #E6B9FF; }
-
         .tag-status-active { background-color: #82F797; color: #006D1A; }
         .tag-status-inactive { background-color: #E0E0E0; color: #555; }
 

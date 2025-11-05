@@ -156,15 +156,6 @@
         .col-last-activity { grid-column: 5; color: #555; }
         .col-actions { grid-column: 6; text-align: right; }
         
-        /* Tags */
-        .tag {
-            display: inline-block; padding: 4px 10px; border-radius: 8px;
-            font-size: 12px; font-weight: 700; text-align: center;
-        }
-        .tag-subject-math { background-color: #E6B9FF; color: #6A009C; }
-        .tag-subject-physics { background-color: #B9E6FF; color: #006A9C; }
-        .tag-subject-default { background-color: #E0E0E0; color: #555; }
-        
         /* Scores */
         .score-good { color: #28A745; }
         .score-medium { color: #FFA500; }

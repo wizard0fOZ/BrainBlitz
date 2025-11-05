@@ -139,8 +139,6 @@ namespace BrainBlitz // Assuming this namespace
             LoadQuizzesForStudent(txtSearchQuizzes.Text.Trim());
         }
 
-        // --- REMOVED btnFilter_Click ---
-
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             Session.Clear();
@@ -151,11 +149,10 @@ namespace BrainBlitz // Assuming this namespace
         // --- Helper Methods ---
         protected string GetSubjectTagClass(string subjectName)
         {
-            // You can customize this
             switch (subjectName?.ToLower())
             {
                 case "mathematics": return "tag tag-subject-math";
-                case "science": return "tag tag-subject-science";
+                case "physics": return "tag tag-subject-physics";
                 case "english": return "tag tag-subject-english";
                 default: return "tag tag-subject-default";
             }
