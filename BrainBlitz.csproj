@@ -100,6 +100,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AdminDiscussions.aspx" />
     <Content Include="App_Data\BrainBlitz.mdf" />
     <Content Include="App_Data\BrainBlitz_log.ldf">
       <DependentUpon>BrainBlitz.mdf</DependentUpon>
@@ -191,10 +192,15 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="StudentDetails.aspx" />
+    <Content Include="StudentProgress.aspx" />
     <Content Include="StudentQuiz.aspx" />
+    <Content Include="StudentResources.aspx" />
+    <Content Include="StudentResourceView.aspx" />
     <Content Include="TakeQuiz.aspx" />
     <Content Include="TeacherDashboard.aspx" />
     <Content Include="TeacherQuiz.aspx" />
+    <Content Include="TeacherResourceEditor.aspx" />
+    <Content Include="TeacherResources.aspx" />
     <Content Include="ViewQuiz.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Bundle.config" />
@@ -208,6 +214,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminDiscussions.aspx.cs">
+      <DependentUpon>AdminDiscussions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminDiscussions.aspx.designer.cs">
+      <DependentUpon>AdminDiscussions.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="CreateQuiz.aspx.cs">
@@ -264,12 +277,33 @@
     <Compile Include="StudentDetails.aspx.designer.cs">
       <DependentUpon>StudentDetails.aspx</DependentUpon>
     </Compile>
+    <Compile Include="StudentProgress.aspx.cs">
+      <DependentUpon>StudentProgress.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StudentProgress.aspx.designer.cs">
+      <DependentUpon>StudentProgress.aspx</DependentUpon>
+    </Compile>
     <Compile Include="StudentQuiz.aspx.cs">
       <DependentUpon>StudentQuiz.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="StudentQuiz.aspx.designer.cs">
       <DependentUpon>StudentQuiz.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StudentResources.aspx.cs">
+      <DependentUpon>StudentResources.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StudentResources.aspx.designer.cs">
+      <DependentUpon>StudentResources.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StudentResourceView.aspx.cs">
+      <DependentUpon>StudentResourceView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StudentResourceView.aspx.designer.cs">
+      <DependentUpon>StudentResourceView.aspx</DependentUpon>
     </Compile>
     <Compile Include="TakeQuiz.aspx.cs">
       <DependentUpon>TakeQuiz.aspx</DependentUpon>
@@ -291,6 +325,20 @@
     </Compile>
     <Compile Include="TeacherQuiz.aspx.designer.cs">
       <DependentUpon>TeacherQuiz.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherResourceEditor.aspx.cs">
+      <DependentUpon>TeacherResourceEditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TeacherResourceEditor.aspx.designer.cs">
+      <DependentUpon>TeacherResourceEditor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherResources.aspx.cs">
+      <DependentUpon>TeacherResources.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TeacherResources.aspx.designer.cs">
+      <DependentUpon>TeacherResources.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewQuiz.aspx.cs">
       <DependentUpon>ViewQuiz.aspx</DependentUpon>

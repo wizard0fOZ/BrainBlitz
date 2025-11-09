@@ -11,7 +11,7 @@ namespace BrainBlitz
 {
 
 
-    public partial class WebForm2
+    public partial class StudentResourceView
     {
 
         /// <summary>
@@ -24,22 +24,22 @@ namespace BrainBlitz
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// lnkLogo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkLogo;
+
+        /// <summary>
         /// btnLogout control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogout;
-
-        /// <summary>
-        /// lblStudentName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblStudentName;
+        protected global::System.Web.UI.WebControls.LinkButton btnLogout;
 
         /// <summary>
         /// lblMessage control.
@@ -51,93 +51,156 @@ namespace BrainBlitz
         protected global::System.Web.UI.WebControls.Label lblMessage;
 
         /// <summary>
-        /// lblQuizzesCompleted control.
+        /// pnlContent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblQuizzesCompleted;
+        protected global::System.Web.UI.WebControls.Panel pnlContent;
 
         /// <summary>
-        /// lblQuizzesTrend control.
+        /// lnkBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblQuizzesTrend;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lnkBack;
 
         /// <summary>
-        /// lblAverageScore control.
+        /// hfResourceId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAverageScore;
+        protected global::System.Web.UI.WebControls.HiddenField hfResourceId;
 
         /// <summary>
-        /// lblAverageTrend control.
+        /// lblTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAverageTrend;
+        protected global::System.Web.UI.WebControls.Label lblTitle;
 
         /// <summary>
-        /// lblStreak control.
+        /// lblSubject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblStreak;
+        protected global::System.Web.UI.WebControls.Label lblSubject;
 
         /// <summary>
-        /// lblStreakInfo control.
+        /// lblType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblStreakInfo;
+        protected global::System.Web.UI.WebControls.Label lblType;
 
         /// <summary>
-        /// lblHoursStudied control.
+        /// lblTeacher control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHoursStudied;
+        protected global::System.Web.UI.WebControls.Label lblTeacher;
 
         /// <summary>
-        /// lblHoursInfo control.
+        /// lblDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHoursInfo;
+        protected global::System.Web.UI.WebControls.Label lblDescription;
 
         /// <summary>
-        /// rptRecentQuizzes control.
+        /// hlDownload control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptRecentQuizzes;
+        protected global::System.Web.UI.WebControls.HyperLink hlDownload;
 
         /// <summary>
-        /// rptRecommendedResources control.
+        /// btnBookmark control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptRecommendedResources;
+        protected global::System.Web.UI.WebControls.LinkButton btnBookmark;
+
+        /// <summary>
+        /// btnMarkComplete control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnMarkComplete;
+
+        /// <summary>
+        /// pnlPreview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlPreview;
+
+        /// <summary>
+        /// lblCommentCount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCommentCount;
+
+        /// <summary>
+        /// pnlNoComments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNoComments;
+
+        /// <summary>
+        /// rptThreads control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptThreads;
+
+        /// <summary>
+        /// txtComment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtComment;
+
+        /// <summary>
+        /// btnPostComment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPostComment;
     }
 }

@@ -11,7 +11,7 @@ namespace BrainBlitz
 {
 
 
-    public partial class WebForm2
+    public partial class TeacherResourceEditor
     {
 
         /// <summary>
@@ -30,16 +30,25 @@ namespace BrainBlitz
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogout;
+        protected global::System.Web.UI.WebControls.LinkButton btnLogout;
 
         /// <summary>
-        /// lblStudentName control.
+        /// lblPageTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblStudentName;
+        protected global::System.Web.UI.WebControls.Label lblPageTitle;
+
+        /// <summary>
+        /// lblPageSubtitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPageSubtitle;
 
         /// <summary>
         /// lblMessage control.
@@ -51,93 +60,102 @@ namespace BrainBlitz
         protected global::System.Web.UI.WebControls.Label lblMessage;
 
         /// <summary>
-        /// lblQuizzesCompleted control.
+        /// hfResourceId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblQuizzesCompleted;
+        protected global::System.Web.UI.WebControls.HiddenField hfResourceId;
 
         /// <summary>
-        /// lblQuizzesTrend control.
+        /// hfExistingPath control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblQuizzesTrend;
+        protected global::System.Web.UI.WebControls.HiddenField hfExistingPath;
 
         /// <summary>
-        /// lblAverageScore control.
+        /// txtTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAverageScore;
+        protected global::System.Web.UI.WebControls.TextBox txtTitle;
 
         /// <summary>
-        /// lblAverageTrend control.
+        /// ddlSubject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAverageTrend;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSubject;
 
         /// <summary>
-        /// lblStreak control.
+        /// ddlType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblStreak;
+        protected global::System.Web.UI.WebControls.DropDownList ddlType;
 
         /// <summary>
-        /// lblStreakInfo control.
+        /// txtDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblStreakInfo;
+        protected global::System.Web.UI.WebControls.TextBox txtDescription;
 
         /// <summary>
-        /// lblHoursStudied control.
+        /// fuResource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHoursStudied;
+        protected global::System.Web.UI.WebControls.FileUpload fuResource;
 
         /// <summary>
-        /// lblHoursInfo control.
+        /// lblExistingFile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHoursInfo;
+        protected global::System.Web.UI.WebControls.Label lblExistingFile;
 
         /// <summary>
-        /// rptRecentQuizzes control.
+        /// txtExternalUrl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptRecentQuizzes;
+        protected global::System.Web.UI.WebControls.TextBox txtExternalUrl;
 
         /// <summary>
-        /// rptRecommendedResources control.
+        /// btnCancel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptRecommendedResources;
+        protected global::System.Web.UI.WebControls.Button btnCancel;
+
+        /// <summary>
+        /// btnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSave;
     }
 }
