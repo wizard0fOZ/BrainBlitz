@@ -83,6 +83,39 @@
         }
         .export-button i { font-size: 16px; }
 
+        .export-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    background: #FFFFFF;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.export-button i {
+    font-size: 16px;
+}
+
+/* gradient primary style, consistent with the app */
+.export-button-primary {
+    background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
+    color: #FFFFFF;
+    border: none;
+}
+
+.export-button-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(97, 0, 153, 0.35);
+}
+
+
         /* Summary Cards */
         .summary-container {
             display: grid;
@@ -189,7 +222,12 @@
                     <h1 class="page-title">Student Performance</h1>
                     <p class="page-subtitle">Track and analyze student progress</p>
                 </div>
-                <asp:Button ID="btnExportReport" runat="server" Text="Export Report" CssClass="export-button" OnClick="btnExportReport_Click" />
+                <asp:LinkButton ID="btnExportReport" runat="server"
+                    CssClass="export-button export-button-primary"
+                    OnClick="btnExportReport_Click">
+                    <i class="fas fa-file-export"></i>
+                    <span>Export CSV</span>
+                </asp:LinkButton>
             </div>
 
             <asp:Label ID="lblErrorMessage" runat="server" CssClass="error-message" Visible="false"></asp:Label>

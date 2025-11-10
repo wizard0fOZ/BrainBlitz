@@ -242,36 +242,67 @@ namespace BrainBlitz
 
             foreach (DataRow row in dt.Rows)
             {
-                string studentName = EscapeCsvField(row["StudentName"].ToString());
-                string subject = EscapeCsvField(row["LastSubjectName"].ToString());
-                string quizzesTaken = row["QuizzesTaken"].ToString();
-                string avgScore = string.Format("{0:N2}", row["AvgPercentage"]);
-                string lastActivity = row["LastActivityTimeAgo"].ToString();
+                string studentName = row["StudentName"]?.ToString() ?? "";
+                string subject = row["LastSubjectName"]?.ToString() ?? "";
+                string quizzesTaken = row["QuizzesTaken"]?.ToString() ?? "";
 
-                csvBuilder.AppendLine($"\"{studentName}\",\"{subject}\",{quizzesTaken},{avgScore},\"{lastActivity}\"");
+                double avg = 0;
+                if (row["AvgPercentage"] != DBNull.Value)
+                {
+                    avg = Convert.ToDouble(row["AvgPercentage"], CultureInfo.InvariantCulture);
+                }
+                string avgScore = avg.ToString("N2", CultureInfo.InvariantCulture);
+
+                string lastActivity = "";
+                if (row.Table.Columns.Contains("LastActivityDate") &&
+                    row["LastActivityDate"] != DBNull.Value)
+                {
+                    DateTime dtLast = (DateTime)row["LastActivityDate"];
+                    // ISO-like, Excel-friendly
+                    lastActivity = dtLast.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                }
+
+                string line = string.Join(",",
+                    EscapeCsvField(studentName),
+                    EscapeCsvField(subject),
+                    quizzesTaken,
+                    avgScore,
+                    EscapeCsvField(lastActivity)
+                );
+
+                csvBuilder.AppendLine(line);
             }
+
+            string fileName = "StudentPerformanceReport_" +
+                              DateTime.Now.ToString("yyyyMMdd_HHmm", CultureInfo.InvariantCulture) +
+                              ".csv";
 
             HttpResponse response = HttpContext.Current.Response;
             response.Clear();
             response.Buffer = true;
             response.ContentType = "text/csv";
-            response.AddHeader("Content-Disposition", "attachment;filename=StudentPerformanceReport.csv");
+            response.AddHeader("Content-Disposition", "attachment;filename=" + fileName);
             response.Charset = "";
+            response.ContentEncoding = Encoding.UTF8;
+
+            // Add UTF-8 BOM so Excel detects encoding correctly
+            response.Write("\uFEFF");
             response.Write(csvBuilder.ToString());
             response.Flush();
             response.SuppressContent = true;
             HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
 
+
         private string EscapeCsvField(string field)
         {
-            if (string.IsNullOrEmpty(field)) return "";
-            if (field.Contains(",") || field.Contains("\""))
-            {
-                return $"\"{field.Replace("\"", "\"\"")}\"";
-            }
-            return field;
+            if (field == null) return "\"\"";
+            // Escape double quotes
+            field = field.Replace("\"", "\"\"");
+            // Always wrap in quotes (simple & safe)
+            return $"\"{field}\"";
         }
+
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {

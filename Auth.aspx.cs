@@ -11,16 +11,57 @@ namespace BrainBlitz
 {
     public partial class Auth : System.Web.UI.Page
     {
+        private string cs = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                // Check if user is already logged in and redirect if necessary
-                if (Session["userID"] != null && Session["role"] != null)
+                // If already logged in, redirect based on role
+                if (Session["UserID"] != null && Session["Role"] != null)
                 {
-                    // Call the new redirection helper method
                     RedirectUserBasedOnRole(Session["Role"].ToString());
+                    return;
                 }
+
+                // Bind security question dropdown for Sign Up
+                BindSecurityQuestions();
+            }
+        }
+
+        private void BindSecurityQuestions()
+        {
+            using (SqlConnection conn = new SqlConnection(cs))
+            using (SqlCommand cmd = new SqlCommand("SELECT SecurityQuestionID, QuestionText FROM SecurityQuestions", conn))
+            {
+                conn.Open();
+                ddlSecurityQuestion.DataSource = cmd.ExecuteReader();
+                ddlSecurityQuestion.DataTextField = "QuestionText";
+                ddlSecurityQuestion.DataValueField = "SecurityQuestionID";
+                ddlSecurityQuestion.DataBind();
+            }
+
+            // Insert placeholder as first item
+            ddlSecurityQuestion.Items.Insert(0, new ListItem("-- Select a question --", ""));
+        }
+
+        private string HashSecurityAnswer(string answer)
+        {
+            if (string.IsNullOrWhiteSpace(answer))
+                return null;
+
+            // Normalize so "Fluffy" and "fluffy" match
+            string normalized = answer.Trim().ToLowerInvariant();
+
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(normalized));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
             }
         }
 
@@ -98,10 +139,28 @@ namespace BrainBlitz
                 string password = txtSignUpPassword.Text;
                 string role = ddlRole.SelectedValue;
 
+                // NEW: security question & answer
+                string securityQuestionValue = ddlSecurityQuestion.SelectedValue;
+                string securityAnswer = txtSecurityAnswer.Text.Trim();
+
+                if (string.IsNullOrEmpty(securityQuestionValue))
+                {
+                    ShowErrorMessage(lblSignUpMessage, "Please select a security question.");
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(securityAnswer))
+                {
+                    ShowErrorMessage(lblSignUpMessage, "Please provide an answer to the security question.");
+                    return;
+                }
+
+                int securityQuestionId = int.Parse(securityQuestionValue);
+                string securityAnswerHash = HashSecurityAnswer(securityAnswer);
+
                 try
                 {
-                    string connectionString = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
-                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    using (SqlConnection conn = new SqlConnection(cs))
                     {
                         conn.Open();
 
@@ -121,10 +180,13 @@ namespace BrainBlitz
                         // Hash the password
                         string passwordHash = HashPassword(password);
 
-                        // Insert new user
-                        string insertQuery = @"INSERT INTO [Users] (email, passwordHash, fullName, role, isActive, createdAt)
-                                               VALUES (@Email, @PasswordHash, @FullName, @Role, 1, GETDATE());
-                                               SELECT CAST(SCOPE_IDENTITY() as int)";
+                        // Insert new user WITH security question + answer
+                        string insertQuery = @"
+                    INSERT INTO [Users] 
+                        (email, passwordHash, fullName, role, isActive, createdAt, SecurityQuestionID, SecurityAnswerHash)
+                    VALUES 
+                        (@Email, @PasswordHash, @FullName, @Role, 1, GETDATE(), @SecurityQuestionID, @SecurityAnswerHash);
+                    SELECT CAST(SCOPE_IDENTITY() as int);";
 
                         using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
                         {
@@ -132,6 +194,8 @@ namespace BrainBlitz
                             insertCmd.Parameters.AddWithValue("@PasswordHash", passwordHash);
                             insertCmd.Parameters.AddWithValue("@FullName", fullName);
                             insertCmd.Parameters.AddWithValue("@Role", role);
+                            insertCmd.Parameters.AddWithValue("@SecurityQuestionID", securityQuestionId);
+                            insertCmd.Parameters.AddWithValue("@SecurityAnswerHash", securityAnswerHash);
 
                             int newUserID = (int)insertCmd.ExecuteScalar();
 

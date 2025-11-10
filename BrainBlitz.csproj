@@ -126,6 +126,7 @@
     <Content Include="Default.aspx" />
     <Content Include="EditQuiz.aspx" />
     <Content Include="favicon.ico" />
+    <Content Include="ForgotPasswordSecurity.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Landing.aspx" />
     <Content Include="Auth.aspx" />
@@ -243,6 +244,13 @@
     </Compile>
     <Compile Include="EditQuiz.aspx.designer.cs">
       <DependentUpon>EditQuiz.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ForgotPasswordSecurity.aspx.cs">
+      <DependentUpon>ForgotPasswordSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ForgotPasswordSecurity.aspx.designer.cs">
+      <DependentUpon>ForgotPasswordSecurity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
