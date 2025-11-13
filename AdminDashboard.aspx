@@ -349,6 +349,18 @@
 
     .manage-users-icon { background-image: url('/Images/Students.png'); }
     .manage-subjects-icon { background-image: url('/Images/Teachers.png'); }
+    .manage-discussions-icon {
+        background: #F5EAFE;
+        color: #610099;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        width: 50px;
+        height: 50px;
+    }
+
 
     .action-card-title {
         font-family: 'Sansation';
