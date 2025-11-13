@@ -487,6 +487,12 @@
                     <span class="action-card-title">Manage Subjects</span>
                     <span class="action-card-subtitle">Manage Subjects for Student & Teachers</span>
                 </a>
+                <a href="AdminDiscussions.aspx" class="action-card">
+                    <div class="action-card-icon manage-discussions-icon">
+                         <i class="fas fa-comments"></i></div>
+                    <span class="action-card-title">Discussion Moderation</span>
+                    <span class="action-card-subtitle">Moderate and review flagged discussions</span>
+                </a>
             </div>
         </div>
     </form>
