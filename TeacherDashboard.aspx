@@ -499,7 +499,7 @@
                     <span class="action-card-title">Create Quiz</span>
                     <span class="action-card-subtitle">Build a new quiz for your students</span>
                 </a>
-                <a href="UploadResource.aspx" class="action-card">
+                <a href="TeacherResources.aspx" class="action-card">
                     <div class="action-card-icon upload-resource-icon"></div>
                     <span class="action-card-title">Upload Resource</span>
                     <span class="action-card-subtitle">Add learning materials for students</span>
