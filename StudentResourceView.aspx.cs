@@ -14,7 +14,6 @@ namespace BrainBlitz
     {
         private string cs = ConfigurationManager.ConnectionStrings["BrainBlitzDB"].ConnectionString;
 
-        // holds all replies while binding
         private DataTable _allReplies;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -26,7 +25,7 @@ namespace BrainBlitz
             }
 
             var role = Session["Role"].ToString();
-            if (role != "Student" && role != "Teacher")
+            if (role != "Student" && role != "Teacher" && role != "Admin")
             {
                 Response.Redirect("~/Landing.aspx");
                 return;
@@ -51,20 +50,29 @@ namespace BrainBlitz
 
         private void ConfigureHeader(string role)
         {
-            // Logo: go back to the correct dashboard
-            lnkLogo.HRef = role == "Teacher" ? "TeacherDashboard.aspx" : "StudentDashboard.aspx";
+            bool isTeacher = role == "Teacher";
+            bool isAdmin = role == "Admin";
+            bool isStudent = role == "Student";
 
-            // Back link – respect ?from=teacher if present
+            if (isTeacher)
+                lnkLogo.HRef = "TeacherDashboard.aspx";
+            else if (isAdmin)
+                lnkLogo.HRef = "AdminDashboard.aspx";
+            else
+                lnkLogo.HRef = "StudentDashboard.aspx";
+
             string from = (Request.QueryString["from"] ?? "").ToLower();
-            if (from == "teacher" || role == "Teacher")
+
+            if (from == "teacher" || isTeacher)
                 lnkBack.HRef = "TeacherResources.aspx";
+            else if (from == "admin" || isAdmin)
+                lnkBack.HRef = "AdminDiscussions.aspx";
             else
                 lnkBack.HRef = "StudentResources.aspx";
 
-            // Teachers shouldn't see bookmark / complete
-            bool isTeacher = role == "Teacher";
-            btnBookmark.Visible = !isTeacher;
-            btnMarkComplete.Visible = !isTeacher;
+            // Only students should see bookmark / complete
+            btnBookmark.Visible = isStudent;
+            btnMarkComplete.Visible = isStudent;
         }
 
         private int GetCurrentUserId()
@@ -72,17 +80,16 @@ namespace BrainBlitz
             return Convert.ToInt32(Session["UserId"]);
         }
 
-        /// <summary>
-        /// Load resource details for either Student or Teacher.
-        /// </summary>
         private void LoadResource(int resourceId, string role)
         {
             bool isTeacher = role == "Teacher";
+            bool isAdmin = role == "Admin";
+            bool isStudent = role == "Student";
 
             using (SqlConnection conn = new SqlConnection(cs))
             using (SqlCommand cmd = conn.CreateCommand())
             {
-                if (isTeacher)
+                if (isTeacher || isAdmin)
                 {
                     cmd.CommandText = @"
                         SELECT 
@@ -100,7 +107,7 @@ namespace BrainBlitz
                     ";
                     cmd.Parameters.AddWithValue("@ResourceId", resourceId);
                 }
-                else
+                else if (isStudent)
                 {
                     cmd.CommandText = @"
                         SELECT 
@@ -126,6 +133,12 @@ namespace BrainBlitz
                     ";
                     cmd.Parameters.AddWithValue("@UserId", GetCurrentUserId());
                     cmd.Parameters.AddWithValue("@ResourceId", resourceId);
+                }
+                else
+                {
+                    ShowError("You do not have access to this resource.");
+                    pnlContent.Visible = false;
+                    return;
                 }
 
                 conn.Open();
@@ -168,7 +181,7 @@ namespace BrainBlitz
                         hlDownload.Enabled = false;
                     }
 
-                    if (!isTeacher)
+                    if (isStudent)
                     {
                         bool isBookmarked = Convert.ToInt32(reader["IsBookmarked"]) == 1;
                         bool isCompleted = Convert.ToInt32(reader["IsCompleted"]) == 1;
@@ -423,7 +436,6 @@ namespace BrainBlitz
             {
                 conn.Open();
 
-                // Top-level comments
                 using (SqlCommand cmd = new SqlCommand(@"
                     SELECT d.discussionID AS DiscussionID,
                            d.message      AS Message,
@@ -445,7 +457,6 @@ namespace BrainBlitz
                     }
                 }
 
-                // Replies
                 using (SqlCommand cmd = new SqlCommand(@"
                     SELECT d.discussionID AS DiscussionID,
                            d.parentDiscussionID,
@@ -468,7 +479,6 @@ namespace BrainBlitz
                 }
             }
 
-            // TimeAgo for parents
             parents.Columns.Add("TimeAgo", typeof(string));
             foreach (DataRow row in parents.Rows)
             {
@@ -476,7 +486,6 @@ namespace BrainBlitz
                 row["TimeAgo"] = FormatTimeAgo(created);
             }
 
-            // TimeAgo for replies
             _allReplies.Columns.Add("TimeAgo", typeof(string));
             foreach (DataRow row in _allReplies.Rows)
             {
@@ -519,7 +528,6 @@ namespace BrainBlitz
 
         protected void rptThreads_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            // 1) REPLY TO COMMENT
             if (e.CommandName == "Reply")
             {
                 int parentId;
@@ -566,7 +574,6 @@ namespace BrainBlitz
                 return;
             }
 
-            // 2) REPORT / FLAG COMMENT
             if (e.CommandName == "Flag")
             {
                 int discussionId;

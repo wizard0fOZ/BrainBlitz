@@ -362,8 +362,7 @@
                             <div class="resource-actions">
                                 <asp:HyperLink ID="hlView" runat="server"
                                     CssClass="btn-view"
-                                    NavigateUrl='<%# "~/StudentResourceView.aspx?id=" + Eval("ResourceId") + "&from=teacher" %>'
-                                    Target="_blank">
+                                    NavigateUrl='<%# "~/StudentResourceView.aspx?id=" + Eval("ResourceId") + "&from=teacher" %>'>
                                     <i class="fas fa-eye"></i>
                                     <span>View</span>
                                 </asp:HyperLink>

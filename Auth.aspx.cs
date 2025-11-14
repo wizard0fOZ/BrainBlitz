@@ -226,7 +226,7 @@ namespace BrainBlitz
                     Response.Redirect("~/TeacherDashboard.aspx");
                     break;
                 case "Student":
-                    Response.Redirect("~/StudentQuiz.aspx");
+                    Response.Redirect("~/Studentdashboard.aspx");
                     break;
                 case "Admin":
                     Response.Redirect("~/AdminDashboard.aspx");
