@@ -289,7 +289,7 @@
         <%-- 1. Reusable Header --%>
         <div class="header">
             <div class="header-content">
-                <a href="UserDashboard.aspx" class="brainblitz"></a>
+                <a href="StudentDashboard.aspx" class="brainblitz"></a>
                 <div class="header-buttons-wrapper">
                     <asp:LinkButton ID="btnLogout" runat="server" CssClass="header-logout-btn" OnClick="btnLogout_Click">Log out</asp:LinkButton>
                 </div>

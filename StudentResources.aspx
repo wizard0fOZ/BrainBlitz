@@ -10,6 +10,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <style>
+
+        .header-logout-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 9px 38px;
+        position: relative;
+        height: 40px;
+        top: auto;
+        right: auto;
+        background: linear-gradient(90deg, #610099 0%, #FF00D9 100%);
+        border-radius: 10px;
+        cursor: pointer;
+        color: #fff;
+        font-family: 'Sansation';
+        font-weight: 700;
+        font-size: 20px;
+        text-align: center;
+        text-decoration: none;
+        width: 145px;
+        }
+
+        .header-logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(97, 0, 153, 0.3);
+        }
         body {
             background-color: #F3F3F3;
             font-family: 'Sansation', sans-serif;

@@ -295,7 +295,7 @@ namespace BrainBlitz
         {
             Session.Clear();
             Session.Abandon();
-            Response.Redirect("Auth.aspx");
+            Response.Redirect("Landing.aspx");
         }
     }
 }

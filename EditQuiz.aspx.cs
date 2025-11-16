@@ -744,7 +744,7 @@ namespace BrainBlitz
         {
             Session.Clear();
             Session.Abandon();
-            Response.Redirect("Auth.aspx");
+            Response.Redirect("Landing.aspx");
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)

@@ -203,7 +203,7 @@ namespace BrainBlitz
             Session.Abandon();
 
             // Redirect to login page
-            Response.Redirect("Auth.aspx");
+            Response.Redirect("Landing.aspx");
         }
     }
 }

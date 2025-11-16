@@ -329,7 +329,7 @@
         }
 
         .action-quiz-icon { background-image: url('/Images/pluspink.png'); }
-        .action-resource-icon { background-image: url('/Images/bookicon.png'); }
+        .action-resource-icon { background-image: url('/Images/Teachers.png'); }
         .action-progress-icon { background-image: url('/Images/chartgreen.png'); }
 
         .action-card-title {

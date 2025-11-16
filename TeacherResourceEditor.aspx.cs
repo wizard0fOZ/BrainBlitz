@@ -192,7 +192,7 @@ namespace BrainBlitz
                 fuResource.SaveAs(fullPath);
 
                 urlOrPath = "~/uploads/resources/" + fileName;
-            }
+            }   
             else if (!string.IsNullOrWhiteSpace(txtExternalUrl.Text))
             {
                 urlOrPath = txtExternalUrl.Text.Trim();

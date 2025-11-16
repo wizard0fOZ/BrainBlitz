@@ -66,7 +66,7 @@ namespace BrainBlitz.Student
 
             if (AllQuestions == null || AllQuestions.Count == 0)
             {
-                // TODO: Add error message
+               
                 Response.Redirect("~/StudentQuiz.aspx");
                 return;
             }
@@ -350,7 +350,7 @@ namespace BrainBlitz.Student
         {
             Session.Clear();
             Session.Abandon();
-            Response.Redirect("~/Auth.aspx");
+            Response.Redirect("~/Landing.aspx");
         }
     }
 
