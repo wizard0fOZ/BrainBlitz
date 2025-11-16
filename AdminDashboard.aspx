@@ -398,7 +398,7 @@
         <div class="dashboard-container">
             <div class="slogan-div">
                 <div class="dashboard-title">Admin Dashboard</div>
-                <div class="dashboard-subtitle">Manage your courses and track student progress</div>
+                <div class="dashboard-subtitle">System Overview with Management Tools</div>
             </div>
 
             <div class="summary-container">
